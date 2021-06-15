@@ -1,0 +1,43 @@
+# create a new VM from a template
+
+- name: VM from template
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    vcenter_hostname: vcenter-hostname
+    vcenter_user: ansible@vsphere.local
+    vcenter_pass: 
+    esxhost: 10.2.9.200
+    datastore: datastore01
+    vmtemplate: VM01
+    name: "newvm"
+    notes: Ansible Test
+    dumpfacts: False
+  tasks:
+    - name: Create VM from template
+      vmware_guest:
+        validate_certs: False
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        esxi_hostname: "{{ esxhost }}"
+        datacenter: dc
+        name: "{{ name }}"
+        template: "{{ vmtemplate }}"
+        disk:
+          - size_gb: "{{ disk_size | default(30) }}"
+            type: thin
+            datastore: "{{ datastore }}"
+        networks:
+        - name: VM Network
+          type: dhcp
+        hardware:
+          memory_mb: "{{ vm_memory | default(1024) }}"
+        wait_for_ip_address: True
+        state: present
+      register: newvm
+
+    - name: IP address info
+      debug:
+        msg: "{{ newvm.instance.ipv4 }} {{ name }}"
