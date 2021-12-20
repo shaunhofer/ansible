@@ -14,12 +14,17 @@
     ec2_ami_image: "ami-0be7afce90ae33ee9" #Microsoft Windows Server 2022 Base
     ptr_zone_cidr: "10.10.1.0/24"
     security_group: "Ansibledemo-windowssg"
+    # Needed for AD and windows client provision
+    dns_domain_name: "ansibleworkshop.com"
+    dns_domain_name_short: "ansibleworkshop"
+    ldap_basedn: "DC=ansibleworkshop,DC=com"
+    domain_admin_password: "$t0p read1ng My @ss"
     
 ################### Build Instances ###################
   tasks:
     - name: Windows - Launch instance 1
       ec2:
-        key_name: "{{ tag_user }}-{{ name_prefix }}-key"
+        key_name: "{{ aws_key_pair }}"
         instance_type: "{{ ec2_instance_type }}"
         image: "{{ ec2_ami_image }}"
         wait: yes
@@ -64,7 +69,7 @@
       ec2_win_password:
         region: '{{ ec2_region }}'
         instance_id: "{{ item.id }}"
-        key_file: "/var/lib/awx/projects/{{ tag_user }}-{{ name_prefix }}-private.pem"
+        key_data: "{{ aws_key_pair }}"
         wait: yes
         wait_timeout: 300
       with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
