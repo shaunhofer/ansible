@@ -1,4 +1,5 @@
 ---
+
 - name: Deploy windows VM in AWS
   hosts: all
   vars:
