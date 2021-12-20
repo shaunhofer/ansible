@@ -1,0 +1,10 @@
+---
+- name: Snapshot AWS VM
+  hosts: localhost
+  gather_facts: False
+  vars:
+    instance_id: ""
+  tasks:
+    ec2_snapshot:
+      instance_id: {{ instance_id }}
+      description: Quick snapshot before work
