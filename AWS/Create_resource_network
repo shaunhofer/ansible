@@ -1,0 +1,138 @@
+---
+- name: Deploy windows VM in AWS
+  hosts: localhost
+  vars:
+    instance_loc: aws
+    name_prefix: "Ansibledemo"
+    ec2_vpc_id: ""
+    ec2_region: "ap-southeast-2"
+    ec2_az: "ap-southeast-2a"
+    tag_user: "ansible"
+    user_count: "1"
+    ec2_vpc_subnet_id: ""
+    ptr_zone_cidr: "10.10.1.0/24"
+
+    # Needed for AD and windows client provision
+    dns_domain_name: "ansibleworkshop.com"
+    dns_domain_name_short: "ansibleworkshop"
+    ldap_basedn: "DC=ansibleworkshop,DC=com"
+    domain_admin_password: "MyP@ssw0rd21"
+
+  tasks:
+    ################### Create Resources ###################
+    - name: Create AWS VPC {{ name_prefix }}-vpc
+      ec2_vpc_net:
+        name: "{{ name_prefix }}-vpc"
+        cidr_block: "{{ ptr_zone_cidr }}"
+        region: "{{ ec2_region }}"
+      #tags:
+        #Username: {{ tag_user }}
+        #Info: Username that provisioned this-> {{ tag_user }}
+        #Students: "{{ user_count }}"
+      register: create_vpc
+      until: create_vpc is not failed
+      retries: 5
+
+    - name: Set VPC ID
+      set_fact:
+        ec2_vpc_id: "{{ create_vpc.vpc.id }}"
+
+    - name: Create subnet for {{ name_prefix }}-vpc
+      ec2_vpc_subnet:
+        region: "{{ ec2_region }}"
+        az: "{{ ec2_az }}"
+        vpc_id: "{{ ec2_vpc_id }}"
+        cidr: "{{ ptr_zone_cidr }}"
+        wait_timeout: 600
+        resource_tags:
+          Name: "{{ name_prefix }}-subnet"
+          Username: "{{ tag_user }}"
+          Info: "Username that provisioned this-> {{ tag_user }}"
+          Students: "{{ user_count }}"
+      register: create_subnet
+      until: create_subnet is not failed
+      retries: 15
+
+    - name: Set Subnet ID
+      set_fact:
+        ec2_vpc_subnet_id: "{{ create_subnet.subnet.id }}"
+
+    - name: Create Internet Gateway
+      ec2_vpc_igw:
+        vpc_id: "{{ ec2_vpc_id }}"
+        region: "{{ ec2_region }}"
+        #tags:
+          #Name: "{{ name_prefix }}-igw"
+          #Username: "{{ tag_user }}"
+          #Info: "Username that provisioned this-> {{ tag_user }}"
+        state: present
+      register: igw
+      until: igw is not failed
+      retries: 15
+
+    - name: vpc public subnet route table is present for {{ ec2_vpc_id }}
+      ec2_vpc_route_table:
+        region: "{{ ec2_region }}"
+        vpc_id: "{{ ec2_vpc_id }}"
+        subnets:
+          - "{{ ec2_vpc_subnet_id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw.gateway_id }}"
+        tags:
+          Name: "{{ name_prefix }}-route"
+          Username: "{{ tag_user }}"
+          Info: "Username that provisioned this-> {{ tag_user }}"
+          Students: "{{ user_count }}"
+      register: routetable
+      until: routetable is not failed
+      retries: 5
+
+    - name: Create ssh key pair {{ name_prefix }}
+      ec2_key:
+        name: "{{ tag_user }}-{{ name_prefix }}-key"
+        region: "{{ ec2_region }}"
+      register: create_key
+
+    - name: Save the private key
+      copy:
+        content: "{{ create_key.key.private_key }}"
+        dest: "/var/lib/awx/projects/{{ tag_user }}-{{ name_prefix }}-private.pem"
+        mode: '0400'
+      when: create_key.changed
+
+    ################### Create Security Groups ###################
+
+    - name: Windows | Create MS Windows security group
+      ec2_group:
+        name: "{{ name_prefix }}-windowssg"
+        description: "Microsoft Windows SG"
+        vpc_id: "{{ ec2_vpc_id }}"
+        region: "{{ ec2_region }}"
+        #tags:
+          #Username: "{{ tag_user }}"
+          #Info: "Username that provisioned this-> {{ tag_user }}"
+          #Students: "{{ user_count }}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: "0.0.0.0/0"
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 443
+            to_port: 443
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 5986
+            to_port: 5986
+            cidr_ip: "0.0.0.0/0"
+          - proto: tcp
+            from_port: 3389
+            to_port: 3389
+            cidr_ip: "0.0.0.0/0"
+          - proto: all
+            cidr_ip: "{{ ptr_zone_cidr }}"
