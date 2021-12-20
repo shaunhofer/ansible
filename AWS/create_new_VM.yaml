@@ -71,7 +71,8 @@
       ec2_win_password:
         region: '{{ ec2_region }}'
         instance_id: "{{ item.id }}"
-        key_data: "{{ aws_key_pair }}"
+        aws_access_key: "{{ aws_access_key }}"
+        #key_data: "{{ aws_key_pair }}"
         wait: yes
         wait_timeout: 300
       with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
