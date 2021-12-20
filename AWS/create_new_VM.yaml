@@ -64,7 +64,7 @@
       ec2_win_password:
         region: '{{ ec2_region }}'
         instance_id: "{{ item.id }}"
-        key_file: "/var/lib/awx/projects/{{ name_prefix }}-private.pem"
+        key_file: "/var/lib/awx/projects/{{ tag_user }}-{{ name_prefix }}-private.pem"
         wait: yes
         wait_timeout: 300
       with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
