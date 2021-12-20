@@ -29,20 +29,20 @@
         assign_public_ip: yes
         region: "{{ ec2_region }}"
         count_tag:
-          Name: "{{ name_prefix + '-s' + item + '-database'}}"
+          Name: "{{ name_prefix + '-s' + item }}"
           App: AnsibleWorkshop
         instance_tags:
-          Name: "{{ name_prefix + '-s' + item + '-database'}}"
+          Name: "{{ name_prefix + '-s' + item }}"
           App: AnsibleWorkshop
           Workshop: "{{ name_prefix }}"
-          Student: "{{ user_prefix + item }}"
-          Username: "{{ skylight_user }}"
-          Info: "Username that provisioned this-> {{ skylight_user }}"
+          Student: "{{ tag_user + item }}"
+          Username: "{{ tag_user }}"
+          Info: "Username that provisioned this-> {{ tag_user }}"
           Students: "{{ user_count }}"
-          short_name: "{{ 's' + item + '-database' }}"
-          long_name: "{{ 's' + item + '-database' }}.{{ name_prefix }}.{{ public_dns_zone | default('') }}"
+          short_name: "{{ 's' + item }}"
+          long_name: "{{ 's' + item }}.{{ name_prefix }}.{{ public_dns_zone | default('') }}"
           os_type: windows
-        user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='s' + item + '-database')) }}"
+        user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='s' + item )) }}"
       with_sequence: count={{user_count}}
       register: windows1_jobs
       async: 7200
@@ -75,7 +75,7 @@
 
     - name: Windows | Add new instance to host group
       add_host:
-        hostname: "s{{ item.item.tags.Student | regex_replace('[^0-9]', '') }}-database"
+        hostname: "s{{ item.item.tags.Student | regex_replace('[^0-9]', '') }}"
         ansible_host: "{{ item.item.public_ip }}"
         private_ip: "{{ item.item.private_ip }}"
         ansible_port: "{{ '22' if (windows_ansible_connection is defined and windows_ansible_connection == 'ssh') else '5986' }}"
