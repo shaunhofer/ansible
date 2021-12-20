@@ -4,7 +4,7 @@
   vars:
     instance_loc: aws
     name_prefix: "Ansibledemo"
-    ec2_vpc_id: ""
+    ec2_vpc_id: "vpc-0bcde310b604499c6"
     ec2_region: "ap-southeast-2"
     ec2_az: "ap-southeast-2a"
     tag_user: "ansible"
@@ -44,3 +44,5 @@
       register: windows1_jobs
       async: 7200
       poll: 0
+      wait: yes
+      wait_timeout: 500
