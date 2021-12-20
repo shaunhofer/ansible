@@ -21,6 +21,8 @@
         group: "{{ name_prefix }}-windowssg"
         instance_type: "{{ ec2_instance_type }}"
         exact_count: 1
+        wait: yes
+        wait_timeout: 500
         count_tag:
           Name: "{{ name_prefix + '-s' + item + '-database'}}"
           App: AnsibleWorkshop
@@ -44,5 +46,3 @@
       register: windows1_jobs
       async: 7200
       poll: 0
-      wait: yes
-      wait_timeout: 500
