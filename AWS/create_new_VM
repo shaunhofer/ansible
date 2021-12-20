@@ -7,8 +7,9 @@ ec2_region: "ap-southeast-2"
 username: "ansible"
 user_count: "1"
 ec2_windows_instance_type: "win2019_full"
-ec2_vpc_subnet_id:
+ec2_vpc_subnet_id: ""
 ec2_ami_ids: "t2.medium"
+ptr_zone_cidr: ""
 
 # Needed for AD and windows client provision
 dns_domain_name: "ansibleworkshop.com"
@@ -17,6 +18,88 @@ ldap_basedn: "DC=ansibleworkshop,DC=com"
 domain_admin_password: "MyP@ssw0rd21"
 
 tasks:
+################### Create Resources ###################
+- name: Create AWS VPC {{ name_prefix }}-vpc
+  ec2_vpc_net:
+    name: "{{ name_prefix }}-vpc"
+    cidr_block: "{{ ptr_zone_cidr }}"
+    region: "{{ ec2_region }}"
+    tags:
+      Username: "{{ user }}"
+      Info: "Username that provisioned this-> {{ user }}"
+      Students: "{{ user_count }}"
+  register: create_vpc
+  until: create_vpc is not failed
+  retries: 5
+
+- name: Set VPC ID
+  set_fact:
+    ec2_vpc_id: "{{ create_vpc.vpc.id }}"
+
+- name: Create subnet for {{ name_prefix }}-vpc
+  ec2_vpc_subnet:
+    region: "{{ ec2_region }}"
+    az: "{{ ec2_az }}"
+    vpc_id: "{{ ec2_vpc_id }}"
+    cidr: "{{ ptr_zone_cidr }}"
+    wait_timeout: 600
+    resource_tags:
+      Name: "{{ name_prefix }}-subnet"
+      Username: "{{ user }}"
+      Info: "Username that provisioned this-> {{ user }}"
+      Students: "{{ user_count }}"
+  register: create_subnet
+  until: create_subnet is not failed
+  retries: 15
+
+- name: Set Subnet ID
+  set_fact:
+    ec2_vpc_subnet_id: "{{ create_subnet.subnet.id }}"
+
+- name: Create Internet Gateway
+  ec2_vpc_igw:
+    vpc_id: "{{ ec2_vpc_id }}"
+    region: "{{ ec2_region }}"
+    tags:
+      Name: "{{ name_prefix }}-igw"
+      Username: "{{ user }}"
+      Info: "Username that provisioned this-> {{ user }}"
+    state: present
+  register: igw
+  until: igw is not failed
+  retries: 15
+
+- name: vpc public subnet route table is present for {{ ec2_vpc_id }}
+  ec2_vpc_route_table:
+    region: "{{ ec2_region }}"
+    vpc_id: "{{ ec2_vpc_id }}"
+    subnets:
+      - "{{ ec2_vpc_subnet_id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ igw.gateway_id }}"
+    tags:
+      Name: "{{ name_prefix }}-route"
+      Username: "{{ user }}"
+      Info: "Username that provisioned this-> {{ user }}"
+      Students: "{{ user_count }}"
+  register: routetable
+  until: routetable is not failed
+  retries: 5
+
+- name: Create ssh key pair {{ name_prefix }}
+  ec2_key:
+    name: "{{ user }}-{{ name_prefix }}-key"
+    region: "{{ ec2_region }}"
+  register: create_key
+
+- name: Save the private key
+  copy:
+    content: "{{ create_key.key.private_key }}"
+    dest: "/var/lib/awx/projects/workshops/{{ name_prefix }}/{{ user }}-{{ name_prefix }}-private.pem"
+    mode: '0400'
+  when: create_key.changed
+
 ################### Create Security Groups ###################
 
 - name: Windows | Create MS Windows security group
