@@ -110,10 +110,10 @@
         description: "Microsoft Windows SG"
         vpc_id: "{{ ec2_vpc_id }}"
         region: "{{ ec2_region }}"
-        tags:
-          Username: "{{ tag_user }}"
-          Info: "Username that provisioned this-> {{ tag_user }}"
-          Students: "{{ user_count }}"
+        #tags:
+          #Username: "{{ tag_user }}"
+          #Info: "Username that provisioned this-> {{ tag_user }}"
+          #Students: "{{ user_count }}"
         rules:
           - proto: tcp
             from_port: 22
