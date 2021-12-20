@@ -144,8 +144,7 @@
     - name: Windows - Launch instance 1
       ec2:
         key_name: "{{ tag_user }}-{{ name_prefix }}-key"
-        group:
-          - "{{ name_prefix }}-windowssg"
+        group: "{{ name_prefix }}-windowssg"
         instance_type: "{{ ec2_windows_instance_type }}"
         exact_count: 1
         count_tag:
