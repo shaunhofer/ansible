@@ -27,4 +27,4 @@
         vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
         assign_public_ip: yes
         region: "{{ ec2_region }}"
-        #user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='s' + item + '-database')) }}"
+        user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='win-'+ {{ name_prefix }} )) }}"
