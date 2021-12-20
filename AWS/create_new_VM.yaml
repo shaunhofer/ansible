@@ -1,7 +1,6 @@
 ---
 
 - name: Deploy windows VM in AWS
-  hosts: all
   vars:
     instance_loc: aws
     name_prefix: "Ansibledemo"
@@ -63,10 +62,10 @@
       ec2_vpc_igw:
         vpc_id: "{{ ec2_vpc_id }}"
         region: "{{ ec2_region }}"
-        tags:
-          Name: "{{ name_prefix }}-igw"
-          Username: "{{ tag_user }}"
-          Info: "Username that provisioned this-> {{ tag_user }}"
+        #tags:
+          #Name: "{{ name_prefix }}-igw"
+          #Username: "{{ tag_user }}"
+          #Info: "Username that provisioned this-> {{ tag_user }}"
         state: present
       register: igw
       until: igw is not failed
