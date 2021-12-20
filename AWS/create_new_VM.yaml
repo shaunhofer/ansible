@@ -1,6 +1,6 @@
 ---
 - name: Deploy windows VM in AWS
-  hosts: all
+  hosts: localhost
   vars:
     instance_loc: aws
     name_prefix: "Ansibledemo"
