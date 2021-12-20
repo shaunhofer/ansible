@@ -19,12 +19,12 @@
     - name: Windows - Launch instance 1
       ec2:
         key_name: "{{ tag_user }}-{{ name_prefix }}-key"
-        group: "{{ security_group }}"
         instance_type: "{{ ec2_instance_type }}"
-        count: 1
         image: "{{ ec2_ami_image }}"
         wait: yes
-        region: "{{ ec2_region }}"
+        count: 1
+        group: "{{ security_group }}"
         vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
-        user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='s' + item + '-database')) }}"
         assign_public_ip: yes
+        region: "{{ ec2_region }}"
+        #user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='s' + item + '-database')) }}"
