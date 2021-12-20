@@ -11,7 +11,7 @@
     ec2_windows_instance_type: "win2019_full"
     ec2_vpc_subnet_id: ""
     ec2_ami_ids: "t2.medium"
-    ptr_zone_cidr: ""
+    ptr_zone_cidr: "10.10.1.0/24"
 
     # Needed for AD and windows client provision
     dns_domain_name: "ansibleworkshop.com"
