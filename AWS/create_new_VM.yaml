@@ -14,7 +14,8 @@
     ec2_ami_image: "ami-0be7afce90ae33ee9" #Microsoft Windows Server 2022 Base
     ptr_zone_cidr: "10.10.1.0/24"
     security_group: "Ansibledemo-windowssg"
-
+    
+################### Build Instances ###################
   tasks:
     - name: Windows - Launch instance 1
       ec2:
@@ -27,4 +28,83 @@
         vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
         assign_public_ip: yes
         region: "{{ ec2_region }}"
-        user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='win-'+ name_prefix )) }}"
+        count_tag:
+          Name: "{{ name_prefix + '-s' + item + '-database'}}"
+          App: AnsibleWorkshop
+        instance_tags:
+          Name: "{{ name_prefix + '-s' + item + '-database'}}"
+          App: AnsibleWorkshop
+          Workshop: "{{ name_prefix }}"
+          Student: "{{ user_prefix + item }}"
+          Username: "{{ skylight_user }}"
+          Info: "Username that provisioned this-> {{ skylight_user }}"
+          Students: "{{ user_count }}"
+          short_name: "{{ 's' + item + '-database' }}"
+          long_name: "{{ 's' + item + '-database' }}.{{ name_prefix }}.{{ public_dns_zone | default('') }}"
+          os_type: windows
+        user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='s' + item + '-database')) }}"
+      with_sequence: count={{user_count}}
+      register: windows1_jobs
+      async: 7200
+      poll: 0
+       
+################### Wait for Jobs ###################
+    - name: Wait for windows instance creation to complete
+      async_status: jid="{{ item.ansible_job_id }}"
+      register: windows_instances
+      until: windows_instances.finished
+      retries: 300
+      with_items:
+        - "{{ windows1_jobs.results }}"
+
+
+################### Get Passwords ###################
+
+    - name: Windows | Obtain windows passwords for instances
+      ec2_win_password:
+        region: '{{ ec2_region }}'
+        instance_id: "{{ item.id }}"
+        key_file: "/var/lib/awx/projects/workshops/{{ name_prefix }}/{{ skylight_user }}-{{ name_prefix }}-private.pem"
+        wait: yes
+        wait_timeout: 300
+      with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
+      register: ec2windows_password
+      when: windows_instances is defined
+
+################### Add Hosts ###################
+
+    - name: Windows | Add new instance to host group
+      add_host:
+        hostname: "s{{ item.item.tags.Student | regex_replace('[^0-9]', '') }}-database"
+        ansible_host: "{{ item.item.public_ip }}"
+        private_ip: "{{ item.item.private_ip }}"
+        ansible_port: "{{ '22' if (windows_ansible_connection is defined and windows_ansible_connection == 'ssh') else '5986' }}"
+        ansible_user: "Administrator"
+        ansible_password: "{{ item.win_password }}"
+        ansible_become_password: "{{ domain_admin_password }}"
+        ansible_connection: "{{ windows_ansible_connection | default('winrm') }}"
+        ansible_shell_type: "cmd"
+        ansible_winrm_transport: "ntlm"
+        ansible_winrm_server_cert_validation: "ignore"
+        ansible_winrm_operation_timeout_sec: 120
+        ansible_winrm_read_timeout_sec: 150
+        student: "{{ item.item.tags.Student | regex_replace('[^0-9]', '') }}"
+        groups: windows
+      with_items: "{{ ec2windows_password.results }}"
+      when: ec2windows_password is defined
+ 
+ ################### Wait for Instances ################### 
+
+    - name: Windows | Wait for {{ windows_ansible_connection | default('winrm') }} to come up
+      wait_for_connection:
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['windows'] }}"
+    
+################### Set Stats ###################
+
+    - name: Set password fact for subsequent job templates
+      set_stats:
+        data:
+          ec2windows_password: "{{ item.win_password }}"
+        # per_host: yes
+      with_items: "{{ ec2windows_password.results }}"
