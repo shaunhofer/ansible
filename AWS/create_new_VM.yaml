@@ -84,7 +84,7 @@
         ansible_become_password: "{{ domain_admin_password }}"
         ansible_connection: "{{ windows_ansible_connection | default('winrm') }}"
         ansible_shell_type: "cmd"
-        ansible_winrm_transport: "ntlm"
+        ansible_winrm_transport: "CredSSP"
         ansible_winrm_server_cert_validation: "ignore"
         ansible_winrm_operation_timeout_sec: 120
         ansible_winrm_read_timeout_sec: 150
