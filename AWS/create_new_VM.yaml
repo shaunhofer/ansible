@@ -154,7 +154,6 @@
           Name: "{{ name_prefix + '-s' + item + '-database'}}"
           App: AnsibleWorkshop
           Workshop: "{{ name_prefix }}"
-          Student: "{{ user_prefix + item }}"
           Username: "{{ tag_user }}"
           Info: "Username that provisioned this-> {{ tag_user }}"
           Students: "{{ user_count }}"
