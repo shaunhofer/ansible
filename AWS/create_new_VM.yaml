@@ -95,7 +95,7 @@
         msg: "{{ create_key.key.private_key }}"
       with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2windows_password
-      when: windows_instances is defined
+      #when: windows_instances is defined
 
 ################### Add Hosts ###################
 
@@ -117,7 +117,7 @@
         #student: "{{ item.item.tags.Student | regex_replace('[^0-9]', '') }}"
         groups: windows
       with_items: "{{ ec2windows_password.results }}"
-      when: ec2windows_password is defined
+      #when: ec2windows_password is defined
  
  ################### Wait for Instances ################### 
 
