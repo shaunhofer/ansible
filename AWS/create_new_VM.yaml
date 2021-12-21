@@ -30,9 +30,9 @@
       ec2_key:
         name: "{{ tag_user }}-{{ name_prefix }}-VM-key"
         region: "{{ ec2_region }}"
+        msg: "{{ create_key.key.private_key }}"
       register: create_key
-      msg: "{{ create_key.key.private_key }}"
-
+      
     - name: Save the private key
       copy:
         content: "{{ create_key.key.private_key }}"
@@ -88,8 +88,9 @@
       ec2_win_password:
         region: '{{ ec2_region }}'
         instance_id: "{{ item.id }}"
-        key_file: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
+        #key_file: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
         #key_data: "{{ aws_key_pair }}"
+        key_data: "{{ create_key.key.private_key }}"
         wait: yes
         wait_timeout: 300
       with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
