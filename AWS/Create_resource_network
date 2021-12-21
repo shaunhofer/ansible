@@ -88,7 +88,7 @@
       until: routetable is not failed
       retries: 5
 
-    - name: Create ssh key pair {{ name_prefix }}
+    - name: Create key pair {{ name_prefix }}
       ec2_key:
         name: "{{ tag_user }}-{{ name_prefix }}-key"
         region: "{{ ec2_region }}"
