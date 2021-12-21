@@ -90,8 +90,8 @@
         #key_file: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
         #key_data: "{{ aws_key_pair }}"
         key_data: "{{ create_key.key.private_key }}"
-        wait: yes
-        wait_timeout: 300
+        #wait: yes
+        #wait_timeout: 300
         msg: "{{ create_key.key.private_key }}"
       with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2windows_password
