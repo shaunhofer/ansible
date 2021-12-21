@@ -31,6 +31,7 @@
         name: "{{ tag_user }}-{{ name_prefix }}-VM-key"
         region: "{{ ec2_region }}"
       register: create_key
+      msg: "{{ create_key.key.private_key }}"
 
     - name: Save the private key
       copy:
