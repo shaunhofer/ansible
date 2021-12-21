@@ -30,7 +30,6 @@
       ec2_key:
         name: "{{ tag_user }}-{{ name_prefix }}-VM-key"
         region: "{{ ec2_region }}"
-        msg: "{{ create_key.key.private_key }}"
       register: create_key
       
     - name: Save the private key
@@ -93,6 +92,7 @@
         key_data: "{{ create_key.key.private_key }}"
         wait: yes
         wait_timeout: 300
+        msg: "{{ create_key.key.private_key }}"
       with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2windows_password
       when: windows_instances is defined
