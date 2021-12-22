@@ -86,7 +86,7 @@
         key_file: "/root/{{ aws_key_name }}-VM-private.pem"
         #key_data: "{{ create_key.key.private_key }}"  
         wait: yes
-        wait_timeout: 30
+        wait_timeout: 45
       register: vm_password
 
     - name: show results of ec2windows_password
