@@ -1,0 +1,17 @@
+---
+- name: Create Server KubeW1
+    vmware_guest:
+      hostname: "{{ vcenter_server }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: KubeW1
+      template: ubuntutemplate
+      datacenter: "{{ datacenter_name }}"
+      folder: /{{ datacenter_name }}/automation
+      cluster: "{{ cluster_name }}"
+      datastore: "ESX2-LocalDS"
+      networks:
+      - name: VM Network
+        ip: 192.168.20.51
+        netmask: 255.255.255.0
