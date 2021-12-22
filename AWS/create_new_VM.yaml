@@ -80,8 +80,11 @@
       with_items:
         - "{{ windows_jobs.results }}"
 
+    - name: show results of windowes_instances
+      debug:
+        var: windows_instances
 
-    - name: show results of windows_instances
+    - name: show results of windows_instances.0.id
       debug:
         var: windows_instances.instances.0.id
 
