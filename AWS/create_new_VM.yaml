@@ -102,7 +102,7 @@
         ansible_port: "5986"
         ansible_user: "Administrator"
         ansible_password: "{{ vm_password.win_password }}"
-        ansible_become_password: "{{ win_password }}"
+        #ansible_become_password: "{{ win_password }}"
         ansible_connection: "{{ windows_ansible_connection | default('winrm') }}"
         ansible_shell_type: "cmd"
         ansible_winrm_transport: "CredSSP"
