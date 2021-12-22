@@ -13,7 +13,7 @@
     ec2_vpc_subnet_id: "subnet-0b0bfa69219481a33"
     ec2_ami_image: "ami-0be7afce90ae33ee9" #Microsoft Windows Server 2022 Base
     ptr_zone_cidr: "10.10.1.0/24"
-    security_group: "Ansibledemo-windowssg"
+    security_group: Ansibledemo-windowssg
     # Needed for AD and windows client provision
     dns_domain_name: "ansibleworkshop.com"
     dns_domain_name_short: "ansibleworkshop"
