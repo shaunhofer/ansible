@@ -3,7 +3,7 @@
   hosts: localhost
   vars:
     instance_loc: aws
-    name_prefix: "Ansibledemo"
+    name: "Ansibledemo"
     ec2_vpc_id: "vpc-0bcde310b604499c6"
     ec2_region: "ap-southeast-2"
     ec2_az: "ap-southeast-2a"
@@ -52,18 +52,15 @@
         assign_public_ip: yes
         region: "{{ ec2_region }}"
         count_tag:
-          Name: "{{ name_prefix + '-s' + item }}"
+          Name: "{{ name }}"
           App: AnsibleWorkshop
         instance_tags:
-          Name: "{{ name_prefix + '-s' + item }}"
+          Name: "{{ name }}"
           App: AnsibleWorkshop
-          Workshop: "{{ name_prefix }}"
-          Student: "{{ tag_user + item }}"
           Username: "{{ tag_user }}"
           Info: "Username that provisioned this-> {{ tag_user }}"
-          Students: "{{ user_count }}"
-          short_name: "{{ 's' + item }}"
-          long_name: "{{ 's' + item }}.{{ name_prefix }}.{{ public_dns_zone | default('') }}"
+          short_name: "{{ name }}"
+          long_name: "{{ name }}.{{ public_dns_zone | default('') }}"
           os_type: windows
         user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name='s' + item )) }}"
       with_sequence: count={{user_count}}
@@ -84,48 +81,30 @@
       debug:
         var: windows_instances.results
 
-    - name: show results of windows_instances.0.id
-      debug:
-        var: windows_instances.results.0.instances.0.id
-
 ################### Get Passwords ###################
     - name: Windows | Obtain windows passwords for instances
       ec2_win_password:
         region: '{{ ec2_region }}'
         instance_id: "{{ windows_instances.results.0.instances.0.id }}"
-        key_file: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
-        #key_data: "{{ create_key.key.private_key }}"  
+        #key_file: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
+        key_data: "{{ create_key.key.private_key }}"  
         #wait: yes
         #wait_timeout: 60
         #with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2windows_password
         #when: windows_instances is defined and os_type == 'windows'
 
-    #- name: Windows | Obtain windows passwords for instances
-     # ec2_win_password:
-      #  region: '{{ ec2_region }}'
-       # instance_id: "{{ item.id }}"
-        #key_file: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
-        #key_data: "{{ aws_key_pair }}"
-        #key_data: "{{ create_key.key.private_key }}"
-        #wait: yes
-        #wait_timeout: 300
-        #msg: "{{ create_key.key.private_key }}"
-      #with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
-      #register: ec2windows_password
-      #when: windows_instances is defined
-
 ################### Add Hosts ###################
 
     - name: Windows | Add new instance to host group
       add_host:
-        hostname: "s{{ item.item.tags.Student | regex_replace('[^0-9]', '') }}"
-        ansible_host: "{{ item.item.public_ip }}"
+        hostname: "{{ name }}"
+        ansible_host: "{{ name }}.{{ public_dns_zone | default('') }}"
         private_ip: "{{ item.item.private_ip }}"
         ansible_port: "5986"
         ansible_user: "Administrator"
         ansible_password: "{{ item.win_password }}"
-        ansible_become_password: "{{ domain_admin_password }}"
+        ansible_become_password: "{{ item.win_password }}"
         ansible_connection: "{{ windows_ansible_connection | default('winrm') }}"
         ansible_shell_type: "cmd"
         ansible_winrm_transport: "CredSSP"
