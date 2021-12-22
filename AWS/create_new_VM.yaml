@@ -91,7 +91,7 @@
           wait_timeout: 300
         with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
         register: ec2windows_password
-        when: windows_instances is defined and os_type == 'windows'
+        #when: windows_instances is defined and os_type == 'windows'
 
     #- name: Windows | Obtain windows passwords for instances
      # ec2_win_password:
