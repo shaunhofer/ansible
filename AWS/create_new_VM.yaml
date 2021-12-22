@@ -82,17 +82,17 @@
 
     - name: show results of windowes_instances
       debug:
-        var: windows_instances
+        var: windows_instances.results
 
     - name: show results of windows_instances.0.id
       debug:
-        var: windows_instances.instances.0.id
+        var: windows_instances.results.0.instances.0.id
 
 ################### Get Passwords ###################
     - name: Windows | Obtain windows passwords for instances
       ec2_win_password:
         region: '{{ ec2_region }}'
-        instance_id: "{{ windows_instances.instances.0.id }}"
+        instance_id: "{{ windows_instances.results.0.instances.0.id }}"
         key_data: "{{ create_key.key.private_key }}"  
         wait: yes
         wait_timeout: 300
