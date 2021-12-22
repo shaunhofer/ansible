@@ -1,0 +1,17 @@
+---
+- name: Snapshot VM
+  hosts: all
+  tasks:
+       - name: snapshot VM
+         vmware_guest_snapshot:
+           validate_certs: false
+           hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+           username: "{{ lookup('env', 'VMWARE_USER') }}"
+           password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+           datacenter: Home
+           folder: /Home/Demo/
+           name: "{{ vm_name }}"
+           state: present
+           snapshot_name: "{{snapname}} {{ansible_date_time.date}}"
+           description: "{{snapname}}"
+         delegate_to: localhost
