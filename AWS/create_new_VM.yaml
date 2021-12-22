@@ -26,16 +26,16 @@
 
 ################### Private key ###################
   tasks:
-    - name: Create key pair {{ name }}
+    - name: Create key pair {{ aws_key_name  }}
       ec2_key:
-        name: "{{ tag_user }}-{{ name }}-VM-key"
+        name: "{{ aws_key_name }}"
         region: "{{ ec2_region }}"
       register: create_key
       
     - name: Save the private key
       copy:
         content: "{{ create_key.key.private_key }}"
-        dest: "/root/{{ tag_user }}-{{ name }}-VM-private.pem"
+        dest: "/root/{{ aws_key_name }}-VM-private.pem"
         mode: '0400'
       when: create_key.changed
       
@@ -86,7 +86,7 @@
       ec2_win_password:
         region: '{{ ec2_region }}'
         instance_id: "{{ windows_instances.results.0.instances.0.id }}"
-        key_file: "/root/{{ tag_user }}-{{ name }}-VM-private.pem"
+        key_file: "/root/{{ aws_key_name }}-VM-private.pem"
         #key_data: "{{ create_key.key.private_key }}"  
         #wait: yes
         #wait_timeout: 60
