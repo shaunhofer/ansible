@@ -32,12 +32,12 @@
         region: "{{ ec2_region }}"
       register: create_key
       
-    #- name: Save the private key
-      #copy:
-        #content: "{{ create_key.key.private_key }}"
-        #dest: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
-        #mode: '0400'
-      #when: create_key.changed
+    - name: Save the private key
+      copy:
+        content: "{{ create_key.key.private_key }}"
+        dest: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
+        mode: '0400'
+      when: create_key.changed
       
 ################### Build Instances ###################      
     - name: Windows - Launch instance 1
@@ -93,9 +93,10 @@
       ec2_win_password:
         region: '{{ ec2_region }}'
         instance_id: "{{ windows_instances.results.0.instances.0.id }}"
-        key_data: "{{ create_key.key.private_key }}"  
+        key_file: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
+        #key_data: "{{ create_key.key.private_key }}"  
         wait: yes
-        wait_timeout: 300
+        wait_timeout: 60
         #with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2windows_password
         #when: windows_instances is defined and os_type == 'windows'
