@@ -26,16 +26,16 @@
 
 ################### Private key ###################
   tasks:
-    - name: Create key pair {{ name_prefix }}
+    - name: Create key pair {{ name }}
       ec2_key:
-        name: "{{ tag_user }}-{{ name_prefix }}-VM-key"
+        name: "{{ tag_user }}-{{ name }}-VM-key"
         region: "{{ ec2_region }}"
       register: create_key
       
     - name: Save the private key
       copy:
         content: "{{ create_key.key.private_key }}"
-        dest: "/root/{{ tag_user }}-{{ name_prefix }}-VM-private.pem"
+        dest: "/root/{{ tag_user }}-{{ name }}-VM-private.pem"
         mode: '0400'
       when: create_key.changed
       
