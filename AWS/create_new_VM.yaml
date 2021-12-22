@@ -86,12 +86,12 @@
         key_file: "/root/{{ aws_key_name }}-VM-private.pem"
         #key_data: "{{ create_key.key.private_key }}"  
         wait: yes
-        wait_timeout: 45
-      register: win_password
+        wait_timeout: 30
+      register: vm_password
 
     - name: show results of ec2windows_password
       debug:
-        var: win_password
+        var: vm_password
 ################### Add Hosts ###################
 
     - name: Windows | Add new instance to host group
@@ -101,7 +101,7 @@
         #private_ip: "{{ item.item.private_ip }}"
         ansible_port: "5986"
         ansible_user: "Administrator"
-        ansible_password: "{{ win_password }}"
+        ansible_password: "{{ vm_password.win_password }}"
         ansible_become_password: "{{ win_password }}"
         ansible_connection: "{{ windows_ansible_connection | default('winrm') }}"
         ansible_shell_type: "cmd"
