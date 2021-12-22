@@ -85,12 +85,15 @@
         instance_id: "{{ windows_instances.results.0.instances.0.id }}"
         key_file: "/root/{{ aws_key_name }}-VM-private.pem"
         #key_data: "{{ create_key.key.private_key }}"  
-        #wait: yes
-        #wait_timeout: 60
+        wait: yes
+        wait_timeout: 45
         #with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2windows_password
         #when: windows_instances is defined and os_type == 'windows'
 
+    - name: show results of ec2windows_password
+      debug:
+        var: ec2windows_password.results
 ################### Add Hosts ###################
 
     - name: Windows | Add new instance to host group
