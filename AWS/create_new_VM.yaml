@@ -87,14 +87,14 @@
 
 ################### Get Passwords ###################
     - name: Windows | Obtain windows passwords for instances
-        ec2_win_password:
-          region: '{{ ec2_region }}'
-          instance_id: "{{ windows_instances.instances.0.id }}"
-          key_data: "{{ create_key.key.private_key }}"  
-          wait: yes
-          wait_timeout: 300
+      ec2_win_password:
+        region: '{{ ec2_region }}'
+        instance_id: "{{ windows_instances.instances.0.id }}"
+        key_data: "{{ create_key.key.private_key }}"  
+        wait: yes
+        wait_timeout: 300
         #with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
-        register: ec2windows_password
+      register: ec2windows_password
         #when: windows_instances is defined and os_type == 'windows'
 
     #- name: Windows | Obtain windows passwords for instances
