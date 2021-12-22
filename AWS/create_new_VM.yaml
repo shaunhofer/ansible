@@ -97,7 +97,7 @@
     - name: Windows | Add new instance to host group
       add_host:
         hostname: "{{ name }}"
-        ansible_host: "{{ windows_instances.public_dns_name }}"
+        ansible_host: "{{ windows_instances.results.0.instances.0.public_dns_name }}"
         #private_ip: "{{ item.item.private_ip }}"
         ansible_port: "5986"
         ansible_user: "Administrator"
