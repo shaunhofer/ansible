@@ -87,11 +87,11 @@
         #key_data: "{{ create_key.key.private_key }}"  
         wait: yes
         wait_timeout: 45
-      register: ec2windows_password
+      register: win_password
 
     - name: show results of ec2windows_password
       debug:
-        var: ec2windows_password.results
+        var: win_password
 ################### Add Hosts ###################
 
     - name: Windows | Add new instance to host group
