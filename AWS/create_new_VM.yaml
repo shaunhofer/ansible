@@ -81,6 +81,10 @@
         - "{{ windows_jobs.results }}"
 
 
+    - name: show results of windows_instances
+      debug:
+        var: windows_instances.instances.0.id
+
 ################### Get Passwords ###################
     - name: Windows | Obtain windows passwords for instances
         ec2_win_password:
