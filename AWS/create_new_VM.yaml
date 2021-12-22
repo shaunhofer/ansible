@@ -19,10 +19,7 @@
     dns_domain_name_short: "ansibleworkshop"
     ldap_basedn: "DC=ansibleworkshop,DC=com"
     domain_admin_password: "$t0p read1ng My @ss"
-    aws_key_name: ""
-    aws_key_pair: ""
-
-
+    aws_key_name: "AnsibleDemoKey"
 
 ################### Private key ###################
   tasks:
