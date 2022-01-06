@@ -87,11 +87,14 @@
         
 ################### Add Hosts ###################
     - name: Windows Servers | Add new instance to host group
-      add_host:
-        hostname: "{{ windows_instances.results.0.instances.0.tags.Name }} + {{ windows_instances.results.0.instances.0.id }}"
-        ansible_host: "{{ windows_instances.results.0.instances.0.public_dns_name }}"
-        ansible_password: "{{ ec2windows_password.win_password }}"
-        groups: "{{ windows_instances.results.0.instances.0.tags.os_type }} "
+      host:
+        name: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
+        inventory: "AWS_RHPDS"
+        variables:
+          #hostname: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
+          ansible_host: "{{ windows_instances.results.0.instances.0.public_dns_name }}"
+          ansible_password: "{{ ec2windows_password.win_password }}"
+          #groups: "{{ windows_instances.results.0.instances.0.tags.os_type }} "
  
 ################### Wait for Instances ################### 
     - name: Windows | Wait for {{ windows_ansible_connection | default('winrm') }} to come up
