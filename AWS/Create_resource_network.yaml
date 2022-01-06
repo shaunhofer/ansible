@@ -7,7 +7,6 @@
     ec2_vpc_id: ""
     ec2_region: "ap-southeast-2"
     ec2_az: "ap-southeast-2a"
-    tag_user: "ansible"
     user_count: "1"
     ec2_vpc_subnet_id: ""
     ptr_zone_cidr: "10.10.1.0/24"
@@ -36,9 +35,6 @@
         wait_timeout: 600
         resource_tags:
           Name: "{{ name_prefix }}-subnet"
-          Username: "{{ tag_user }}"
-          Info: "Username that provisioned this-> {{ tag_user }}"
-          Students: "{{ user_count }}"
       register: create_subnet
       until: create_subnet is not failed
       retries: 15
@@ -68,9 +64,6 @@
             gateway_id: "{{ igw.gateway_id }}"
         tags:
           Name: "{{ name_prefix }}-route"
-          Username: "{{ tag_user }}"
-          Info: "Username that provisioned this-> {{ tag_user }}"
-          Students: "{{ user_count }}"
       register: routetable
       until: routetable is not failed
       retries: 5
