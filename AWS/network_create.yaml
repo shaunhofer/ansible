@@ -4,12 +4,12 @@
   vars:
     instance_loc: aws
     name_prefix: "Ansibledemo"
-    ec2_vpc_id: ""
-    ec2_region: "ap-southeast-2"
-    ec2_az: "ap-southeast-2a"
+    ec2_vpc_id: "{{ survey_ec2_vpc_id }}"
+    ec2_region: "{{ survey_ec2_region }}"
+    ec2_az: "{{ survey_ec2_az }}"
     user_count: "1"
     ec2_vpc_subnet_id: ""
-    ptr_zone_cidr: "10.10.1.0/24"
+    ptr_zone_cidr: "{{ survey_ptr_zone_cidr }}"
 
     ################### Create Resources ###################
   tasks:
