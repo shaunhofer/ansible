@@ -41,7 +41,6 @@
       ec2:
         key_name: "{{ aws_key_name }}"
         instance_type: "{{ ec2_instance_type }}"
-        exact_count: 1
         image: "{{ ec2_ami_image }}"
         wait: yes
         group: "{{ security_group }}"
@@ -52,6 +51,7 @@
           Name: "{{ base_vm_name }}"
           os_type: windows
         user_data: "{{ lookup('template', 'win_ec2_user_data.j2', template_vars=dict(vm_name=base_vm_name )) }}"
+      with_sequence: count=1
       register: windows_jobs
       async: 7200
       poll: 0
