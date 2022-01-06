@@ -75,8 +75,7 @@
       register: windows_instances
       until: windows_instances.finished
       retries: 300
-      with_items:
-        - "{{ windows_jobs.results }}"
+      with_items: "{{ windows_jobs.results }}"
 
     - name: show results of windowes_instances
       debug:
@@ -92,9 +91,9 @@
         #key_data: "{{ create_key.key.private_key }}"  
         wait: yes
         wait_timeout: 75
-      with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
+      #with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2windows_password
-      when: windows_instances is defined
+      #when: windows_instances is defined
 
 
     - name: show results of ec2windows_password
