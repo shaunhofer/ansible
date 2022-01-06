@@ -3,15 +3,14 @@
   hosts: localhost
   vars:
     base_vm_name: "Ansibledemo"
-    ec2_vpc_id: ""
-    ec2_region: "ap-southeast-2"
+    ec2_vpc_id: "{{ survey_ec2_vpc_id }}"
+    ec2_region: "{{ survey_ec2_region }}"
     #ec2_az: "ap-southeast-2a"
     #tag_user: "ansible"
     user_count: "1"
     ec2_instance_type: "t2.medium"
-    ec2_vpc_subnet_id: "subnet-0b0bfa69219481a33"
     ec2_ami_image: "ami-0be7afce90ae33ee9" #Microsoft Windows Server 2022 Base
-    ptr_zone_cidr: "10.10.1.0/24"
+    ptr_zone_cidr: "{{ survey_ptr_zone_cidr }}"
     security_group: Ansibledemo-windowssg
     # Needed for AD and windows client provision
     #dns_domain_name: "ansibleworkshop.com"
@@ -54,7 +53,7 @@
         wait: yes
         count: 1
         group: "{{ security_group }}"
-        vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
+        #vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
         assign_public_ip: yes
         region: "{{ ec2_region }}"
         count_tag:
@@ -141,8 +140,8 @@
 
     - name: Create Local Admin User
       win_user:
-        name: "{{ win_admin_user | default('winlocaladmin') }}"
-        password: "{{ win_admin_pass | default('$t0p read1ng My @ss') }}"
+        name: "{{ win_admin_user }}"
+        password: "{{ win_admin_pass }}"
         password_never_expires: true   
         groups: Administrators
         state: present
