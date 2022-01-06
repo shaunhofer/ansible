@@ -3,7 +3,7 @@
   hosts: localhost
   vars:
     base_vm_name: "Ansibledemo"
-    ec2_vpc_id: "vpc-0bcde310b604499c6"
+    ec2_vpc_id: ""
     ec2_region: "ap-southeast-2"
     #ec2_az: "ap-southeast-2a"
     #tag_user: "ansible"
