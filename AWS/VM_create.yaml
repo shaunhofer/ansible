@@ -23,13 +23,13 @@
 
 ################### Private key ###################
   tasks:
-      - name: Delete Key Pair {{ aws_key_name  }}
-        ec2_key:
-          name: "{{ aws_key_name }}"
-          region: "{{ ec2_region }}"
-          state: absent
-        register: remove_key
-        ignore_errors: true
+    - name: Delete Key Pair {{ aws_key_name  }}
+      ec2_key:
+        name: "{{ aws_key_name }}"
+        region: "{{ ec2_region }}"
+        state: absent
+      register: remove_key
+      ignore_errors: true
     
     - name: Create key pair {{ aws_key_name  }}
       ec2_key:
