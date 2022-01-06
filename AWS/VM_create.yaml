@@ -86,7 +86,7 @@
     - name: Windows | Obtain windows passwords for instances
       ec2_win_password:
         region: '{{ ec2_region }}'
-        #instance_id: "{{ windows_instances.results.0.instances.0.id }}"
+        instance_id: "{{ windows_instances.results.0.instances.0.id }}"
         instance_id: "{{ item.id }}"
         key_file: "/root/{{ aws_key_name }}-VM-private.pem"
         #key_data: "{{ create_key.key.private_key }}"  
@@ -106,16 +106,11 @@
       add_host:
         hostname: "{{ item.item.tags.Name }}"
         ansible_host: "{{ item.item.public_ip }}"
-        ansible_port: "{{ '22' if (windows_ansible_connection is defined and windows_ansible_connection == 'ssh') else '5986' }}"
         ansible_user: "Administrator"
         ansible_password: "{{ item.win_password }}"
         ansible_connection: "{{ windows_ansible_connection | default('winrm') }}"
-        ansible_shell_type: "cmd"
         private_ip: "{{ item.item.private_ip }}"
         ansible_winrm_transport: "{{ ansible_winrm_transport }}"
-        ansible_winrm_server_cert_validation: "ignore"  
-        ansible_winrm_operation_timeout_sec: 120
-        ansible_winrm_read_timeout_sec: 150
         groups: windows
       with_items: "{{ ec2windows_password.results }}"
       when: ec2windows_password is defined
