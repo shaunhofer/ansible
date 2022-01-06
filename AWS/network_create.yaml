@@ -4,7 +4,7 @@
   vars:
     instance_loc: aws
     name_prefix: "Ansibledemo"
-    ec2_vpc_id: "{{ survey_ec2_vpc_id }}"
+    ec2_vpc_id: ""
     ec2_region: "{{ survey_ec2_region }}"
     ec2_az: "{{ survey_ec2_az }}"
     user_count: "1"
