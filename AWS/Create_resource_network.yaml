@@ -1,5 +1,5 @@
 ---
-- name: Deploy windows VM in AWS
+- name: Deploy VPC, subnets, gateway and SG
   hosts: localhost
   vars:
     instance_loc: aws
