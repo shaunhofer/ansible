@@ -41,6 +41,7 @@
       ec2:
         key_name: "{{ aws_key_name }}"
         instance_type: "{{ ec2_instance_type }}"
+        exact_count: 1
         image: "{{ ec2_ami_image }}"
         wait: yes
         group: "{{ security_group }}"
