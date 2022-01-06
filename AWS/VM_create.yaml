@@ -87,7 +87,7 @@
         
 ################### Add Hosts ###################
     - name: Windows Servers | Add new instance to host group
-      ansible.controller.host:
+      controller.host:
         name: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
         inventory: "AWS_RHPDS"
         variables:
