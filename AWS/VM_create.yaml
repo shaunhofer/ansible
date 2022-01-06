@@ -12,9 +12,9 @@
     ptr_zone_cidr: "{{ survey_ptr_zone_cidr }}"
     security_group: Ansibledemo-windowssg
     aws_key_name: "AnsibleDemoKey"
-
-################### Private key ###################
   tasks:
+  
+  ################### Private key ###################
     - name: Delete Key Pair {{ aws_key_name  }}
       ec2_key:
         name: "{{ aws_key_name }}"
@@ -43,13 +43,13 @@
         instance_type: "{{ ec2_instance_type }}"
         image: "{{ ec2_ami_image }}"
         wait: yes
-        count: 1
+        #count: 1
         group: "{{ security_group }}"
         vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
         assign_public_ip: yes
         region: "{{ ec2_region }}"
-        count_tag:
-          Name: "{{ base_vm_name }}"
+        #count_tag:
+        #  Name: "{{ base_vm_name }}"
         instance_tags:
           Name: "{{ base_vm_name }}{{ item }}"
           App: AnsibleWorkshop
@@ -82,7 +82,7 @@
         #key_data: "{{ create_key.key.private_key }}"  
         wait: yes
         wait_timeout: 75
-      #with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
+      with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2windows_password
       #when: windows_instances is defined
 
@@ -99,8 +99,8 @@
         ansible_password: "{{ item.win_password }}"
         private_ip: "{{ item.item.private_ip }}"
         groups: windows
-      with_items: "{{ ec2windows_password.results }}"
-      when: ec2windows_password is defined
+      with_items: "{{ ec2windows_password }}"
+      #when: ec2windows_password is defined
  
 ################### Wait for Instances ################### 
     - name: Windows | Wait for {{ windows_ansible_connection | default('winrm') }} to come up
