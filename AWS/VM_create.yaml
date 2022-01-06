@@ -5,6 +5,7 @@
     base_vm_name: "Ansibledemo"
     ec2_vpc_id: "{{ survey_ec2_vpc_id }}"
     ec2_region: "{{ survey_ec2_region }}"
+    vpc_subnet_id: "{{ survey_vpc_subnet_id }}"
     #ec2_az: "ap-southeast-2a"
     #tag_user: "ansible"
     user_count: "1"
@@ -53,7 +54,7 @@
         wait: yes
         count: 1
         group: "{{ security_group }}"
-        #vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
+        vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
         assign_public_ip: yes
         region: "{{ ec2_region }}"
         count_tag:
