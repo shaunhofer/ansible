@@ -17,6 +17,7 @@
         controller_host: "{{ controller_name }}"
         name: "{{ vm_name }}"
         inventory: "{{ inventory_name }}"
+        validate_certs: no
         variables:
           ansible_host: "{{ vm_hostname }}"
           ansible_password: "{{ vm_password }}"
