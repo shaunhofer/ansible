@@ -7,6 +7,7 @@
     vm_password: ""
     group_name: ""
     inventory_name: ""
+    aws_instance: ""
   
   tasks:
     - name: Add new node to Controller inventory
@@ -17,6 +18,7 @@
         variables:
           ansible_host: "{{ vm_hostname }}"
           ansible_password: "{{ vm_password }}"
+          aws_instance_id: "{{ aws_instance }}"
 
     - name: Add new node to Group
       ansible.controller.group:
