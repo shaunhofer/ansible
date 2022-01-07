@@ -13,5 +13,13 @@
       ec2_snapshot:
         region: "{{ region_id }}"
         instance_id: "{{ instance_id }}"
+        device_name: "/dev/sda1"
+        description: Quick snapshot before work
+
+    - name: Snapshot VM instance second disk
+      ec2_snapshot:
+        region: "{{ region_id }}"
+        instance_id: "{{ instance_id }}"
         device_name: "/dev/sdb1"
         description: Quick snapshot before work
+      ignore_errors: true
