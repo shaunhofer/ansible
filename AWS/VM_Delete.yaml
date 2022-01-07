@@ -1,6 +1,6 @@
 ---
 - name: Deploy VM in AWS
-  hosts: all
+  hosts: localhost
   vars:
     instance_name: "Ansibledemo"
     ec2_region: "ap-southeast-2"
@@ -18,12 +18,10 @@
       
 ################### Delete Instances ###################      
     - name: Delete Instances
-      ec2_instance:
+      aws.ec2_instance:
         region: "{{ ec2_region }}"
-        name:  "{{ instance_name }}"
+        #name:  "{{ instance_name }}"
         state: absent
         wait: yes
         wait_timeout: 600
-        tags:
-          Name: "{{ instance_name }}"
       register: delete_job
