@@ -1,0 +1,24 @@
+---
+- name: Deploy VM in AWS
+  hosts: windows
+  vars:
+    win_admin_user: "default"
+    win_admin_pass: "default"
+    
+  tasks:
+  
+################### Wait for Instances ################### 
+    - name: Windows | Wait for {{ windows_ansible_connection | default('winrm') }} to come up
+      wait_for_connection:
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['windows'] }}"
+      ignore_errors: true
+      
+################### Local Admin from Controller ###################
+    - name: Create Local Admin User
+      ansible.windows.win_user:
+        name: "{{ win_admin_user }}"
+        password: "{{ win_admin_pass }}"
+        password_never_expires: true   
+        groups: Administrators
+        register: localadministrator_result
