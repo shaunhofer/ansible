@@ -7,6 +7,8 @@
     instance_id: ""
     
   tasks:
-    - amazon.aws.ec2_snapshot:
-      instance_id: "{{ instance_id }}"
-      description: Quick snapshot before work
+  
+    - name: Snapshot VM instance
+      amazon.aws.ec2_snapshot:
+        instance_id: "{{ instance_id }}"
+        description: Quick snapshot before work
