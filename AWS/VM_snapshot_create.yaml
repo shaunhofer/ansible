@@ -9,8 +9,9 @@
     
   tasks:
   
-    - name: Snapshot VM instance
+    - name: Snapshot VM instance primary disk
       ec2_snapshot:
         region: "{{ region_id }}"
         instance_id: "{{ instance_id }}"
+        device_name: "/dev/sdb1"
         description: Quick snapshot before work
