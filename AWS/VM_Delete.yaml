@@ -20,7 +20,7 @@
     - name: Delete Instances
       ec2_instance:
         region: "{{ ec2_region }}"
-        name:  "{{ instance_name }}"
+        #name:  "{{ instance_name }}"
         state: absent
         wait: yes
         wait_timeout: 600
