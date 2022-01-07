@@ -1,22 +1,23 @@
 ---
-- name: Deploy VM in AWS
+- name: Add VM to Controller inventory
   hosts: all
   vars:
-    ec2_password: ""
+    vm_name: ""
+    vm_hostname: ""
+    vm_password: ""
     inventory_name: "AWS_RHPDS"
     win_admin_user: "default"
     win_admin_pass: "default"
   
   tasks:
 ################### Add Hosts ###################
-    - name: Add new node to Contrller inventory
+    - name: Add new node to Controller inventory
       host:
-        name: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
+        name: "{{ vm_name }}"
         inventory: "{{ inventory_name }}"
         variables:
-          #hostname: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
-          ansible_host: "{{ windows_instances.results.0.instances.0.public_dns_name }}"
-          ansible_password: "{{ ec2windows_password.win_password }}"
+          ansible_host: "{{ vm_hostname }}"
+          ansible_password: "{{ vm_password }}"
           #groups: "{{ windows_instances.results.0.instances.0.tags.os_type }} "
  
 ################### Wait for Instances ################### 
@@ -26,11 +27,7 @@
       with_items: "{{ groups['windows'] }}"
       ignore_errors: true
       
-################### Set Password Fact ###################
-    - name: Set password fact for subsequent job templates
-      set_stats:
-        data:
-          ec2_password: "{{ ec2_password.win_password }}"
+
 
 ################### Local Admin from Controller ###################
     - name: Create Local Admin User
