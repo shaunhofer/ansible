@@ -21,4 +21,4 @@
         password: "{{ win_admin_pass }}"
         password_never_expires: true   
         groups: Administrators
-        register: localadministrator_result
+      register: localadministrator_result
