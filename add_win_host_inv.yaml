@@ -8,7 +8,6 @@
     inventory_name: "AWS_RHPDS"
     win_admin_user: "default"
     win_admin_pass: "default"
-    controller_name: ""
   
   tasks:
   
