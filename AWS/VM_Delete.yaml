@@ -26,6 +26,6 @@
         wait_timeout: 600
         filters:
           instance-state-name: running
-          tag.Name: "{{ instance_name }}"
+          tag:Name: "{{ instance_name }}"
       register: delete_job
       
