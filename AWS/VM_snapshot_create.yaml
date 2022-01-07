@@ -5,10 +5,12 @@
 
   vars:
     instance_id: ""
+    region_id: ""
     
   tasks:
   
     - name: Snapshot VM instance
       ec2_snapshot:
+        region: "{{ region_id }}"
         instance_id: "{{ instance_id }}"
         description: Quick snapshot before work
