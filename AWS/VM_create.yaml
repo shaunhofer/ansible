@@ -87,8 +87,8 @@
       debug:
         var: ec2_password
 
-################### Set Password Fact ###################
-    - name: Set password fact for subsequent job templates
+################### Set Facts ###################
+    - name: Set VM facts for subsequent job templates
       set_stats:
         data:
           vm_password: "{{ ec2_password.win_password }}"
