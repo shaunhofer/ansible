@@ -22,19 +22,6 @@
         region: "{{ ec2_region }}"
         name:  "{{ instance_name }}"
         state: absent
-      with_sequence: count=1
-      register: launch_jobs
-      async: 7200
-      poll: 0
-       
-################### Wait for Jobs ###################
-    - name: Wait for instance creation to complete
-      async_status: jid="{{ item.ansible_job_id }}"
-      register: vm_instances
-      until: vm_instances.finished
-      retries: 300
-      with_items: "{{ launch_jobs.results }}"
-
-    - name: show results of vm_instances
-      debug:
-        var: vm_instances.results
+        wait: yes
+        wait_timeout: 600
+      register: delete_job
