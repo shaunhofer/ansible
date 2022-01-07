@@ -46,7 +46,7 @@
         wait: yes
         network:
           assign_public_ip: yes
-          security_group: "{{ security_group }}"
+        security_group: "{{ security_group }}"
         vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
         region: "{{ ec2_region }}"
         tags:
