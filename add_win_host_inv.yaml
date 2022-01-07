@@ -32,10 +32,3 @@
         preserve_existing_hosts: yes
         preserve_existing_children: yes
         hostss: "{{ vm_hostname }}"
- 
-################### Wait for Instances ################### 
-    - name: Windows | Wait for {{ windows_ansible_connection | default('winrm') }} to come up
-      wait_for_connection:
-      delegate_to: "{{ item }}"
-      with_items: "{{ groups['windows'] }}"
-      ignore_errors: true
