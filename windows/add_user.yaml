@@ -1,5 +1,5 @@
 ---
-- name: Deploy VM in AWS
+- name: Deploy new windows admin user
   hosts: windows
   vars:
     win_admin_user: "default"
