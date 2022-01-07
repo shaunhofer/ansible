@@ -42,7 +42,7 @@
       ec2_instance:
         key_name: "{{ aws_key_name }}"
         instance_type: "{{ ec2_instance_type }}"
-        image: "{{ ec2_ami_image }}"
+        image_id: "{{ ec2_ami_image }}"
         wait: yes
         network:
           assign_public_ip: yes
@@ -86,3 +86,11 @@
     - name: show results of ec2_password
       debug:
         var: ec2_password
+
+################### Set Password Fact ###################
+    - name: Set password fact for subsequent job templates
+      set_stats:
+        data:
+          vm_password: "{{ ec2_password.win_password }}"
+          vm_hostname: "{{ windows_instances.results.0.instances.0.public_dns_name }}"
+          vm_name: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
