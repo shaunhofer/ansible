@@ -1,6 +1,6 @@
 ---
 - name: Snapshot VM instance
-  hosts: localhost
+  hosts: all
 
   vars:
     #instance_id: ""
