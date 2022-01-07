@@ -7,23 +7,17 @@
     vm_password: ""
     group_name: ""
     inventory_name: "AWS_RHPDS"
-    win_admin_user: "default"
-    win_admin_pass: "default"
   
   tasks:
-  
-################### Add Hosts ###################
     - name: Add new node to Controller inventory
       ansible.controller.host:
-        #controller_host: "{{ controller_name }}"
         name: "{{ vm_name }}"
         inventory: "{{ inventory_name }}"
         validate_certs: no
         variables:
           ansible_host: "{{ vm_hostname }}"
           ansible_password: "{{ vm_password }}"
-          #groups: "{{ windows_instances.results.0.instances.0.tags.os_type }} "
-          
+
     - name: Add new node to Group
       ansible.controller.host:
         name: "{{ group_name }}"
