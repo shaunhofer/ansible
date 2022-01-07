@@ -22,9 +22,6 @@
         region: "{{ ec2_region }}"
         name:  "{{ instance_name }}"
         state: absent
-        tags:
-          Name: "{{ base_vm_name }}"
-          os_type: "{{ os_name }}"
       with_sequence: count=1
       register: launch_jobs
       async: 7200
