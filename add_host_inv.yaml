@@ -19,7 +19,7 @@
           ansible_password: "{{ vm_password }}"
 
     - name: Add new node to Group
-      ansible.controller.host:
+      ansible.controller.groups:
         name: "{{ group_name }}"
         inventory: "{{ inventory_name }}"
         validate_certs: no
