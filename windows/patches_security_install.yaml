@@ -1,0 +1,8 @@
+---
+- name: install windows security patches
+  hosts: all
+  tasks:
+       - name: install security
+         win_updates:
+           category_name: SecurityUpdates
+           reboot: yes
