@@ -7,9 +7,6 @@
     region_id: "ap-southeast-2"
     
   tasks:
-    - name: Snapshot VM instance primary disk
-      debug:
-        var: "{{ instance_i }}"
   
     - name: Snapshot VM instance primary disk
       ec2_snapshot:
