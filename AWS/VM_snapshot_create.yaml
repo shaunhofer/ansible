@@ -4,7 +4,7 @@
   gather_facts: False
 
   vars:
-    instance_id: ""
+    #instance_id: ""
     region_id: "ap-southeast-2"
     
   tasks:
