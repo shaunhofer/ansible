@@ -1,6 +1,6 @@
 ---
 - name: Deploy VM in AWS
-  hosts: all
+  hosts: localhost
   vars:
     instance_name: "Ansibledemo"
     ec2_region: "ap-southeast-2"
