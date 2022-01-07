@@ -80,7 +80,7 @@
         #key_data: "{{ create_key.key.private_key }}"  
         wait: yes
         wait_timeout: 75
-      #with_items: "{{ windows_instances.results | map(attribute='tagged_instances') | list }}"
+      #with_items: "{{ vm_instances.results | map(attribute='tagged_instances') | list }}"
       register: ec2_password
 
     - name: show results of ec2_password
@@ -92,5 +92,5 @@
       set_stats:
         data:
           vm_password: "{{ ec2_password.win_password }}"
-          vm_hostname: "{{ windows_instances.results.0.instances.0.public_dns_name }}"
-          vm_name: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
+          vm_hostname: "{{ vm_instances.results.0.instances.0.public_dns_name }}"
+          vm_name: "{{ vm_instances.results.0.instances.0.tags.Name }}_{{ vm_instances.results.0.instances.0.id }}"
