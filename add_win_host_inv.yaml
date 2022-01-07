@@ -26,8 +26,6 @@
       delegate_to: "{{ item }}"
       with_items: "{{ groups['windows'] }}"
       ignore_errors: true
-      
-
 
 ################### Local Admin from Controller ###################
     - name: Create Local Admin User
