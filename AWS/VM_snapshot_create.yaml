@@ -3,13 +3,13 @@
   hosts: all
 
   vars:
-    instance_i: ""
+    instance_i: "{{ instance_id }}"
     region_id: "ap-southeast-2"
     
   tasks:
     - name: Snapshot VM instance primary disk
       debug:
-        var: "{{ instance_id }}"
+        var: "{{ instance_i }}"
   
     - name: Snapshot VM instance primary disk
       ec2_snapshot:
