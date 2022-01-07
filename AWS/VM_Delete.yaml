@@ -20,8 +20,11 @@
     - name: Delete Instances
       amazon.aws.ec2_instance:
         region: "{{ ec2_region }}"
-        #name:  "{{ instance_name }}"
+        name:  "{{ instance_name }}"
         state: absent
         wait: yes
         wait_timeout: 600
+        filters:
+          instance-state-name: running
       register: delete_job
+      
