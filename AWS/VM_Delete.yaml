@@ -18,7 +18,7 @@
       
 ################### Delete Instances ###################      
     - name: Delete Instances
-      aws.ec2_instance:
+      amazon.aws.ec2_instance:
         region: "{{ ec2_region }}"
         #name:  "{{ instance_name }}"
         state: absent
