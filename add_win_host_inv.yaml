@@ -12,7 +12,7 @@
   tasks:
 ################### Add Hosts ###################
     - name: Add new node to Controller inventory
-      host:
+      controller.host:
         name: "{{ vm_name }}"
         inventory: "{{ inventory_name }}"
         variables:
