@@ -9,7 +9,7 @@
   tasks:
     - name: Snapshot VM instance primary disk
       debug:
-        var: {{ instance_id }}
+        var: "{{ instance_id }}"
   
     - name: Snapshot VM instance primary disk
       ec2_snapshot:
