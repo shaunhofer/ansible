@@ -1,0 +1,9 @@
+---
+- name: Snapshot VM instance
+  hosts: all
+  vars:
+    instance_id: ""
+    
+  tasks:
+    - amazon.aws.ec2_snapshot:
+      instance_id: "{{ instance_id }}"
