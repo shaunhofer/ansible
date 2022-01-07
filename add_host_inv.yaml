@@ -25,4 +25,4 @@
         validate_certs: no
         preserve_existing_hosts: yes
         preserve_existing_children: yes
-        hosts: "{{ vm_hostname }}"
+        hosts: "{{ vm_name }}"
