@@ -11,14 +11,11 @@
     controller_name: ""
   
   tasks:
-      - name: show results global vars
-        debug:
-          var: CONTROLLER_HOST
   
 ################### Add Hosts ###################
     - name: Add new node to Controller inventory
       ansible.controller.host:
-        controller_host: "{{ controller_name }}"
+        #controller_host: "{{ controller_name }}"
         name: "{{ vm_name }}"
         inventory: "{{ inventory_name }}"
         validate_certs: no
