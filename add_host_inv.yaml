@@ -6,7 +6,7 @@
     vm_hostname: ""
     vm_password: ""
     group_name: ""
-    inventory_name: "AWS_RHPDS"
+    inventory_name: ""
   
   tasks:
     - name: Add new node to Controller inventory
