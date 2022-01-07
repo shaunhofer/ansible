@@ -9,6 +9,9 @@
     
   tasks:
   
+    - debug:
+      var: ansible_facts
+  
     - name: Snapshot VM instance primary disk
       ec2_snapshot:
         region: "{{ region_id }}"
