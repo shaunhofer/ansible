@@ -1,0 +1,43 @@
+---
+- name: Deploy VM in AWS
+  hosts: all
+  vars:
+    instance_name: "Ansibledemo"
+    ec2_region: "ap-southeast-2"
+    aws_key_name: "AnsibleDemoKey"
+  tasks:
+  
+  ################### Delete Private key ###################
+    - name: Delete Key Pair {{ aws_key_name  }}
+      ec2_key:
+        name: "{{ aws_key_name }}"
+        region: "{{ ec2_region }}"
+        state: absent
+      register: remove_key
+      ignore_errors: true
+      
+################### Delete Instances ###################      
+    - name: Delete Instances
+      ec2_instance:
+        region: "{{ ec2_region }}"
+        name:  "{{ instance_name }}"
+        state: absent
+        tags:
+          Name: "{{ base_vm_name }}"
+          os_type: "{{ os_name }}"
+      with_sequence: count=1
+      register: launch_jobs
+      async: 7200
+      poll: 0
+       
+################### Wait for Jobs ###################
+    - name: Wait for instance creation to complete
+      async_status: jid="{{ item.ansible_job_id }}"
+      register: vm_instances
+      until: vm_instances.finished
+      retries: 300
+      with_items: "{{ launch_jobs.results }}"
+
+    - name: show results of vm_instances
+      debug:
+        var: vm_instances.results
