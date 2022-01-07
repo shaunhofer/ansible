@@ -38,7 +38,7 @@
       
 ################### Build Instances ###################      
     - name: Windows - Launch instance 1
-      ec2:
+      ec2_instance:
         key_name: "{{ aws_key_name }}"
         instance_type: "{{ ec2_instance_type }}"
         image: "{{ ec2_ami_image }}"
@@ -84,37 +84,3 @@
     - name: show results of ec2windows_password
       debug:
         var: ec2windows_password
-        
-################### Add Hosts ###################
-    - name: Windows Servers | Add new instance to host group
-      controller.host:
-        name: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
-        inventory: "AWS_RHPDS"
-        variables:
-          #hostname: "{{ windows_instances.results.0.instances.0.tags.Name }}_{{ windows_instances.results.0.instances.0.id }}"
-          ansible_host: "{{ windows_instances.results.0.instances.0.public_dns_name }}"
-          ansible_password: "{{ ec2windows_password.win_password }}"
-          #groups: "{{ windows_instances.results.0.instances.0.tags.os_type }} "
- 
-################### Wait for Instances ################### 
-    - name: Windows | Wait for {{ windows_ansible_connection | default('winrm') }} to come up
-      wait_for_connection:
-      delegate_to: "{{ item }}"
-      with_items: "{{ groups['windows'] }}"
-      ignore_errors: true
-      
-################### Set Password Fact ###################
-    - name: Set password fact for subsequent job templates
-      set_stats:
-        data:
-          ec2windows_password: "{{ ec2windows_password.win_password }}"
-
-################### Local Admin from Controller ###################
-    - name: Create Local Admin User
-      win_user:
-        name: "{{ win_admin_user }}"
-        password: "{{ win_admin_pass }}"
-        password_never_expires: true   
-        groups: Administrators
-        state: present
-        register: localadministrator_result
