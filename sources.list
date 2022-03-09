@@ -1,12 +1,3 @@
-deb http://mirror.internode.on.net/pub/debian/ squeeze main
-deb-src http://mirror.internode.on.net/pub/debian/ squeeze main
-
-deb http://security.debian.org/ squeeze/updates main
-deb-src http://security.debian.org/ squeeze/updates main
-
-deb http://mirror.internode.on.net/pub/debian/ squeeze-updates main
-deb-src http://mirror.internode.on.net/pub/debian/ squeeze-updates main
-
 deb http://mirror.internode.on.net/pub/debian/ bullseye main
 deb-src http://mirror.internode.on.net/pub/debian/ bullseye main
 
