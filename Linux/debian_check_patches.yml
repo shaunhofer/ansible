@@ -1,0 +1,31 @@
+
+---
+# Play 1:  Connect  List or Install Patches on Remote servers
+- name: Discover Patches
+  hosts: all
+  become: yes
+  become_user: ansible-user
+  become_method: sudo
+  gather_facts: yes  
+  
+  tasks:
+    #- name: Download apt sources file
+      #become: yes
+      #become_method: sudo
+      #ansible.builtin.git:
+      #get_url:
+        #url: https://raw.githubusercontent.com/shaunhofer/ansible/main/sources.list
+        #dest: /etc/apt/sources.list
+
+    - name: APT update
+      become: yes
+      become_method: sudo
+      become_user: ansible-user
+      ansible.builtin.apt:
+        update_cache: yes
+      #ansible.builtin.command: apt update
+      register: upgradeable
+
+    - name: show results of upgradeable
+      debug:
+        var: upgradeable
