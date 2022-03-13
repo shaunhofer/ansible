@@ -25,7 +25,6 @@
     - name: APT update
       become: yes
       become_method: sudo
-      become_user: ansible-user
       ansible.builtin.apt:
         update_cache: yes
       #ansible.builtin.command: apt update
