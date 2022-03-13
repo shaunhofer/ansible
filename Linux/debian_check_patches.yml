@@ -4,8 +4,6 @@
 - name: Discover Patches
   hosts: all
   become: yes
-  become_user: ansible-user
-  become_method: sudo
   gather_facts: yes  
   
   tasks:
