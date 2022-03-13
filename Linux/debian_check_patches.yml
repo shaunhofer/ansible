@@ -9,11 +9,11 @@
     allow_world_readable_tmpfiles: true
     
   tasks:
-    - name: Install Python-apt
-      ansible.builtin.apt:
-        name: acl
-      become: yes
-      register: upgradeable
+    #- name: Install Python-apt
+    #  ansible.builtin.apt:
+    #    name: acl
+    #  become: yes
+    #  register: upgradeable
     #- name: Download apt sources file
       #become: yes
       #become_method: sudo
