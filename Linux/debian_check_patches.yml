@@ -9,6 +9,11 @@
   gather_facts: yes  
   
   tasks:
+    - name: Install Python-apt
+      ansible.builtin.apt:
+        name: python-apt
+      become: yes
+      register: upgradeable
     #- name: Download apt sources file
       #become: yes
       #become_method: sudo
