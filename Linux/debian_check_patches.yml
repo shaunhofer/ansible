@@ -5,7 +5,9 @@
   hosts: all
   become: yes
   gather_facts: yes  
-  
+  vars:
+    allow_world_readable_tmpfiles: true
+    
   tasks:
     - name: Install Python-apt
       ansible.builtin.apt:
