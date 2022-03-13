@@ -24,7 +24,6 @@
 
     - name: APT update
       become: yes
-      become_method: sudo
       ansible.builtin.apt:
         update_cache: yes
       #ansible.builtin.command: apt update
