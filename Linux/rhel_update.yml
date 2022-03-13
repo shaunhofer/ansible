@@ -3,6 +3,7 @@
 - name: Discover Patches
   hosts: all
   gather_facts: yes
+  become: yes
   vars:
     allow_world_readable_tmpfiles: true
   
