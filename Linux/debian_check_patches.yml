@@ -9,7 +9,7 @@
   tasks:
     - name: Install Python-apt
       ansible.builtin.apt:
-        name: python-apt
+        name: python3-apt
       become: yes
       register: upgradeable
     #- name: Download apt sources file
