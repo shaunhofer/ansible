@@ -2,7 +2,9 @@
 # Play 1:  Connect  List or Install Patches on Remote servers
 - name: Discover Patches
   hosts: all
-  gather_facts: yes  
+  gather_facts: yes
+  vars:
+    allow_world_readable_tmpfiles: true
   
   tasks:
     # name: Download apt sources file
