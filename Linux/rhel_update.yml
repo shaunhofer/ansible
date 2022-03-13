@@ -28,7 +28,6 @@
       ansible.builtin.yum:
         name: '*'
         state: latest
-        become: yes
 
     - name: DNF update
       become: yes
