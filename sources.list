@@ -1,5 +1,5 @@
 deb http://mirror.internode.on.net/pub/debian/ bullseye main
 deb-src http://mirror.internode.on.net/pub/debian/ bullseye main
 
-deb http://security.debian.org/ bullseye-updates main
-deb-src http://security.debian.org/ bullseye-updates main
+deb http://mirror.internode.on.net/pub/debian/bullseye-updates main
+deb-src http://mirror.internode.on.net/pub/debian/ bullseye-updates main
