@@ -1,5 +1,8 @@
 deb https://mirror.aarnet.edu.au/pub/debian/ bullseye main
 deb-src https://mirror.aarnet.edu.au/pub/debian/ bullseye main
 
-deb https://mirror.aarnet.edu.au/pub/debian-security/ bullseye-updates main
-deb-src https://mirror.aarnet.edu.au/pub/debian-security/ bullseye-updates main
+deb https://mirror.aarnet.edu.au/pub/debian/ bullseye-updates main
+deb-src https://mirror.aarnet.edu.au/pub/debian/ bullseye-updates main
+
+deb https://mirror.aarnet.edu.au/pub/debian-security/ bullseye-security main
+deb-src https://mirror.aarnet.edu.au/pub/debian-security/ bullseye-security main
