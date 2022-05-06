@@ -1,0 +1,118 @@
+# Pre-requisite: ansible-galaxy collection install community.libvirt
+#
+- hosts: rhelvm
+
+  name: Register RHEL VMs and install Insights/related
+  gather_facts: yes
+  become: yes
+
+  vars:
+  # Explicitly telling Ansible to use Python3, because of the bug below:
+  #     # https://github.com/ansible/ansible/issues/54855
+  #- ansible_python_interpreter: /usr/bin/python3
+
+  # Insights Compliance - Supported Configurations
+  # https://access.redhat.com/articles/6644131
+  #
+  # RHEL 8.0 SAP  scap-security-guide-0.1.42-11.el8
+  # RHEL 8.1 EUS  scap-security-guide-0.1.46-1.el8 and scap-security-guide-0.1.47-8.el8_1
+  # RHEL 8.2 (batch update) scap-security-guide-0.1.48-7.el8
+  # RHEL 8.3 scap-security-guide-0.1.50-14.el8
+  # RHEL 8.4 scap-security-guide-0.1.54-5.el8 and scap-security-guide-0.1.57-3.el8_4
+  # RHEL 8.5 scap-security-guide-0.1.57-5.el8
+  - scap_security_guide_package:
+      "8.0": "scap-security-guide-0.1.42-11.el8.noarch"
+      "8.1": "scap-security-guide-0.1.47-8.el8_1.noarch"
+      "8.2": "scap-security-guide-0.1.48-7.el8.noarch"
+      "8.3": "scap-security-guide-0.1.50-14.el8.noarch"
+      "8.4": "scap-security-guide-0.1.57-3.el8_4.noarch"
+      "8.5": "scap-security-guide-0.1.57-5.el8.noarch"
+      "7.9": "scap-security-guide-0.1.57-6.el7_9.noarch"
+
+    rhel_version: "{{ ansible_facts['distribution_version'] }}"
+      #rhel_version: "{{ ansible_facts['distribution_major_version'] }}"
+
+  tasks:
+
+  - name: Show the RHEL version and scap-security-guide-version
+    debug:
+      #msg: RHEL version {{ rhel_version }}
+      #msg: RHEL version {{ rhel_version }} requires {{ scap_security_guide_package[ lookup(vars.rhel_version) ] }}
+      #msg: Requires {{ scap_security_guide_package[ lookup(ansible_facts['distribution_version']) ] }}
+      msg: RHEL version {{ rhel_version }} requires {{ scap_security_guide_package[ rhel_version ] }}
+    tags:
+    - insights
+    - debug
+
+  - name: Set the system hostname correctly
+    hostname:
+      name: "{{ inventory_hostname }}"
+      use: systemd
+    tags:
+      - hostname
+
+  - name: Set the system timezone correctly
+    timezone:
+      name: Australia/Perth
+    tags:
+      - timezone
+
+  - name: Register the systems with subscription-manager
+    redhat_subscription:
+      state: present
+      username: "{{ rhn_username }}"
+      password: "{{ rhn_password }}"
+      #auto_attach: true
+    tags:
+      - subscription-manager
+
+  - name: Install some useful packages
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - bash-completion
+      - vim
+      - tmux
+      - git
+
+  - name: Install Insights-related packages
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - insights-client
+        #- scap-security-guide
+      - "{{ scap_security_guide_package[ rhel_version ] }}"
+      - openscap-scanner
+    tags:
+      - insights
+
+  - name: Register the Insights Client
+    command: insights-client --register
+    tags:
+      - insights
+
+  - name: Run the Insights Client
+    command: insights-client
+    tags:
+      - insights
+
+  - name: Run the Insights Client Compliance Scan
+    command: insights-client --compliance
+    ignore_errors: yes
+    tags:
+      - insights
+      - compliance
+
+  # You want to use subscription-manager syspurpose service-level --set Premium and similar for RHEL 8.6 and 9.x. The syspurpose commands are unified as a subcommand of subscription-manager going forward.
+  # existing syntax is preserved though for RHEL 8 though deprecated.
+  - name: Set the system purpose
+    command: "{{ item }}"
+    ignore_errors: yes
+    loop:
+      - syspurpose set-sla "Premium"
+      - syspurpose set-usage "Development/Test"
+      - syspurpose set-role "Red Hat Enterprise Linux Server"
+    tags:
+      - syspurpose
