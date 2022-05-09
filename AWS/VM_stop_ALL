@@ -1,0 +1,20 @@
+---
+- name: Deploy VM in AWS
+  hosts: localhost
+  vars:
+    #instance_name: "Ansibledemo"
+    ec2_region: "ap-southeast-2"
+  tasks:
+      
+################### Delete Instances ###################      
+    - name: stop Instances
+      amazon.aws.ec2_instance:
+        region: "{{ ec2_region }}"
+        #name:  "{{ instance_name }}"
+        state: stopped
+        wait: yes
+        wait_timeout: 600
+        filters:
+          instance-state-name: running
+          tag:Name: "{{ instance_name }}"
+      register: stopped_job
