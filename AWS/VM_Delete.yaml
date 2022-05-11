@@ -28,4 +28,10 @@
           instance-state-name: running
           tag:Name: "{{ instance_name }}"
       register: delete_job
-      
+ 
+ ################### Delete from Controller ###################     
+    - name: Delete node from Controller inventory
+      ansible.controller.host:
+        name: "{{ instance_name }}"_*
+        inventory: "{{ inventory_name }}"
+        validate_certs: no
