@@ -3,7 +3,7 @@
   hosts: localhost
   vars:
     os_name: "Microsoft Windows Server 2022 Base"
-    ec2_ami_image: "ami-0be7afce90ae33ee9" #Microsoft Windows Server 2022 Base
+    ec2_ami_image: "{{ survey_win_ami }}"
     base_vm_name: "Ansibledemo"
     ec2_vpc_id: "{{ survey_ec2_vpc_id }}"
     ec2_region: "{{ survey_ec2_region }}"
