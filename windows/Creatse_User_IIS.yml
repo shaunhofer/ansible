@@ -1,10 +1,28 @@
-- name: install the iis web service
+---
+- name: Deploy new windows admin user
   hosts: windows
-  #gather_facts: True
   vars:
+    win_admin_user: "default"
+    win_admin_pass: "default"
     iis_test_message: " Red Hat Summit "
-    
   tasks:
+  
+################### Wait for Instances ################### 
+    - name: Windows | Wait for {{ windows_ansible_connection | default('winrm') }} to come up
+      wait_for_connection:
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['windows'] }}"
+      ignore_errors: true
+      
+################### Local Admin from Controller ###################
+    - name: Create Local Admin User
+      ansible.windows.win_user:
+        name: "{{ win_admin_user }}"
+        password: "{{ win_admin_pass }}"
+        password_never_expires: true   
+        groups: Administrators
+      register: localadministrator_result
+
     - name: install iis
       win_feature:
         name: Web-Server
