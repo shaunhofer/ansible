@@ -21,7 +21,7 @@
         region: "{{ ec2_region }}"
         filters:
           owner-alias: amazon
-          platform: Windows Server 2019
+          platform: windows
           #name: Microsoft Windows Server 2019
       register: AMI_image
     
