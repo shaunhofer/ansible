@@ -14,9 +14,11 @@
     security_group: Ansibledemo-windowssg
     aws_key_name: "AnsibleDemoKey"
   tasks:
-  
+ 
+ ################### Find Windows AMI ###################
     - name: gather information about an AMI with 'AMI Name' equal to foobar
       ec2_ami_info:
+        region: "{{ ec2_region }}"
         filters:
           name: Microsoft Windows Server 2019 Base
       register: AMI_image
