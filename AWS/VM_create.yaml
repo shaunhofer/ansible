@@ -20,7 +20,9 @@
       ec2_ami_info:
         region: "{{ ec2_region }}"
         filters:
-          name: Microsoft Windows Server 2019 Base
+          owner-alias: amazon
+          platform: Windows Server 2019
+          #name: Microsoft Windows Server 2019
       register: AMI_image
     
     - name: show results AMI
