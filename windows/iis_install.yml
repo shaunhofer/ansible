@@ -1,7 +1,7 @@
 ---
 - name: install the iis web service
-  hosts: all
-  gather_facts: True
+  hosts: "{{ vm_name }}"
+  #gather_facts: True
   vars:
     iis_test_message: " Red Hat Summit "
     
