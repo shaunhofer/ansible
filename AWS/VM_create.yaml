@@ -21,7 +21,7 @@
         filters:
           owner-alias: amazon
           platform: windows
-          description: "Microsoft Windows Server 2019 with Desktop Experience Locale English AMI provided by Amazon"
+          description: "Microsoft Windows Server 2022 Core Locale English AMI provided by Amazon"
           architecture: "x86_64"
           state: "available"
       register: AMI_image
