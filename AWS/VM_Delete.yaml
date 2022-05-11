@@ -5,6 +5,7 @@
     instance_name: "Ansibledemo"
     ec2_region: "ap-southeast-2"
     aws_key_name: "AnsibleDemoKey"
+    inventory: "AWS_RHPDS"
   tasks:
   
   ################### Delete Private key ###################
@@ -32,7 +33,6 @@
  ################### Delete from Controller ###################     
     - name: Delete node from Controller inventory
       ansible.controller.host:
-        #name: "^{{ instance_name }}_.*$"
-        name: "{{ inventory_hostname_short }}"
-        inventory: "{{ inventory_hostname }}"
+        name: "^{{ instance_name }}_.*$"
+        inventory: "{{ AWS_RHPDS }}"
         validate_certs: no
