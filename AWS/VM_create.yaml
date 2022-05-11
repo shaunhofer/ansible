@@ -16,13 +16,13 @@
   tasks:
  
  ################### Find Windows AMI ###################
-    - name: gather information about an AMI with 'AMI Name' equal to foobar
+    - name: get latest AMI Windows image
       ec2_ami_info:
         region: "{{ ec2_region }}"
         filters:
           owner-alias: amazon
           platform: windows
-          #name: Microsoft Windows Server 2019
+          description: "Microsoft Windows Server 2019 with Desktop Experience Locale English AMI provided by Amazon"
       register: AMI_image
     
     - name: show results AMI
