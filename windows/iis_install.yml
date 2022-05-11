@@ -1,6 +1,9 @@
 ---
 - name: install the iis web service
   hosts: all
+  vars:
+    iis_test_message: " Red Hat Summit "
+    
   tasks:
     - name: install iis
       win_feature:
