@@ -32,6 +32,7 @@
  ################### Delete from Controller ###################     
     - name: Delete node from Controller inventory
       ansible.controller.host:
-        name: "^{{ instance_name }}_.*$"
-        inventory: "{{ inventory_name }}"
+        #name: "^{{ instance_name }}_.*$"
+        name: "{{ inventory_hostname_short }}"
+        inventory: "{{ inventory_hostname }}"
         validate_certs: no
