@@ -34,5 +34,5 @@
     - name: Delete node from Controller inventory
       ansible.controller.host:
         name: "^{{ instance_name }}_.*$"
-        inventory: "{{ AWS_RHPDS }}"
+        inventory: "{{ inventory }}"
         validate_certs: no
