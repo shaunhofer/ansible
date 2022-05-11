@@ -3,7 +3,6 @@
   hosts: localhost
   vars:
     os_name: "Microsoft Windows Server"
-    ec2_ami_image: "{{ survey_win_ami }}"
     base_vm_name: "Ansibledemo"
     ec2_vpc_id: "{{ survey_ec2_vpc_id }}"
     ec2_region: "{{ survey_ec2_region }}"
@@ -23,6 +22,8 @@
           owner-alias: amazon
           platform: windows
           description: "Microsoft Windows Server 2019 with Desktop Experience Locale English AMI provided by Amazon"
+          architecture: "x86_64"
+          state: "available"
       register: AMI_image
     
     - name: show results AMI
@@ -56,7 +57,7 @@
       ec2_instance:
         key_name: "{{ aws_key_name }}"
         instance_type: "{{ ec2_instance_type }}"
-        image_id: "{{ ec2_ami_image }}"
+        image_id: "{{ AMI_image.images.0.image_id }}"
         wait: yes
         network:
           assign_public_ip: yes
