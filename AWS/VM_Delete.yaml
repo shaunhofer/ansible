@@ -38,3 +38,4 @@
         inventory: "{{ inventory }}"
         validate_certs: no
         state: absent
+        controller_host: "{{ controller_name }}"
