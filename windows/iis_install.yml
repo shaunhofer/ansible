@@ -1,6 +1,6 @@
 ---
 - name: install the iis web service
-  hosts: all
+  hosts: windows
   vars:
     iis_test_message: " Red Hat Summit "
     
