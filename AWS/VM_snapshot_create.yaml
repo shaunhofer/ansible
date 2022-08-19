@@ -9,14 +9,14 @@
   tasks:
   
     - name: Snapshot VM instance primary disk
-      ec2_snapshot:
+      amazon.aws.ec2_snapshot:
         region: "{{ region_id }}"
         instance_id: "{{ instance_i }}"
         device_name: "/dev/sda1"
         description: Quick snapshot before work
 
     - name: Snapshot VM instance second disk
-      ec2_snapshot:
+      amazon.aws.ec2_snapshot:
         region: "{{ region_id }}"
         instance_id: "{{ instance_i }}"
         device_name: "/dev/sdb1"
