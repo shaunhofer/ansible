@@ -1,6 +1,6 @@
 ---
 - name: Snapshot VM instance
-  hosts: all
+  hosts: localhost
 
   vars:
     instance_i: "{{ instance_id }}"
