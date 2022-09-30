@@ -1,0 +1,56 @@
+---
+  - name: Repos Defined
+    hosts: all
+    gather_facts: yes
+    become: yes
+    
+    tasks:
+      - name: Add repo - JBoss Interconnect 2
+        yum_repository:
+          name: interconnect-2-for-rhel-8-x86_64-rpms
+          description: JBoss Interconnect 2 for RHEL 8 x86_64 (RPMs)
+          file: redhat
+          baseurl: https://cdn.redhat.com/content/dist/layered/rhel8/x86_64/interconnect/2/os
+          gpgcheck: yes
+          gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+          enabled: no
+          sslverify: yes
+          sslcacert: /etc/rhsm/ca/redhat-uep.pem
+          sslclientkey: /etc/pki/entitlement/3667304446855339124-key.pem
+          sslclientcert: /etc/pki/entitlement/3667304446855339124.pem
+          metadata_expire: "86400"
+
+      - name: Add repo - rhel-8-for-x86_64-baseos-rpms
+        yum_repository:
+          name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
+          description: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
+          file: redhat
+          baseurl: https://cdn.redhat.com/content/dist/rhel8/$releasever/x86_64/baseos/os
+          gpgcheck: yes
+          gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+          enabled: yes
+          sslverify: yes
+          sslcacert: /etc/rhsm/ca/redhat-uep.pem
+          sslclientkey: /etc/pki/entitlement/3667304446855339124-key.pem
+          sslclientcert: /etc/pki/entitlement/3667304446855339124.pem
+          metadata_expire: "86400"
+          
+      - name: Add repo - rhel-8-for-x86_64-appstream-rpms
+        yum_repository:
+          name: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
+          description: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
+          file: redhat
+          baseurl: https://cdn.redhat.com/content/dist/rhel8/$releasever/x86_64/appstream/os
+          gpgcheck: yes
+          gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+          enabled: yes
+          sslverify: yes
+          sslcacert: /etc/rhsm/ca/redhat-uep.pem
+          sslclientkey: /etc/pki/entitlement/3667304446855339124-key.pem
+          sslclientcert: /etc/pki/entitlement/3667304446855339124.pem
+          metadata_expire: "86400"
+
+      - name: yum-repolist
+        command: yum repolist
+        args:
+          warn: no
