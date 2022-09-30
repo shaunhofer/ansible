@@ -1,0 +1,66 @@
+---
+- name: Set resource facts
+  set_fact:
+    azure_resource_group:  "{{ name_prefix }}-resource"
+    azure_security_group:  "{{ name_prefix }}-security"
+    azure_storage_account: "{{ (name_prefix + 'storage') | lower | regex_replace('[^0-9a-z]+', '') }}"
+    azure_virtual_network: "{{ name_prefix }}-network"
+    azure_virtual_subnet:  "{{ (name_prefix + 'subnet')  | lower | regex_replace('[^0-9a-z]+', '') }}"
+
+
+# Create a resource group
+- name: Azure | Create a resource group
+  azure_rm_resourcegroup:
+    client_id: "{{ azure_client_id }}"
+    secret: "{{ azure_secret }}"
+    subscription_id: "{{ azure_subscription_id }}"
+    tenant: "{{ azure_tenant }}"
+    name: "{{ azure_resource_group }}"
+    location: "{{ azure_location }}"
+    state: present
+
+# Create a network security group
+- name: Azure | Create a network security group
+  azure_rm_securitygroup:
+    client_id: "{{ azure_client_id }}"
+    secret: "{{ azure_secret }}"
+    subscription_id: "{{ azure_subscription_id }}"
+    tenant: "{{ azure_tenant }}"
+    name: "{{ azure_security_group }}"
+    location: "{{ azure_location }}"
+    state: present
+    rules:
+      - name: AllowSSH
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 100
+        direction: Inbound
+
+
+# Create a virtual network
+- name: Azure | Create virtual network
+  azure_rm_virtualnetwork:
+    client_id: "{{ azure_client_id }}"
+    secret: "{{ azure_secret }}"
+    subscription_id: "{{ azure_subscription_id }}"
+    tenant: "{{ azure_tenant }}"
+    resource_group: "{{ azure_resource_group }}"  
+    name: "{{ azure_virtual_network }}"
+    address_prefixes_cidr:
+        - "{{ ptr_zone_cidr }}"
+    dns_servers:
+        - "8.8.8.8"
+  register: virtual_network_facts    
+
+# Create a subnet and associate with the virtual network
+- name: Create a subnet
+  azure_rm_subnet:
+    client_id: "{{ azure_client_id }}"
+    secret: "{{ azure_secret }}"
+    subscription_id: "{{ azure_subscription_id }}"
+    tenant: "{{ azure_tenant }}"
+    resource_group: "{{ azure_resource_group }}"
+    name: "{{ azure_virtual_subnet }}"
+    virtual_network_name: "{{ azure_virtual_network }}"
+    address_prefix_cidr: "{{ ptr_zone_cidr }}"

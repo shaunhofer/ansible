@@ -1,0 +1,74 @@
+---
+- name: Set resource facts
+  set_fact:
+    azure_resource_group:  "{{ name_prefix }}-resource"
+    azure_storage_account: "{{ (name_prefix + 'storage') | lower | regex_replace('[^0-9a-z]+', '') }}"
+    azure_virtual_network: "{{ name_prefix }}-network"
+    azure_virtual_subnet:  "{{ (name_prefix + 'subnet')  | lower | regex_replace('[^0-9a-z]+', '') }}"
+
+- name: Launch RHEL Instance
+  azure_rm_virtualmachine:
+    client_id: "{{ azure_client_id }}"
+    secret: "{{ azure_secret }}"
+    subscription_id: "{{ azure_subscription_id }}"
+    tenant: "{{ azure_tenant }}"
+    resource_group: "{{ azure_resource_group }}"
+    name: "{{ name_prefix + '-s' + item + '-WebServer'}}"
+    vm_size: "{{ azure_gitlab_instance_type }}"
+    managed_disk_type: "{{ azure_storage_account_type }}"
+    admin_username: "bstineha"
+    admin_password: "{{ azure_admin_pass }}"
+    started: True
+    state: present
+    public_ip_allocation_method: Dynamic
+    virtual_network_name: "{{ azure_virtual_network }}"
+    subnet_name: "{{ azure_virtual_subnet }}"
+    open_ports:
+      - 22
+      - 80
+      - 8080
+      - 443
+    tags:
+      Name: "{{ name_prefix + '-s' + item + '-tower'}}"
+      DNSName: "{{ 's' + item + '-tower'}}"
+      App: AnsibleWorkshop
+      Student: "{{ item }}"
+      User: "{{ user_prefix + item }}"
+    image:
+      publisher: "{{ azure_rhel_publisher }}"
+      offer: "{{ azure_rhel_offer }}"
+      version: "{{ azure_rhel_version }}"
+      sku: "{{ azure_rhel_sku }}"
+  with_sequence: count={{ user_count }}
+  register: docs_jobs
+  async: 7200
+  poll: 0
+
+################### Wait for Jobs ###################
+
+- name: Wait for RHEL instance creation to complete
+  async_status: jid="{{ item.ansible_job_id }}"
+  register: docs_instances
+  until: docs_instances.finished
+  retries: 300
+  with_items: "{{ docs_jobs.results }}"
+
+################### Add Hosts ###################
+
+- name: RHEL | Add new instance to host group  
+  add_host:  
+    hostname: "{{ item.invocation.module_args.tags.DNSName }}"
+    ansible_host: "{{ item.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    ansible_user: "bstineha"
+    ansible_password: "{{ azure_admin_pass }}"
+    ansible_become_pass: "{{ azure_admin_pass }}" 
+    private_ip: "{{ item.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress }}"
+    groups: docs
+  with_items: "{{ docs_instances.results }}"  
+
+################### Wait for Instances ###################
+
+- name: RHEL | Wait for SSH to come up
+  wait_for_connection:
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['docs'] }}"  

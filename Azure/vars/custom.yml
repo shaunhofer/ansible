@@ -1,0 +1,84 @@
+---
+##########################################################
+##################### GENERAL INFO #######################
+##########################################################
+
+# Where to provision instances (ec2, azure, vmware)
+instance_loc: azure
+name_prefix: "UWA"
+
+# Needed for AD and windows client provision
+dns_domain_name: "ansiblepoc.com"
+dns_domain_name_short: "ansiblepoc"
+ldap_basedn: "DC=ansiblepoc,DC=com"
+domain_admin_password: "MyP@ssw0rd21"
+
+# Number of users and prefix for user name
+user_count: 2
+user_prefix: student
+users_password: "Ans1bl3--"
+
+# Tower Admin Password
+towerpass: "MyPassw0rd21"
+towerversion: 3.5.2-1
+pgpass: awx
+rabbitpass: tower
+
+# Tower LDAP Integration
+ldap_search_base: "{{ ldap_basedn }}"
+ldap_access_filter: "(&(objectClass=user)(memberOf=CN=Ansible Users,CN=Users,{{ ldap_search_base }}))"
+tower_ldap_search_dn: "CN=Users,{{ ldap_search_base }}"
+
+# Root user (ec2-user for AWS)
+root_user: centos
+root_password: MyPassw0rd21
+centos_root_user: centos
+
+# Needed for reverse lookup DNS setup
+ptr_zone_name: "1.0.10.in-addr.arpa"
+ptr_zone_cidr: "10.0.1.0/24"
+
+# Deploy Extra Labs
+git_lab: false
+advanced_lab: false
+
+# Enable nginx-ssl
+nginx_ssl: true
+
+# Experimental - Windows connection variables
+windows_ansible_connection: winrm # set this to winrm/ssh
+windows_openssh_url: https://github.com/PowerShell/Win32-OpenSSH/releases/download/v8.0.0.0p1-Beta/OpenSSH-Win64.zip
+
+
+##########################################################
+####################### AZURE INFO #######################
+##########################################################
+
+azure_admin_user: "?"
+azure_admin_pass: "?!"
+
+azure_client_id: '?'
+azure_secret: '?'
+azure_subscription_id: '?'
+azure_tenant: '?'
+azure_location: 'australiasoutheast'
+
+azure_storage_account_type: Standard_LRS
+
+# Instance Sizes
+azure_tower_instance_type: "Standard_B1s"    # Medium = 2 vCPU / 4GB
+azure_gitlab_instance_type: "Standard_B1s"   # Might be able to use small...
+azure_windc_instance_type: "Standard_B1s"
+azure_windows_workstation_instance_type: "Standard_A2_v2"
+azure_windows_instance_type: "Standard_B1s"   # Medium = 2 vCPU / 4GB
+
+azure_rhel_publisher: "?"
+azure_rhel_offer: "?"
+azure_rhel_sku: "?"
+azure_rhel_version: "?"
+
+azure_win_publisher: "MicrosoftWindowsServer"
+azure_win_offer: "WindowsServer"
+azure_win_sku: "2019-Datacenter"
+azure_win_version: "latest"
+
