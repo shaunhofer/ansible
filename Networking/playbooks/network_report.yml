@@ -1,0 +1,19 @@
+---
+- name: convert interface to structured data
+  hosts: "{{ group_to_limit | default('routers') }}"
+  gather_facts: no
+
+  tasks:
+    - name: load read interfaces role
+      include_role:
+        name: "../roles/facts"
+
+- name: build report with facts
+  hosts: "{{ web_host }}"
+  gather_facts: no
+
+  tasks:
+
+    - name: build a report
+      include_role:
+        name: "../roles/build_report"

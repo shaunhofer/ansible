@@ -1,0 +1,13 @@
+---
+- name: Change hostname
+  hosts: all
+  gather_facts: false
+  
+  vars:
+    # save_when: 'modified'
+    
+  tasks:
+
+    - include_role:
+        name: "../roles/network_device_rename"
+        
