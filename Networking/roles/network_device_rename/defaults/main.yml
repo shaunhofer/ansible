@@ -1,0 +1,4 @@
+---
+# defaults file for network_device_rename
+save_when: "never"
+

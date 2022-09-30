@@ -1,0 +1,5 @@
+---
+# tasks file for network_device_rename
+
+- name: Rename Network Devices
+  include_tasks: "{{ ansible_network_os }}.yml"

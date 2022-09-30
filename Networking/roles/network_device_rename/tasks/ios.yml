@@ -1,0 +1,10 @@
+---
+
+- name: Cisco - Configure Device Name
+  ios_config:
+      lines: hostname {{ inventory_hostname }}
+
+- name: Cisco - Save running to start-config when modified
+  ios_config:
+    save_when: "{{ save_when | default('never') }}"
+  when: save_when !="never"

@@ -1,0 +1,14 @@
+- name: ensure netconf is running
+  vars:
+    ansible_connection: network_cli
+  junos_netconf:
+
+- name: backup junos configuration
+  vars:
+    ansible_connection: netconf
+  junipernetworks.junos.junos_config:
+    backup: true
+    backup_options:
+      dir_path: /tmp/
+      filename: "{{ inventory_hostname }}.txt"
+  register: config_output

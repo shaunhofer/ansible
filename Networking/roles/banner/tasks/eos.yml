@@ -1,0 +1,5 @@
+---
+- name: ADD THE EOS BANNER
+  eos_banner:
+    text: "{{ network_banner }}"
+    banner: "{{ banner_type }}"
