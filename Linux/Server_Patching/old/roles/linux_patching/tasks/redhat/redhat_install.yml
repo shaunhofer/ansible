@@ -1,0 +1,34 @@
+---
+
+- name: Install Packages (RHEL 8)
+
+  block:
+
+    - name: Security Patch Packages (RHEL 8)
+      become: yes
+      ansible.builtin.dnf:
+        name: '*'
+        security: yes
+        state: latest
+        update_cache: yes
+        update_only: no
+      register: reg_upgrade_ok
+
+  when: ansible_distribution_version >= '8'
+
+- name: Install Packages (RHEL 7)
+
+  block:
+
+    - name: Security Patch Packages (RHEL 7)
+      become: yes
+      ansible.builtin.yum:
+        name: '*'
+        security: yes
+        state: latest
+        update_cache: yes
+        update_only: no
+      register: reg_upgrade_ok
+
+  when: ansible_distribution_version < '8'
+

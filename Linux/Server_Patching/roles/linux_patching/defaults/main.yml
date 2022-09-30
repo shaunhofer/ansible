@@ -1,0 +1,6 @@
+---
+# defaults file for linux_patching
+patch_mode: "discover"
+ev_security_only: yes
+
+

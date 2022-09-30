@@ -1,0 +1,38 @@
+---
+- name: Download apt sources file
+  become: yes
+  #ansible.builtin.git:
+  #get_url:
+    #url: https://raw.githubusercontent.com/shaunhofer/ansible/main/Linux/sources.list
+    #dest: /etc/apt/sources.list
+
+- name: APT update
+  become: yes
+  ansible.builtin.apt:
+    update_cache: yes
+  
+
+  
+- name: Check for upgradeable
+  become: yes
+  #check_mode: yes
+  ansible.builtin.command: apt list --upgradable
+  #ansible.builtin.apt:
+    #upgrade: yes
+    #name: "*"
+  register: upgradeable
+
+- name: show results of upgradeable
+  debug:
+    var: upgradeable
+
+- name: Create Patch List | APT
+  set_fact:
+    server_patch_list: "{{ server_patch_list|default([]) + [ {'host': ansible_hostname,'os': 'Ubuntu ' + ansible_distribution_version, 'ipfqdn': ansible_host, 'package': item }  ] }}"
+  with_items: "{{ upgradeable.stdout_lines }}"
+
+
+- name: Set Server Patch List - Debian (If nothing Found)
+  set_fact:
+    server_patch_list: "{{ server_patch_list|default([]) + [ {'host': ansible_hostname,'os': 'Ubuntu ' + ansible_distribution_version, 'ipfqdn': ansible_host, 'package': 'Nothing Found'} ] }}"
+  when: server_patch_list is not defined  

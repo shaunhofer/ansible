@@ -1,0 +1,99 @@
+# Play 1:  Connect  List or Install Patches on Remote servers
+- name: Discover Patches
+  hosts: "{{ hosts_filter | default('all') }}"
+  become: yes
+  environment:
+    StrictHostKeyChecking: no
+  gather_facts: yes  
+  
+  tasks:
+    - name: Load Patching Role
+      include_role:
+        name: linux_patching
+      vars:
+        patch_mode: discover
+
+
+# Play 2:  Combine Server Lists and send email
+- name: Combine All Server Patching Lists (Localhost)
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    rhel_master_csv_file: "./rhel_master_csv_report.csv"
+    rhel_advisory_csv_file: "./rhel_advisory_csv_report.csv"
+    debian_master_csv_file: "./debian_master_csv_report.csv"
+    ubuntu_master_csv_file: "./ubuntu_master_csv_report.csv"
+
+  tasks:
+
+    - name: RHEL - Combine all Server Lists
+      set_fact:
+        rhel_master_server_patch_list: "{{ rhel_master_server_patch_list|default([])  + hostvars[item]['server_patch_list']  }}"
+        rhel_advisory_server_patch_list: "{{ rhel_advisory_server_patch_list|default([])  + hostvars[item]['advisory_list']  }}"
+      with_inventory_hostnames:
+        - rhel
+      when: hostvars[item]['server_patch_list'] is defined
+
+    - name: DEBIAN - Combine all Server Lists
+      set_fact:
+        debian_master_server_patch_list: "{{ debian_master_server_patch_list|default([])  + hostvars[item]['server_patch_list']  }}"
+      with_inventory_hostnames:
+        - debian
+      when: hostvars[item]['server_patch_list'] is defined      
+
+    - name: Ubuntu - Combine all Server Lists
+      set_fact:
+        ubuntu_master_server_patch_list: "{{ ubuntu_master_server_patch_list|default([])  + hostvars[item]['server_patch_list']  }}"
+      with_inventory_hostnames:
+        - ubuntu
+      when: hostvars[item]['server_patch_list'] is defined    
+  
+    - name: RHEL - Create Master CSV
+      template:
+        src: rhel_master_report.csv.j2
+        dest: "{{ rhel_master_csv_file }}"
+      register: rhel_master_report_result
+      when: rhel_master_server_patch_list is defined
+
+    - name: RHEL - Create Advisory CSV
+      template:
+        src: rhel_advisory_report.csv.j2
+        dest: "{{ rhel_advisory_csv_file }}"
+      register: rhel_advisory_report_result
+      when: rhel_advisory_server_patch_list is defined
+
+    - name: Debian - Create Master CSV
+      template:
+        src: debian_master_report.csv.j2
+        dest: "{{ debian_master_csv_file }}"
+      register: debian_master_report_result
+      when: debian_master_server_patch_list is defined 
+    
+    - name: Ubuntu - Create Master CSV
+      template:
+        src: ubuntu_master_report.csv.j2
+        dest: "{{ ubuntu_master_csv_file }}"
+      register: ubuntu_master_report_result
+      when: ubuntu_master_server_patch_list is defined 
+
+    - name: prepare email attachment list
+      shell:  ls ./*.csv
+      register: attachment_list
+
+
+    - name: Patching  notification by email
+      mail:
+        host: "{{ email_server }}"
+        port: "{{ email_port}}"
+        from: "{{ email_user }}"
+        to: "{{ to_email }}" 
+        subject: "Patching Discovery Report"
+        subtype: html
+        username: "{{ email_user }}"
+        password: "{{ email_pass }}"
+        body: "Patching Report Attached"
+        attach:  "{{ attachment_list.stdout_lines | list | join(',') }}"
+      when: email_notify
+      ignore_errors: true

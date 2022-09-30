@@ -1,0 +1,20 @@
+---
+# tasks file for linux_patching
+  # - include_tasks: redhat/redhat_discover.yml
+  #   when: ansible_os_family == "RedHat" and patch_mode == "discover"
+
+
+  - include_tasks: "{{ ansible_os_family|lower }}/{{ ansible_os_family|lower }}_{{ patch_mode }}.yml"
+
+
+
+
+  # - include_tasks: redhat/redhat_install.yml
+  #   when: ansible_os_family == "RedHat" and patch_mode == "install"
+
+
+  # - include_tasks: debian/debian_discover.yml
+  #   when: ansible_os_family == "Debian" and patch_mode == "discover"
+
+  # - include_tasks: debian/debian_install.yml
+  #   when: ansible_os_family == "Debian" and patch_mode == "install"

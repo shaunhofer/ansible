@@ -1,0 +1,34 @@
+---
+#- name: APT update
+#  become: yes
+#  ansible.builtin.apt:
+#    update_cache: yes
+  
+- name: Upgrade
+  become: yes
+  #check_mode: yes
+  #ansible.builtin.command: apt full-upgrade
+  ansible.builtin.apt:
+    upgrade: dist
+    #name: "*"
+    #state: latest
+  register: upgradeable
+
+- name: show results of upgradeable
+  debug:
+    var: upgradeable
+    
+- name: remove old packages (auto remove)
+  become: yes
+  ansible.builtin.apt:
+    #upgrade: dist
+    autoremove: yes
+  register: removed
+  
+- name: show results of remove
+  debug:
+    var: removed
+
+- name: Unconditionally reboot the machine with all defaults
+  become: yes
+  ansible.builtin.reboot:

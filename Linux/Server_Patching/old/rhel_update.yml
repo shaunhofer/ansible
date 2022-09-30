@@ -1,0 +1,41 @@
+---
+# Play 1:  Connect  List or Install Patches on Remote servers
+- name: Discover Patches
+  hosts: all
+  gather_facts: yes  
+  
+  tasks:
+    # name: Download apt sources file
+    # get_url:
+    #   url: https://raw.githubusercontent.com/shaunhofer/ansible/main/sources.list
+    #   dest: /home/ansible-user/sources.list
+
+    #- name: DNF update
+    #  ansible.builtin.command: dnf update
+    #  become: yes
+    #  register: upgradeable
+
+    - name: Get Packages | YUM
+      ansible.builtin.yum:
+        security: yes
+        list: updates
+        state: latest
+        update_cache: yes
+      register: reg_packages_output_yum
+
+    - name: upgrade all packages
+      become: yes
+      ansible.builtin.yum:
+        name: '*'
+        state: latest
+
+    - name: DNF update
+      become: yes
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      register: upgradeable
+
+    - name: show results of upgradeable
+      debug:
+        var: upgradeable

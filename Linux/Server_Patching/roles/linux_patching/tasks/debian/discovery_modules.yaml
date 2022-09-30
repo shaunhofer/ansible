@@ -1,0 +1,64 @@
+---
+
+#- name: Install Python-apt
+#  ansible.builtin.apt:
+#    name: python-apt
+#  become: yes
+#  register: upgradeable
+
+
+#- name: Remove all repositories
+#  community.general.apt_repo:
+#    repo: all
+#    state: absent
+
+- name: Set Squeeze
+  apt_repository:
+    repo: deb https://mirror.aarnet.edu.au/pub/debian/ squeeze main
+    state: present
+  apt_repository:
+    repo: deb-src https://mirror.aarnet.edu.au/pub/debian/ squeeze main
+    state: present
+  apt_repository:
+    repo: deb http://security.debian.org/ squeeze-updates main
+    state: present
+  apt_repository:
+    repo: deb-src http://security.debian.org/ squeeze-updates main
+    state: present
+  apt_repository:
+    repo: deb https://mirror.aarnet.edu.au/pub/debian/ bullseye main
+    state: present
+  apt_repository:  
+    repo: deb-src https://mirror.aarnet.edu.au/pub/debian/ bullseye main
+    state: present
+  apt_repository:  
+    repo: deb http://security.debian.org/ bullseye-updates main
+    state: present
+  apt_repository:
+    repo: deb-src http://security.debian.org/ bullseye-updates main   
+    state: present
+    update_cache: yes
+  register: repos
+
+- name: show results of repos
+  debug:
+    var: repos
+
+
+#- name: Apt Update
+#  ansible.builtin.apt:
+ #   update_cache: yes
+ # become: yes
+ # register: upgradeable
+
+- name: Check for upgradeable
+  ansible.builtin.apt:
+    upgrade: yes
+    #name: "*"
+  #diff_mode: true
+  become: yes
+  register: upgradeable
+
+- name: show results of upgradeable
+  debug:
+    var: upgradeable

@@ -1,0 +1,5 @@
+Host, OS, ip/fqdn, Package, Release, Version
+
+{% for i in rhel_master_server_patch_list %}
+  {{ i.host }},{{ i.os }},{{ i.ipfqdn }},{{ i.package }},{{ i.release }},{{ i.version }}
+{% endfor%}

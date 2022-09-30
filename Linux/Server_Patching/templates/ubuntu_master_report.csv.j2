@@ -1,0 +1,5 @@
+Host, OS, ip/fqdn, Package
+
+{% for i in ubuntu_master_server_patch_list %}
+  {{ i.host }},{{ i.os }},{{ i.ipfqdn }},{{ i.package }}
+{% endfor%}

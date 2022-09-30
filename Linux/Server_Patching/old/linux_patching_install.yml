@@ -1,0 +1,13 @@
+# Play 1:  Connect  List or Insrtall Patches on Remote servers
+- name: Discover Patches
+  hosts: all
+  gather_facts: yes
+  
+  tasks:
+
+    - name: Load Patching Role
+      include_role:
+        name: linux_patching
+      vars:
+        patch_mode: install
+

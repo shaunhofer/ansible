@@ -1,0 +1,10 @@
+---
+# tasks file for linux_patching
+
+  - include_tasks: "{{ ansible_os_family|lower }}/{{ ansible_os_family|lower }}_{{ patch_mode|lower }}.yml"
+    when: patch_mode == 'discover' or patch_mode == 'install'
+    ignore_errors: true
+
+  - include_tasks: "generate_patch_list.yml"
+    when: patch_mode == 'generate_patch_list'
+    

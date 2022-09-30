@@ -1,0 +1,62 @@
+---
+# Get all Packes that van be upgraded
+
+- name: Get Packages for RHEL 7 and Below (YUM)
+  block:
+
+    - name: Get Packages | YUM
+      become: yes
+      ansible.builtin.yum:
+        security: yes
+        list: updates
+        state: latest
+        update_cache: yes
+      register: reg_packages_output_yum
+    
+
+    - name: Create Patch List | YUM
+      set_fact:
+        server_patch_list: "{{ server_patch_list|default([]) + [ {'host': ansible_hostname,'os': 'RHEL ' + ansible_distribution_version, 'ipfqdn': ansible_host, 'package': item.name, 'version': item.version, 'release': item.release} ] }}"
+      with_items: "{{ reg_packages_output_yum.results }}"
+      
+    - name: Gather RHSA Advisory Information
+      shell: yum updateinfo list --security
+      register: update_advisory_list_yum
+      become: yes
+
+    - name: Create Advisory List | YUM
+      set_fact: 
+        advisory_list: "{{ update_advisory_list_yum.stdout_lines }}"
+
+  when: ansible_distribution_version < '8'
+
+
+- name: Get Packages for RHEL 8 and above (DNF)  
+
+  block:
+
+    - name: Get packages | DNF
+      become: yes
+      ansible.builtin.dnf:
+        security: yes
+        list: updates
+        state: latest
+        update_cache: yes
+      register: reg_packages_output_dnf
+      
+    - name: Create Patch List |  DNF
+      set_fact:
+        server_patch_list: "{{ server_patch_list|default([]) + [ {'host': ansible_hostname,'os': 'RHEL ' + ansible_distribution_version, 'ipfqdn': ansible_host, 'package': item.name, 'version': item.version, 'release': item.release} ] }}"
+      with_items: "{{ reg_packages_output_dnf.results }}"
+      when: ansible_distribution_version >= '8'
+
+    - name: Gather RHSA Advisory Information | DNF
+      shell: dnf updateinfo list --security
+      register: update_advisory_list_dnf
+      become: yes
+
+    - name: Create Advisory List | DNF
+      set_fact: 
+        advisory_list: "{{ update_advisory_list_dnf.stdout_lines }}"
+
+  when: ansible_distribution_version >= '8'
