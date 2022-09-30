@@ -1,0 +1,6 @@
+{% for ns in resolv_nameservers %}
+nameserver {{ ns }}
+{% endfor %}
+
+domain {{ ad_domain_alt }}
+search {{ ad_domain_alt }}
