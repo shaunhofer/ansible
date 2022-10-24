@@ -93,3 +93,4 @@
           vm_hostname: "{{ vm_instances.results.0.instances.0.public_dns_name }}"
           vm_name: "{{ vm_instances.results.0.instances.0.tags.Name }}"
           aws_instance: "{{ vm_instances.results.0.instances.0.instance_id }}"
+          group_name: "rhel"
