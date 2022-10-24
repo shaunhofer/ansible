@@ -88,7 +88,7 @@
     - name: Set VM facts for subsequent job templates
       set_stats:
         data:
-          vm_key: "{{ vm_instances.results }}"
+          vm_key: ""{{ create_key.key.private_key }}""
           vm_hostname: "{{ vm_instances.results.0.instances.0.public_dns_name }}"
           vm_name: "{{ vm_instances.results.0.instances.0.tags.Name }}"
           aws_instance: "{{ vm_instances.results.0.instances.0.instance_id }}"
