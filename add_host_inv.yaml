@@ -16,7 +16,6 @@
         name: "{{ vm_name }}"
         inventory: "{{ inventory_name }}"
         validate_certs: no
-        controller_oauthtoken: "{{ CONTROLLER_OAUTH_TOKEN }}"
         variables:
           ansible_host: "{{ vm_hostname }}"
           ansible_password: "{{ vm_password }}"
@@ -25,7 +24,6 @@
 
     - name: Add new node to Group
       ansible.controller.group:
-        controller_oauthtoken: "{{ CONTROLLER_OAUTH_TOKEN }}"
         name: "{{ group_name }}"
         inventory: "{{ inventory_name }}"
         validate_certs: no
