@@ -3,14 +3,14 @@
   hosts: localhost
   vars:
     os_name: "Red Hat Enterprise Linux"
-    base_vm_name: "Ansibledemo"
+    base_vm_name: "Ansibledemo-rhel"
     ec2_vpc_id: "{{ survey_ec2_vpc_id }}"
     ec2_region: "{{ survey_ec2_region }}"
     ec2_vpc_subnet_id: "{{ survey_vpc_subnet_id }}"
     #user_count: "1"
     ec2_instance_type: "t4g.small"
     ptr_zone_cidr: "{{ survey_ptr_zone_cidr }}"
-    security_group: Ansibledemo-windowssg
+    security_group: Ansibledemo-sg
     aws_key_name: "AnsibleDemoKey"
   tasks:
  
