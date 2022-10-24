@@ -20,6 +20,7 @@
           ansible_host: "{{ vm_hostname }}"
           ansible_password: "{{ vm_password }}"
           instance_id: "{{ aws_instance }}"
+          ansible_ssh_private_key_file: "{{ vm_key }}"
 
     - name: Add new node to Group
       ansible.controller.group:
