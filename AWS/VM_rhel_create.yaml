@@ -20,7 +20,7 @@
         region: "{{ ec2_region }}"
         filters:
           owner-alias: amazon
-          #description: "Red Hat Enterprise Linux 8"
+          description: "Provided by Red Hat, Inc."
           architecture: "arm64"
           state: "available"
       register: AMI_image
