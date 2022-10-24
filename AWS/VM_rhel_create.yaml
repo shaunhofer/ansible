@@ -23,7 +23,7 @@
           description: "Provided by Red Hat, Inc."
           architecture: "arm64"
           state: "available"
-          name: RHEL-9.0.0_HVM*
+          name: RHEL-9.0.0_HVM-*
       register: AMI_image
     
     - name: show results AMI
