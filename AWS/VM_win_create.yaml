@@ -111,3 +111,4 @@
           vm_name: "{{ vm_instances.results.0.instances.0.tags.Name }}"
           #vm_name: "{{ vm_instances.results.0.instances.0.tags.Name }}_{{ vm_instances.results.0.instances.0.instance_id }}"
           aws_instance: "{{ vm_instances.results.0.instances.0.instance_id }}"
+          group_name: "windows"
