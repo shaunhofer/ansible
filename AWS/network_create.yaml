@@ -70,10 +70,10 @@
 
     ################### Create Security Groups ###################
 
-    - name: Windows | Create MS Windows security group
+    - name: Create security group
       ec2_group:
-        name: "{{ name_prefix }}-windowssg"
-        description: "Microsoft Windows SG"
+        name: "{{ name_prefix }}-sg"
+        description: "Windows and Linux SG"
         vpc_id: "{{ ec2_vpc_id }}"
         region: "{{ ec2_region }}"
         rules:
