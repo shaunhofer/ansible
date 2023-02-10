@@ -1,6 +1,6 @@
 ---
 - name: Get F5 Big-IP details
-  hosts: f5
+  hosts: all
   gather_facts: no
   tasks:
     - name: Get F5 hostname
