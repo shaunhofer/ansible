@@ -44,11 +44,11 @@
         body_format: "form-multipart"
         body:
           backup:
-            filename: "{{ playbook_dir + '/files/file.pdf' }}"
+            filename: "{{ local_file }}"
             mime_type: application/octet-stream
           anotherFormParam: "api_key"
-        user: "user"
-        password: "pass"
+        user: "{{ uri_user }}"
+        password: "{{ uri_pass }}"
         force_basic_auth: yes
         return_content: yes
         headers:
