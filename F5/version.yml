@@ -13,5 +13,5 @@
 
   tasks:
     - name: Run show version on remote devices
-      bigip_command:
+      f5networks.f5_bigip.bigip_command:
         commands: show sys version
