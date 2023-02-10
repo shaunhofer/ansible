@@ -3,9 +3,9 @@
   hosts: lb
   connection: local
   gather_facts: false
-
   collections:
     - f5networks.f5_modules
+  connection: httpapi
 
   tasks:
     - name: Setting up provider values
