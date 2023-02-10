@@ -33,7 +33,4 @@
         src: "{{ task.src }}"
         timeout: 300
         
-    - name: RENAME BACKUP
-      copy:
-        src: "{{ local_file }}"
-        dest: "{{ project_path }}/F5/backup/{{ task.src }}"
+
