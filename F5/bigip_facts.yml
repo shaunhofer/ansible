@@ -8,14 +8,17 @@
     - f5networks.f5_modules
 
   tasks:
+    - name: Setting up provider values
+      set_fact:
+       provider:
+        server: "{{private_ip}}"
+        server_port: "8443"
+        validate_certs: "False"
+        
     - name: COLLECT BIG-IP FACTS
       bigip_device_info:
         gather_subset:
           - system-info
-        provider:
-          server: "{{private_ip}}"
-          server_port: 8443
-          validate_certs: false
       register: device_facts
 
     - name: DISPLAY COMPLETE BIG-IP SYSTEM INFORMATION
