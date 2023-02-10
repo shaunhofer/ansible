@@ -3,7 +3,11 @@
   hosts: lb
   connection: local
   gather_facts: false
-  
+  vars:
+    pool_name: "https"
+    port_member: "443"
+    vs_name: "vip_https"
+    vs_port: "9443"
   collections:
     - f5networks.f5_modules
     
@@ -25,7 +29,7 @@
     - name: CREATE POOL
       bigip_pool:
         provider: "{{provider}}"
-        name: "http_pool"
+        name: "{{ pool_name }}"
         lb_method: "round-robin"
         monitors: "/Common/http"
         monitor_type: "and_list"
@@ -36,19 +40,19 @@
         state: "present"
         name: "{{hostvars[item].inventory_hostname}}"
         host: "{{hostvars[item].ansible_host}}"
-        port: "80"
-        pool: "http_pool"
+        port: "{{ port_member }}"
+        pool: "{{ pool_name }}"
       loop: "{{ groups['web'] }}"
 
     - name: ADD VIRTUAL SERVER
       bigip_virtual_server:
         provider: "{{provider}}"
-        name: "vip"
+        name: "{{ vs_name }}"
         destination: "{{private_ip}}"
-        port: "443"
+        port: "{{ vs_port }}"
         enabled_vlans: "all"
         all_profiles: ['http','clientssl','oneconnect']
-        pool: "http_pool"
+        pool: "{{ pool_name }}"
         snat: "Automap"
 
     - name: PRINT OUT WEB VIP FOR F5
