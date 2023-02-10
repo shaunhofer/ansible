@@ -33,4 +33,10 @@
         src: "{{ task.src }}"
         timeout: 300
         
-
+    - name: Upload Changed Backup Files to GIT
+      hosts: localhost
+      connection: local
+      vars:
+        project_path: "{{ local_file }}"
+      roles:
+        - git-upload
