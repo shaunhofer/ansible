@@ -6,7 +6,7 @@
   collections:
     - f5networks.f5_bigip
   vars:
-    local_folder_location: "/tmp/f5/"
+    local_file: "/tmp/cs_backup.ucs"
     file_name: UseCase-00-backup.ucs
 
   tasks:
@@ -29,6 +29,11 @@
      
     - name: Check for task completion and download created UCS
       bigip_ucs_fetch:
-        dest: /tmp/cs_backup.ucs
+        dest: "{{ local_file }}"
         src: "{{ task.src }}"
         timeout: 300
+        
+    - name: RENAME BACKUP
+      copy:
+        src: "{{ local_file }}"
+        dest: "{{ project_path }}/F5/backup/{{ task.src }}"
