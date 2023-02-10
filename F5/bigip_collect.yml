@@ -1,0 +1,14 @@
+- hosts: all
+  collections:
+    - f5networks.f5_bigip
+  connection: httpapi
+
+  vars:
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+
+  tasks:
+    - name: Collect all BIG-IP information
+      bigip_device_info:
+        gather_subset:
+          - all
