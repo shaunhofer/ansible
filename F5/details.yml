@@ -1,0 +1,34 @@
+---
+- name: Get F5 Big-IP details
+  hosts: f5
+  gather_facts: no
+  tasks:
+    - name: Get F5 hostname
+      ios_command:
+        commands:
+          - show sys hostname
+      register: hostname_result
+
+    - name: Extract hostname
+      set_fact:
+        f5_hostname: "{{ hostname_result.stdout_lines[0] }}"
+
+    - name: Get F5 version
+      ios_command:
+        commands:
+          - show sys version
+      register: version_result
+
+    - name: Extract version
+      set_fact:
+        f5_version: "{{ version_result.stdout_lines[0] }}"
+
+    - name: Get F5 product
+      ios_command:
+        commands:
+          - show sys product
+      register: product_result
+
+    - name: Extract product
+      set_fact:
+        f5_product: "{{ product_result.stdout_lines[0] }}"
