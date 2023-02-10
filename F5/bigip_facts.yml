@@ -4,8 +4,7 @@
   connection: local
   gather_facts: false
   collections:
-    - f5networks.f5_modules
-  #connection: httpapi
+    - f5networks.f5_bigip
 
   tasks:
     - name: Setting up provider values
@@ -17,9 +16,9 @@
         
     - name: COLLECT BIG-IP FACTS
       bigip_device_info:
-        provider: "{{provider}}"
+        provider: "{{ provider }}"
         gather_subset:
-          - all
+          - vlans
       register: device_facts
 
     - name: DISPLAY COMPLETE BIG-IP SYSTEM INFORMATION
