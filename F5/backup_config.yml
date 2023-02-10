@@ -1,10 +1,10 @@
 ---
-- name: Version of BigIP
+- name: BIG-IP BACKUP
   hosts: lb
-  collections:
-    - f5networks.f5_bigip
   connection: local
   gather_facts: false
+  collections:
+    - f5networks.f5_bigip
   vars:
     local_folder_location: "/tmp/f5/"
     file_name: UseCase-00-backup.ucs
@@ -17,9 +17,8 @@
         server_port: "8443"
         validate_certs: "False"
         
-    - name: Download a new UCS
-      bigip_ucs_fetch:
-        provider: "{{provider}}"
-        src: "{{file_name}}"
-        dest: "{{local_folder_location}}/UseCase-00-backup.ucs"
-      ##delegate_to: localhost
+     - name: Create a new UCS
+        bigip_ucs_fetch:
+          provider: "{{provider}}"
+          dest: /tmp/cs_backup.ucs
+        register: task
