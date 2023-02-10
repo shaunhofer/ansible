@@ -1,6 +1,6 @@
 ---
 - name: GRAB F5 FACTS
-  hosts: f5
+  hosts: lb
   connection: local
   gather_facts: false
 
