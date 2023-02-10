@@ -13,16 +13,20 @@
     - name: Setting up provider values
       set_fact:
        provider:
-        server: "{{private_ip}}"
+        server: "{{ private_ip }}"
         server_port: "8443"
         validate_certs: "False"
         
     - name: Create a new UCS
       bigip_ucs_fetch:
-        provider: "{{provider}}"
-        dest: /tmp/cs_backup.ucs
+        provider: "{{ provider }}"
+        dest: "/tmp/cs_backup.ucs"
       register: task
-      
+     
+    - name: displays task
+      debug:
+        var: task
+     
     - name: Check for task completion and download created UCS
       bigip_ucs_fetch:
         dest: /tmp/cs_backup.ucs
