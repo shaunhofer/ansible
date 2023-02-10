@@ -18,7 +18,7 @@
         validate_certs: "False"
         
      - name: Create a new UCS
-        bigip_ucs_fetch:
-          provider: "{{provider}}"
-          dest: /tmp/cs_backup.ucs
-        register: task
+       bigip_ucs_fetch:
+         provider: "{{provider}}"
+         dest: /tmp/cs_backup.ucs
+       register: task
