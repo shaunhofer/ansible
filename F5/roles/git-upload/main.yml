@@ -1,0 +1,24 @@
+---
+
+- name: Set identity for GIT Config 
+  git_config:
+    name: user.name
+    scope: local
+    repo: "{{ project_path }}"
+    value: "shaunhofer"
+
+- name: commit changes to git
+  shell: |
+    git add .
+    git commit -m "Config backup taken $(date +"%Y-%m-%d %H:%M:%S")"
+    # exit needed as git commit will fail if there are no changed files
+    exit 0
+  args:
+    chdir: "{{ project_path }}/F5/backup"
+
+- name: Git - push
+  shell: git push 
+  args:
+    chdir: "{{ project_path }}/F5/backup"
+  register: gitpush
+  #when: git.msg is defined
