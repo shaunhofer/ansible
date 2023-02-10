@@ -1,7 +1,8 @@
 ---
 - name: Version of BigIP
   hosts: all
-  collections: f5networks.f5_bigip
+  collections:
+    - f5networks.f5_bigip
   connection: httpapi
 
   vars:
