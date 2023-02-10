@@ -1,4 +1,5 @@
 ---
+
 - name: Install Appache
   hosts: web
   gather_facts: yes
@@ -12,7 +13,7 @@
         state: latest
       register: upgradeable
       
-   - name: Create document root for domain configured in host variable
+    - name: Create document root for domain configured in host variable
       file:
         path: "/var/www/{{ http_host }}"
         state: directory
