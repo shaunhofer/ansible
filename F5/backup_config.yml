@@ -31,5 +31,4 @@
       bigip_ucs_fetch:
         dest: /tmp/cs_backup.ucs
         src: "{{ task.src }}"
-        task_id: "{{ task.task_id }}"
         timeout: 300
