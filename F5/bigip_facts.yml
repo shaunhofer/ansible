@@ -17,6 +17,7 @@
         
     - name: COLLECT BIG-IP FACTS
       bigip_device_info:
+        provider: "{{provider}}"
         gather_subset:
           - system-info
       register: device_facts
