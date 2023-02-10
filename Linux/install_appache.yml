@@ -1,0 +1,41 @@
+---
+- name: Install Appache
+  hosts: web
+  gather_facts: yes
+  become: yes
+  
+  tasks:   
+    - name: DNF update
+      become: yes
+      ansible.builtin.dnf:
+        name: httpd
+        state: latest
+      register: upgradeable
+      
+   - name: Create document root for domain configured in host variable
+      file:
+        path: "/var/www/{{ http_host }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+        
+    - name: Copy your index file
+      template:
+        src: "files/index-template.html"
+        dest: "/var/www/{{ http_host }}/index.html"
+ 
+    - name: Set up virtuahHost
+      template:
+        src: "files/apache-template.conf"
+        dest: "/etc/apache2/sites-available/{{ http_conf }}"
+ 
+    - name: Enable site
+      command: a2ensite {{ http_conf }}
+      notify: restart-apache
+      
+  handlers:
+    - name: restart-apache
+      service:
+        name: apache2
+        state: restarted
