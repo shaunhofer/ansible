@@ -22,4 +22,4 @@
         src: "{{file_name}}"
         dest: "{{local_folder_location}}/UseCase-00-backup.ucs"
         provider: "{{provider}}"
-    delegate_to: localhost
+      delegate_to: localhost
