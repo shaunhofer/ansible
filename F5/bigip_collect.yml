@@ -1,4 +1,6 @@
-- hosts: all
+---
+- name: Collect Info on the BigIP
+  hosts: all
   collections:
     - f5networks.f5_bigip
   connection: httpapi
