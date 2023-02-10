@@ -19,7 +19,7 @@
       bigip_device_info:
         provider: "{{provider}}"
         gather_subset:
-          - system-info
+          - all
       register: device_facts
 
     - name: DISPLAY COMPLETE BIG-IP SYSTEM INFORMATION
