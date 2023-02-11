@@ -7,11 +7,7 @@
     
   tasks:
     - name: Set Git config
-      git_config:
-        name: user.name
-        scope: local
-        repo: "{{ dest_dir }}"
-        value: "shaunhofer"
+
         
     - name: Clone Git repository
       git:
