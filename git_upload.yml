@@ -63,10 +63,14 @@
         chdir: "{{ dest_dir }}"
       become: true
 
-    - name: Push changes to Git repository
+    - name: Check GIT remote
       command: git remote -v 
       args:
         chdir: "{{ dest_dir }}"
+      become: true
+      
+    - name: Check SSH keys
+      command: ssh-keyscan github.com >> ~/.ssh/known_hosts
       become: true
 
     - name: Push changes to Git repository
