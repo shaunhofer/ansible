@@ -12,7 +12,7 @@
         dest: "{{ dest_dir }}"
       become: true
       
-     - name: Set Git details
+    - name: Set Git details
       git_config:
         name: user.name
         scope: local
