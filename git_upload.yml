@@ -57,7 +57,7 @@
     #  become: true
     
     - name: Push changes to Git repository
-      command: git push origin master
+      command: git push origin main
       args:
         chdir: "{{ dest_dir }}/F5/backup"
       become: true
