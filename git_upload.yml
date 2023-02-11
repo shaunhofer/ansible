@@ -8,8 +8,8 @@
       git_config:
         name: user.name
         scope: local
-        repo: "{{ project_path }}"
-        value: shaunhofer
+        repo: "{{ dest_dir }}"
+        value: "shaunhofer"
         
     - name: Clone Git repository
       git:
