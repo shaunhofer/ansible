@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  vars:
+    dest_dir: /tmp/
+  tasks:
+    - name: Clone Git repository
+      git:
+        repo: https://github.com/shaunhofer/ansible.git
+        dest: "{{ dest_dir }}"
+      become: true
+    
+    - name: Copy file to Git repository
+      copy:
+        src: /etc/hostname
+        dest: "{{ dest_dir }}"/F5/backup
+      become: true
+    
+    - name: Add and commit file to Git repository
+      command: git add {{ item }} && git commit -m "Adding {{ item }}" 
+      with_items:
+        - "{{ dest_dir }}"/F5/backup
+      args:
+        chdir: "{{ dest_dir }}"/F5/backup
+      become: true
+    
+    - name: Push changes to Git repository
+      command: git push origin master
+      args:
+        chdir: "{{ dest_dir }}"/F5/backup
+      become: true
