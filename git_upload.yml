@@ -16,7 +16,7 @@
       git_config:
         name: user.name
         scope: global
-        repo: "{{ dest_dir }}"
+        repo: "{{ dest_dir }}/F5/backup"
         value: "shaunhofer"
       
     - name: Copy file to Git repository
@@ -34,7 +34,7 @@
       become: true
       
     - name: commit file to Git repository
-      command: git commit -m "Adding {{ item }}" 
+      command: git commit -m "Adding {{ item }}"
       with_items:
         - "{{ dest_dir }}/F5/backup"
       args:
