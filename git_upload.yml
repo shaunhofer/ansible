@@ -55,6 +55,11 @@
     #  args:
     #    chdir: "{{ dest_dir }}/F5/backup"
     #  become: true
+    - name: Git login
+      command: git auth login
+      args:
+        chdir: "{{ dest_dir }}"
+      become: true
     
     - name: Push changes to Git repository
       command: git push origin main
