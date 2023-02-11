@@ -37,21 +37,4 @@
         src: "{{ task.src }}"
         timeout: 300
         
-    - name: Call upload endpoints
-      uri:
-        url: "url to use"
-        method: "POST"
-        body_format: "form-multipart"
-        body:
-          backup:
-            filename: "{{ local_file }}"
-            mime_type: application/octet-stream
-          anotherFormParam: "api_key"
-        user: "{{ uri_user }}"
-        password: "{{ uri_pass }}"
-        force_basic_auth: yes
-        return_content: yes
-        headers:
-          Content-Type: multipart/form-data
-        validate_certs: false
-      register: upload_result
+
