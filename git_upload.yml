@@ -42,19 +42,19 @@
         chdir: "{{ dest_dir }}/F5/backup"
       become: true
     
-    - name: commit file to Git repository
+    - name: commit INTIAL to Git repository
       command: git commit -m "initial commit"
       args:
         chdir: "{{ dest_dir }}/F5/backup"
       become: true
     
-    - name: commit file to Git repository
-      command: git commit -m "Adding {{ item }}"
-      with_items:
-        - "{{ dest_dir }}/F5/backup"
-      args:
-        chdir: "{{ dest_dir }}/F5/backup"
-      become: true
+    #- name: commit file to Git repository
+    #  command: git commit -m "Adding {{ item }}"
+    #  with_items:
+    #    - "{{ dest_dir }}/F5/backup"
+    #  args:
+    #    chdir: "{{ dest_dir }}/F5/backup"
+    #  become: true
     
     - name: Push changes to Git repository
       command: git push origin master
