@@ -9,7 +9,7 @@
         name: user.name
         scope: local
         repo: "{{ project_path }}"
-        value: "shaunhofer"
+        value: shaunhofer
         
     - name: Clone Git repository
       git:
