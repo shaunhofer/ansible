@@ -3,6 +3,13 @@
   vars:
     dest_dir: /tmp/git
   tasks:
+    - name: Set identity as "shaunhofer" in GIT Config 
+      git_config:
+        name: user.name
+        scope: local
+        repo: "{{ project_path }}"
+        value: "shaunhofer"
+        
     - name: Clone Git repository
       git:
         repo: https://github.com/shaunhofer/ansible.git
