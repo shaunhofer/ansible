@@ -4,6 +4,7 @@
   gather_facts: False
   vars:
     dest_dir: /tmp/git
+    email: bla@bla.com
     
   tasks:   
     - name: Clone Git repository
@@ -21,6 +22,10 @@
         
     - name: Set Git details
       command: git config --global user.name "shaunhofer"
+      become: true
+      
+    - name: Set Git details
+      command: git config --global user.email "{{ email }}"
       become: true
       
     - name: Copy file to Git repository
