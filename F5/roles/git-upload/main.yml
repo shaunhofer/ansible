@@ -14,11 +14,11 @@
     # exit needed as git commit will fail if there are no changed files
     exit 0
   args:
-    chdir: "{{ project_path }}/F5/backup"
+    chdir: "{{ project_path }}"
 
 - name: Git - push
   shell: git push 
   args:
-    chdir: "{{ project_path }}/F5/backup"
+    chdir: "{{ project_path }}"
   register: gitpush
   #when: git.msg is defined
