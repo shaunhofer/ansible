@@ -15,7 +15,7 @@
     - name: Set Git details
       git_config:
         name: user.name
-        scope: local
+        scope: global
         repo: "{{ dest_dir }}"
         value: "shaunhofer"
       
