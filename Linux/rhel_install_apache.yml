@@ -26,7 +26,7 @@
         src: "files/index-template.html"
         dest: "/var/www/{{ http_host }}/index.html"
  
-    - name: Set up virtuahHost
+    - name: Set up virtualHost
       template:
         src: "files/apache-template.conf"
         dest: "/etc/apache2/sites-available/{{ http_conf }}"
