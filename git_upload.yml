@@ -56,7 +56,7 @@
     #    chdir: "{{ dest_dir }}/F5/backup"
     #  become: true
     - name: Git login
-      command: git auth login
+      command: gh auth login
       args:
         chdir: "{{ dest_dir }}"
       become: true
