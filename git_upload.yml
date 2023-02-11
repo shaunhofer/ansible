@@ -57,6 +57,12 @@
     #    chdir: "{{ dest_dir }}/F5/backup"
     #  become: true
 
+    - name: Set remote repo
+      command: git remote set-url origin git@github.com:shaunhofer/"{{ repo }}"
+      args:
+        chdir: "{{ dest_dir }}"
+      become: true
+
     - name: Push changes to Git repository
       command: git remote -v 
       args:
