@@ -6,6 +6,7 @@
   collections:
     - f5networks.f5_bigip
   vars:
+    project_path: "/tmp/"
     local_file: "/tmp/cs_backup.ucs"
     file_name: UseCase-00-backup.ucs
     mynfs: "192.168.0.200:/nfs/share"
@@ -37,4 +38,8 @@
         src: "{{ task.src }}"
         timeout: 300
         
-
+    - name: Upload Changed Backup Files to GIT
+      hosts: localhost
+      backup_role: rtr-backup-new
+      roles:
+        - git-upload
