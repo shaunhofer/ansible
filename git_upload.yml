@@ -16,8 +16,12 @@
       git_config:
         name: user.name
         scope: global
-        repo: "{{ dest_dir }}/F5/backup"
+        repo: "{{ dest_dir }}"
         value: "shaunhofer"
+        
+    - name: Set Git details
+      command: git config --global user.name "shaunhofer"
+      become: true
       
     - name: Copy file to Git repository
       copy:
