@@ -41,7 +41,11 @@
       args:
         chdir: "{{ dest_dir }}/F5/backup"
       become: true
-      
+    
+    - name: commit file to Git repository
+      command: git commit -m "initial commit"
+      become: true
+    
     - name: commit file to Git repository
       command: git commit -m "Adding {{ item }}"
       with_items:
