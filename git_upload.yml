@@ -1,5 +1,7 @@
 ---
-- hosts: localhost
+- name: Upload a file to GIT
+  hosts: localhost
+  gather_facts: False
   vars:
     dest_dir: /tmp/git
     
