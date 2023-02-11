@@ -5,13 +5,7 @@
   vars:
     dest_dir: /tmp/git
     
-  tasks:     
-    - name: Clone Git repository
-      git:
-        repo: https://github.com/shaunhofer/ansible.git
-        dest: "{{ dest_dir }}"
-      become: true
-      
+  tasks:
     - name: Set Git details
       git_config:
         name: user.name
@@ -19,6 +13,12 @@
         repo: "{{ dest_dir }}"
         value: "shaunhofer"
         
+    - name: Clone Git repository
+      git:
+        repo: https://github.com/shaunhofer/ansible.git
+        dest: "{{ dest_dir }}"
+      become: true
+      
     - name: Copy file to Git repository
       copy:
         src: /etc/hostname
