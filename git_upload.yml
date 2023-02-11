@@ -5,11 +5,12 @@
   vars:
     dest_dir: /tmp/git
     email: bla@bla.com
+    repo: https://github.com/shaunhofer/ansible.git
     
   tasks:   
     - name: Clone Git repository
       git:
-        repo: https://github.com/shaunhofer/ansible.git
+        repo: "{{ repo }}"
         dest: "{{ dest_dir }}"
       become: true
       
@@ -55,14 +56,9 @@
     #  args:
     #    chdir: "{{ dest_dir }}/F5/backup"
     #  become: true
-    - name: Git login
-      command: gh auth login
-      args:
-        chdir: "{{ dest_dir }}"
-      become: true
     
     - name: Push changes to Git repository
-      command: git push origin main
+      command: git push main --repo="{{ repo }}"
       args:
         chdir: "{{ dest_dir }}/F5/backup"
       become: true
