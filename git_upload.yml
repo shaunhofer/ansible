@@ -56,9 +56,15 @@
     #  args:
     #    chdir: "{{ dest_dir }}/F5/backup"
     #  become: true
-    
+
+    - name: Push changes to Git repository
+      command: git remote -v 
+      args:
+        chdir: "{{ dest_dir }}"
+      become: true
+
     - name: Push changes to Git repository
       command: git push origin main
       args:
-        chdir: "{{ dest_dir }}/F5/backup"
+        chdir: "{{ dest_dir }}"
       become: true
