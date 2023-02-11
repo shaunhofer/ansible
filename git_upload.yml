@@ -20,6 +20,12 @@
         repo: "{{ dest_dir }}"
         value: "shaunhofer"
         
+    - name: Remote repo
+      command: git remote add origin "{{ email }}":shaunhofer/shaunhofer/ansible.git
+      args:
+        chdir: "{{ dest_dir }}"
+      become: true
+        
     - name: Set Git details
       command: git config --global user.name "shaunhofer"
       become: true
