@@ -44,6 +44,8 @@
     
     - name: commit file to Git repository
       command: git commit -m "initial commit"
+      args:
+        chdir: "{{ dest_dir }}/F5/backup"
       become: true
     
     - name: commit file to Git repository
