@@ -25,8 +25,16 @@
         dest: "{{ dest_dir }}/F5/backup"
       become: true
     
-    - name: Add and commit file to Git repository
-      command: git add {{ item }} && git commit -m "Adding {{ item }}" 
+    - name: Add to Git repository
+      command: git add {{ item }}
+      with_items:
+        - "{{ dest_dir }}/F5/backup"
+      args:
+        chdir: "{{ dest_dir }}/F5/backup"
+      become: true
+      
+    - name: commit file to Git repository
+      command: git commit -m "Adding {{ item }}" 
       with_items:
         - "{{ dest_dir }}/F5/backup"
       args:
