@@ -58,7 +58,7 @@
     #  become: true
 
     - name: Set remote repo
-      command: git remote set-url origin git@github.com:shaunhofer/"{{ repo }}"
+      command: git remote set-url origin git@github.com:shaunhofer/ansible.git
       args:
         chdir: "{{ dest_dir }}"
       become: true
