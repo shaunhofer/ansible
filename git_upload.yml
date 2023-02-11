@@ -2,8 +2,9 @@
 - hosts: localhost
   vars:
     dest_dir: /tmp/git
+    
   tasks:
-    - name: Set identity as "shaunhofer" in GIT Config 
+    - name: Set identity as shaunhofer in GIT Config 
       git_config:
         name: user.name
         scope: local
