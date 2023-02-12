@@ -1,5 +1,5 @@
 ---
-- name: Display qkview details
+- name: Upgrade BigIP
   hosts: lb
   connection: local
   gather_facts: false
