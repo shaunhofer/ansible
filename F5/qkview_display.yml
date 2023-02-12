@@ -1,6 +1,11 @@
 ---
 - name: Display qkview details
-
+  hosts: lb
+  connection: local
+  gather_facts: false
+  collections:
+    - f5networks.f5_modules
+    
   tasks:
     - name: Fetch a qkview from the remote device
      bigip_qkview:
