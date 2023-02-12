@@ -80,7 +80,7 @@
      #   state: present
 
     - name: Cat known_hosts
-      command: cat /etc/ssh/ssh_known_hosts
+      command: cat /etc/hostname
       become: true
 
     - name: Push changes to Git repository
