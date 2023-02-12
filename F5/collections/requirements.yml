@@ -1,3 +1,4 @@
 collections:
  - name: f5networks.f5_modules
  - name: f5networks.f5_bigip
+ - name: amazon.aws
