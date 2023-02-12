@@ -25,6 +25,7 @@
           - secure
         dest: "{{ fileloc }}"
        
-    - name: Print qkview
+    - name: Cat known_hosts
       command: cat "{{ fileloc }}"
+      become: true
       #debug: msg="the value of qkview is {{lookup('file', '"{{ fileloc }}"') }}"

@@ -19,6 +19,7 @@
         provider: "{{ provider }}"
         gather_subset:
           - all
+      delegate_to: localhost
       register: device_facts
 
     - name: DISPLAY COMPLETE BIG-IP SYSTEM INFORMATION
