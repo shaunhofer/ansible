@@ -4,13 +4,21 @@
   connection: local
   gather_facts: false
   collections:
-    - f5networks.f5_bigip
+    - f5networks.f5_modules
   vars:
     fileloc: /tmp/localhost.localdomain.qkview
     
   tasks:
+    - name: Setting up provider values
+      set_fact:
+       provider:
+        server: "{{private_ip}}"
+        server_port: "8443"
+        validate_certs: "False"
+        
     - name: Fetch a qkview from the remote device
-      bigip_qkview:
+      f5_modules.bigip_qkview:
+        provider: "{{provider}}"
         asm_request_log: yes
         exclude:
           - audit
