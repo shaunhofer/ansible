@@ -70,7 +70,7 @@
       become: true
       
     - name: SSH known hosts
-      command: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      command: ssh-keyscan github.com > /home/runner/.ssh/known_hosts
       become: true
       
     - name: Read SSH known hosts 
