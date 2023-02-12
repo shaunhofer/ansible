@@ -72,6 +72,7 @@
 
 - name: Create instances for F5 BIG-IP node(s)
   amazon.aws.ec2_instance:
+    name: "{{ ec2_name_prefix }}-F5-BIGIP"
     key_name: "{{ ec2_name_prefix }}-key"
     # security_group: "{{ ec2_security_group }}"
     instance_type: "{{ ec2_info.f5node.size }}"
