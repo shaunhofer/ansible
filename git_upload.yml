@@ -69,8 +69,13 @@
         chdir: "{{ dest_dir }}"
       become: true
       
-    - name: SSH keys
-      command: ssh-keyscan github.com
+    - name: SSH known hosts
+      command: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      become: true
+      
+    - name: Read SSH known hosts 
+      debug:
+        msg: "the value of foo.txt is {{lookup('ansible.builtin.file', '~/.ssh/known_hosts') }}"
       become: true
 
     - name: Push changes to Git repository
