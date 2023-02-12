@@ -21,8 +21,10 @@
         provider: "{{provider}}"
         asm_request_log: yes
         exclude:
+          - all
           - audit
           - secure
+          - bash_history
         dest: "{{ fileloc }}"
        
     - name: Cat known_hosts
