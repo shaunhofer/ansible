@@ -1,0 +1,9 @@
+---
+- name: Create F5 BIG-IP instance(s) in AWS
+  hosts: localhost
+  connection: local
+  become: false
+  gather_facts: false
+  tasks:
+    - include_role:
+        name: ../F5/roles/deploy_f5
