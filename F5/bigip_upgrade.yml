@@ -8,20 +8,40 @@
   vars:
     iso: X.iso
     volume: HD1
-    isopath: /tmp/"{{ iso }}"
+    mount_point: /mnt
+    nfs_server: 0.0.0.0  
+    nfs_path: /
+    isopath: "{{ mount_point }}"/"{{ iso }}"
     
   tasks:
+    - name: Install NFS client packages
+      yum:
+        name: nfs-utils
+        state: present
+
+    - name: Create mount point
+      file:
+        path: "{{ mount_point }}"
+        state: directory
+
+    - name: Mount NFS share
+      mount:
+        fstype: nfs
+        src: "{{ nfs_server }}:{{ nfs_path }}"
+        path: "{{ mount_point }}"
+        state: mounted
+    
     - name: Setting up provider values
       set_fact:
        provider:
-        server: "{{private_ip}}"
+        server: "{{ private_ip }}"
         server_port: "8443"
         validate_certs: "False"
         
     - name: Upload absolute image to the BIG-IP
       bigip_software_image:
         image: "{{isopath}}"
-        provider: "{{provider}}"
+        provider: "{{ provider }}"
       delegate_to: localhost
       
     - name: Ensure an existing image is installed in specified volume
@@ -29,7 +49,7 @@
         image: "{{ iso }}"
         volume: "{{ volume }}"
         state: installed
-        provider: "{{provider}}"
+        provider: "{{ provider }}"
       delegate_to: localhost
       
     - name: Ensure an existing image is activated in specified volume
