@@ -69,9 +69,9 @@
         chdir: "{{ dest_dir }}"
       become: true
       
-    - name: Test reachability to github.com
-      net_ping:
-        dest: github.com
+    - name: Simple A record (IPV4 address) lookup for example.com
+      debug:
+        msg: "{{ lookup('community.general.dig', 'github.com')}}"
       
     - name: SSH keys
       command: ssh-keyscan github.com
