@@ -6,6 +6,7 @@
     dest_dir: /tmp/git
     email: bla@bla.com
     repo: https://github.com/shaunhofer/ansible.git
+    username: shaunhofer
     
   tasks:   
     - name: Clone Git repository
@@ -19,10 +20,10 @@
         name: user.name
         scope: global
         repo: "{{ dest_dir }}"
-        value: "shaunhofer"
+        value: "{{ username }}"
         
     - name: Set Git details
-      command: git config --global user.name "shaunhofer"
+      command: git config --global user.name "{{ username }}"
       become: true
       
     - name: Set Git details
@@ -58,7 +59,7 @@
     #  become: true
 
     - name: Set remote repo
-      command: git remote set-url origin git@github.com:shaunhofer/ansible.git
+      command: git remote set-url origin "{{ username }}"@github.com:"{{ username }}"/ansible.git
       args:
         chdir: "{{ dest_dir }}"
       become: true
