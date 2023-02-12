@@ -69,10 +69,6 @@
         chdir: "{{ dest_dir }}"
       become: true
       
-    - name: Simple A record (IPV4 address) lookup for example.com
-      debug:
-        msg: "{{ lookup('community.general.dig', 'github.com')}}"
-      
     - name: SSH keys
       command: ssh-keyscan github.com
       become: true
