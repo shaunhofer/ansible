@@ -26,8 +26,13 @@
           - secure
           - bash_history
         dest: "{{ fileloc }}"
-       
+      delegate_to: localhost
+      register: device_qkview
+
+    - name: display qkview
+      debug:
+        var: device_qkview
+        
     - name: Cat known_hosts
-      command: cat "{{ fileloc }}"
+      command: ls "{{ fileloc }}"
       become: true
-      #debug: msg="the value of qkview is {{lookup('file', '"{{ fileloc }}"') }}"
