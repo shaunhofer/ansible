@@ -70,7 +70,7 @@
       become: true
       
     - name: For each host, scan for its ssh public key
-      shell: "ssh-keyscan github.com,`dig +short github.com`"
+      shell: "ssh-keyscan github.com,20.248.137.48"
       register: ssh_known_host_results
       ignore_errors: yes
 
