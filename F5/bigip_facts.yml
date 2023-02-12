@@ -30,4 +30,4 @@
         
     - name: DISPLAY ONLY THE MAC ADDRESS
       debug:
-        var: device_facts['devices']
+        var: device_facts['devices']{0}
