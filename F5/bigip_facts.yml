@@ -18,7 +18,6 @@
       bigip_device_info:
         provider: "{{ provider }}"
         gather_subset:
-          - ucs
           - system-info
           - software-images
           - software-hotfixes
