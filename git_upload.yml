@@ -72,8 +72,16 @@
     - name: SSH known hosts
       command: ssh-keyscan github.com > ~/.ssh/known_hosts
       
-    - name: Read SSH known hosts 
-      command: cat ~/.ssh/known_hosts
+    - name: Update known hosts for ssh
+      ansible.builtin.known_hosts:
+        name: guthub.com
+        key: guthub.com SHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgUfQM  #  (ECDSA)
+        path: /etc/ssh/ssh_known_hosts
+        state: present
+
+    - name: Cat known_hosts
+      command: cat /etc/ssh/ssh_known_hosts
+      become: true
 
     - name: Push changes to Git repository
       command: git push origin main
