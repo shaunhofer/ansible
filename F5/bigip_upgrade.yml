@@ -15,7 +15,7 @@
     
   tasks:
     - name: Install NFS client packages
-      yum:
+      dnf:
         name: nfs-utils
         state: present
 
