@@ -26,6 +26,7 @@
         path: "{{ mount_point }}"
         state: directory
         mode: "{{ permission }}"
+        owner: ansible-runner
       delegate_to: localhost
       become: true
     
@@ -42,6 +43,7 @@
         state: mounted
         opts: "{{ nfsopts }}"
       become: true
+      delegate_to: localhost
     
     - name: Setting up provider values
       set_fact:
