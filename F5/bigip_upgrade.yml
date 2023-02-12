@@ -30,20 +30,20 @@
       delegate_to: localhost
       become: true
     
-    - name: Mount error
-      command: "mount -t nfs -o {{ nfsopts }} -vvvvvv {{ nfs_server }}:{{ nfs_path }} {{ mount_point }}" 
-      become: true
-      delegate_to: localhost
+    #- name: Mount error
+    #  command: "mount -t nfs -o {{ nfsopts }} -vvvvvv {{ nfs_server }}:{{ nfs_path }} {{ mount_point }}" 
+    #  become: true
+    #  delegate_to: localhost
     
-    - name: Mount NFS share
-      mount:
-        fstype: nfs
-        src: "{{ nfs_server }}:{{ nfs_path }}"
-        path: "{{ mount_point }}"
-        state: mounted
-        opts: "{{ nfsopts }}"
-      become: true
-      delegate_to: localhost
+    #- name: Mount NFS share
+    #  mount:
+    #    fstype: nfs
+    #    src: "{{ nfs_server }}:{{ nfs_path }}"
+    #    path: "{{ mount_point }}"
+    #    state: mounted
+    #    opts: "{{ nfsopts }}"
+    #  become: true
+    #  delegate_to: localhost
     
     - name: Setting up provider values
       set_fact:
