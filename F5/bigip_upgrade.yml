@@ -13,7 +13,7 @@
     nfs_path: /
     isopath: "{{ mount_point }}/{{ iso }}"
     permission: '0777'
-    nfsopts: 'ro,sync'
+    nfsopts: 'ro,sync,nfsvers=3'
     
   tasks:
     #- name: Install NFS client packages
