@@ -74,7 +74,7 @@
   amazon.aws.ec2_instance:
     name: "{{ ec2_name_prefix }}-F5-BIGIP"
     key_name: "{{ ec2_name_prefix }}-key"
-    # security_group: "{{ ec2_security_group }}"
+    security_group: "sg-0d27027979ce31da6"
     instance_type: "{{ ec2_info.f5node.size }}"
     image_id: "{{ f5_ami.image_id }}"
     region: "{{ ec2_region }}"
