@@ -69,8 +69,13 @@
         chdir: "{{ dest_dir }}"
       become: true
       
+    - name: Ping
+      command: ping github.com
+      become: true
+      
     - name: SSH keys
-      command: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      command: ssh-keyscan github.com
+      become: true
 
     - name: Push changes to Git repository
       command: git push origin main
