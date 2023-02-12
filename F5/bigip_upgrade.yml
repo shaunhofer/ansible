@@ -11,7 +11,7 @@
     mount_point: /mnt
     nfs_server: 0.0.0.0  
     nfs_path: /
-    isopath: "{{ mount_point }}"/"{{ iso }}"
+    isopath: "{{ mount_point }}/{{ iso }}"
     
   tasks:
     - name: Install NFS client packages
