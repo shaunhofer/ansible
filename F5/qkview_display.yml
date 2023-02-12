@@ -18,4 +18,5 @@
         dest: "{{ fileloc }}"
        
     - name: Print qkview
-      debug: msg="the value of qkview is {{lookup('file', '"{{ fileloc }}"') }}"
+      command: cat "{{ fileloc }}"
+      #debug: msg="the value of qkview is {{lookup('file', '"{{ fileloc }}"') }}"
