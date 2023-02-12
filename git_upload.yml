@@ -69,16 +69,40 @@
         chdir: "{{ dest_dir }}"
       become: true
       
-    - name: SSH known hosts
-      command: ssh-keyscan github.com >> /etc/ssh/ssh_known_hosts
-      become: true
-      
-    - name: Update known hosts for ssh #https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
+    - name: Scan for SSH keys
+      ansible.builtin.shell:
+        cmd: "ssh-keyscan github.com
+              2>/dev/null"
+      register: ssh_scan
+
+    - name: Set stdout_lines array for ssh_scan
+      set_fact:
+        ssout: []
+  
+    - name: Fill ssout
+      set_fact:
+        ssout: "{{ ssout + ss_r.stdout_lines }}"
+      loop: "{{ ssh_scan.results }}"
+      loop_control:
+        loop_var:
+          ss_r
+      when: ss_r.stdout_lines is defined
+
+    - name: Add client ssh keys to known_hosts
       ansible.builtin.known_hosts:
-        name: guthub.com
-        key: "{{ lookup('ansible.builtin.pipe', 'ssh-keyscan guthub.com') }}"
-        path: /etc/ssh/ssh_known_hosts
+        name: "{{ hk.split()[0] }}"
+        key: "{{ hk }}"
         state: present
+      loop: "{{ ssout }}"
+      loop_control:
+        loop_var: hk
+      
+    #- name: Update known hosts for ssh #https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
+    #  ansible.builtin.known_hosts:
+     #   name: guthub.com
+     #   key: "{{ lookup('ansible.builtin.pipe', 'ssh-keyscan guthub.com') }}"
+     #   path: /etc/ssh/ssh_known_hosts
+     #   state: present
 
     - name: Cat known_hosts
       command: cat /etc/ssh/ssh_known_hosts
