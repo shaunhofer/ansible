@@ -70,12 +70,10 @@
       become: true
       
     - name: SSH known hosts
-      command: ssh-keyscan github.com > /home/runner/.ssh/known_hosts
-      become: true
+      command: ssh-keyscan github.com > ~/.ssh/known_hosts
       
     - name: Read SSH known hosts 
       command: cat ~/.ssh/known_hosts
-      become: true
 
     - name: Push changes to Git repository
       command: git push origin main
