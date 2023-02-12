@@ -14,6 +14,11 @@
     f5_ami: >
       {{ amis.images | selectattr('name', 'defined') | sort(attribute='creation_date') | last }}
 
+- name: ensure project folder {{ ec2_name_prefix }} exists
+  file:
+    path: "{{ playbook_dir }}/{{ ec2_name_prefix }}"
+    state: directory
+
 - name: Create ssh key pair for workshop {{ ec2_name_prefix }}
   amazon.aws.ec2_key:
     name: "{{ ec2_name_prefix }}-key"
