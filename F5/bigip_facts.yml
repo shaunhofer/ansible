@@ -19,7 +19,6 @@
         provider: "{{ provider }}"
         gather_subset:
           - system-info
-          - software-images
       delegate_to: localhost
       register: device_facts
 
