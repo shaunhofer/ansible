@@ -8,7 +8,7 @@
   vars:
     iso: X.iso
     volume: HD1
-    mount_point: /mnt
+    mount_point: /tmp/nfs
     nfs_server: 0.0.0.0  
     nfs_path: /
     isopath: "{{ mount_point }}/{{ iso }}"
@@ -23,6 +23,7 @@
       file:
         path: "{{ mount_point }}"
         state: directory
+      become: true
 
     - name: Mount NFS share
       mount:
@@ -30,6 +31,7 @@
         src: "{{ nfs_server }}:{{ nfs_path }}"
         path: "{{ mount_point }}"
         state: mounted
+      become: true
     
     - name: Setting up provider values
       set_fact:
