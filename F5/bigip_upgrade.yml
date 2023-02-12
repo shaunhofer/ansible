@@ -6,7 +6,9 @@
   collections:
     - f5networks.f5_modules
   vars:
-    isopath: /tmp/X.iso
+    iso: X.iso
+    volume: HD1
+    isopath: /tmp/"{{ iso }}"
     
   tasks:
     - name: Setting up provider values
@@ -19,5 +21,21 @@
     - name: Upload absolute image to the BIG-IP
       bigip_software_image:
         image: "{{isopath}}"
+        provider: "{{provider}}"
+      delegate_to: localhost
+      
+    - name: Ensure an existing image is installed in specified volume
+      bigip_software_install:
+        image: "{{ iso }}"
+        volume: "{{ volume }}"
+        state: installed
+        provider: "{{provider}}"
+      delegate_to: localhost
+      
+    - name: Ensure an existing image is activated in specified volume
+      bigip_software_install:
+        image: "{{ iso }}"
+        volume: "{{ volume }}"
+        state: installed
         provider: "{{provider}}"
       delegate_to: localhost
