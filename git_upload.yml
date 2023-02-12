@@ -76,8 +76,8 @@
 
     - name: Add/update the public key in the "{{ ssh_known_hosts_file }}"
       known_hosts:
-        name: "{{ item.item }}"
-        key: "{{ item.stdout }}"
+        name: "github.com"
+        key: "github.com,20.248.137.48 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"
         path: ~/.ssh/known_hosts
       with_items: "{{ ssh_known_host_results.results }}"
       
