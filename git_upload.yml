@@ -79,7 +79,7 @@
         name: "github.com"
         key: "github.com,20.248.137.48 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"
         path: ~/.ssh/known_hosts
-      with_items: "{{ ssh_known_host_results.results }}"
+        state: present
       
     #- name: Update known hosts for ssh #https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
     #  ansible.builtin.known_hosts:
