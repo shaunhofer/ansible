@@ -9,8 +9,16 @@
     fileloc: /tmp/localhost.localdomain.qkview
     
   tasks:
+    - name: Setting up provider values
+      set_fact:
+       provider:
+        server: "{{private_ip}}"
+        server_port: "8443"
+        validate_certs: "False"
+        
     - name: Fetch a qkview from the remote device
       bigip_qkview:
+        provider: "{{provider}}"
         asm_request_log: yes
         exclude:
           - audit
