@@ -5,6 +5,8 @@
   gather_facts: false
   collections:
     - f5networks.f5_modules
+  vars:
+    fileloc: /tmp/localhost.localdomain.qkview
     
   tasks:
     - name: Fetch a qkview from the remote device
@@ -13,8 +15,7 @@
         exclude:
           - audit
           - secure
-        dest: "{{ results }}"
+        dest: "{{ fileloc }}"
        
     - name: Print qkview
-      debug: 
-        msg: "{{ results }}"
+      debug: msg="the value of qkview is {{lookup('file', '"{{ fileloc }}"') }}"
