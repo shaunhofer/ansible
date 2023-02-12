@@ -76,7 +76,7 @@
     - name: Update known hosts for ssh #https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
       ansible.builtin.known_hosts:
         name: guthub.com
-        key: "{{ lookup('pipe', 'ssh-keyscan guthub.com') }}"
+        key: "{{ lookup('ansible.builtin.pipe', 'ssh-keyscan guthub.com') }}"
         path: /etc/ssh/ssh_known_hosts
         state: present
 
