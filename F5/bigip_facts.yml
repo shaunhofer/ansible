@@ -18,7 +18,12 @@
       bigip_device_info:
         provider: "{{ provider }}"
         gather_subset:
-          - all
+          - ucs
+          - system-info
+          - software-images
+          - software-hotfixes
+          - interfaces
+          - devices
       delegate_to: localhost
       register: device_facts
 
