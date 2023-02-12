@@ -7,3 +7,13 @@
   tasks:
     - include_role:
         name: ../F5/roles/deploy_f5
+- name: setup f5 nodes
+  hosts: f5
+  become: false
+  connection: local
+  gather_facts: false
+  vars:
+    as3_uri: "https://github.com/F5Networks/f5-appsvcs-extension/releases"
+  tasks:
+    - include_role:
+        name: ../roles/configure_f5
