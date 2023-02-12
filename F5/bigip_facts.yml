@@ -20,6 +20,7 @@
         gather_subset:
           - interfaces
           - devices
+          - software-images
       delegate_to: localhost
       register: device_facts
 
