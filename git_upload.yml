@@ -69,9 +69,9 @@
         chdir: "{{ dest_dir }}"
       become: true
       
-    - name: Ping
-      command: ping github.com
-      become: true
+    - name: Test reachability to github.com
+      ansible.netcommon.net_ping:
+        dest: github.com
       
     - name: SSH keys
       command: ssh-keyscan github.com
