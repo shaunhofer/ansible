@@ -26,8 +26,14 @@
         path: "{{ mount_point }}"
         state: directory
         mode: "{{ permission }}"
+      delegate_to: localhost
       become: true
-        
+    
+    - name: Mount error
+      command: "mount -t nfs -o {{ nfsopts }} -vvvv {{ nfs_server }}:{{ nfs_path }} {{ mount_point }}" 
+      become: true
+      delegate_to: localhost
+    
     - name: Mount NFS share
       mount:
         fstype: nfs
