@@ -12,7 +12,7 @@
     nfs_server: 0.0.0.0  
     nfs_path: /
     isopath: "{{ mount_point }}/{{ iso }}"
-    permission: '0777'
+    permission: '0770'
     nfsopts: 'ro,sync,nfsvers=3'
     
   tasks:
@@ -29,7 +29,7 @@
         path: "{{ mount_point }}"
         state: directory
         mode: "{{ permission }}"
-        owner: ansible-runner
+        owner: root
       delegate_to: localhost
       become: true
     
