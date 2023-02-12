@@ -21,9 +21,6 @@
     #    name: nfs-utils
     #    state: present
 
-    - name: User
-      command: whoami
-
     - name: Create mount point
       file:
         path: "{{ mount_point }}"
@@ -34,7 +31,7 @@
       become: true
     
     - name: Mount error
-      command: "mount -t nfs -o {{ nfsopts }} -vvvv {{ nfs_server }}:{{ nfs_path }} {{ mount_point }}" 
+      command: "mount -t nfs -o {{ nfsopts }} -vvvvvv {{ nfs_server }}:{{ nfs_path }} {{ mount_point }}" 
       become: true
       delegate_to: localhost
     
