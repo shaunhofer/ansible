@@ -18,7 +18,7 @@
       bigip_device_info:
         provider: "{{ provider }}"
         gather_subset:
-          - monitors
+          - all
       delegate_to: localhost
       register: device_facts
 
