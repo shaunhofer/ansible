@@ -21,6 +21,9 @@
     #    name: nfs-utils
     #    state: present
 
+    - name: User
+      command: whoami
+
     - name: Create mount point
       file:
         path: "{{ mount_point }}"
