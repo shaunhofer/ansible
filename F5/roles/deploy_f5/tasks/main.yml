@@ -34,8 +34,9 @@
 
 - name: Ensure key file has proper permissions
   file:
-    dest: "{{ playbook_dir }}/{{ ec2_name_prefix }}/{{ ec2_name_prefix }}-private.pem"
+    dest: "{{ playbook_dir }}/{{ ec2_name_prefix }}/{{ ec2_name_prefix }}-private.pem" 
     mode: 0600
+  when: create_key.changed
 
 - name: s3 bucket for persistent storage of ec2 key exists
   amazon.aws.s3_bucket:
@@ -54,7 +55,7 @@
     bucket: "{{ ec2_name_prefix|lower }}.private"
     mode: put
     object: "{{ec2_name_prefix}}-private.pem"
-    src: "{{ playbook_dir }}/{{ ec2_name_prefix|lower }}/{{ ec2_name_prefix|lower }}-private.pem"
+    src: "{{ playbook_dir }}/{{ ec2_name_prefix }}/{{ ec2_name_prefix }}-private.pem"
     encrypt: true
     region: "{{ ec2_region }}"
   when: create_key.changed
@@ -64,7 +65,7 @@
     bucket: "{{ ec2_name_prefix|lower }}.private"
     mode: get
     object: "{{ ec2_name_prefix }}-private.pem"
-    dest: "{{ playbook_dir }}/{{ ec2_name_prefix|lower }}/{{ ec2_name_prefix|lower }}-private.pem"
+    dest: "{{ playbook_dir }}/{{ ec2_name_prefix }}/{{ ec2_name_prefix }}-private.pem"
     encrypt: true
     region: "{{ ec2_region }}"
   when: not create_key.changed
