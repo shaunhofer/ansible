@@ -8,9 +8,13 @@
     
   tasks:
     - name: Fetch a qkview from the remote device
-     bigip_qkview:
-       asm_request_log: yes
-       exclude:
-         - audit
-         - secure
-       dest: "{{ results }}"
+      bigip_qkview:
+        asm_request_log: yes
+        exclude:
+          - audit
+          - secure
+        dest: "{{ results }}"
+       
+    - name: Print qkview
+      debug: 
+        msg: "{{ results }}"
