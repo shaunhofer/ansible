@@ -14,10 +14,10 @@
     isopath: "{{ mount_point }}/{{ iso }}"
     
   tasks:
-    - name: Install NFS client packages
-      dnf:
-        name: nfs-utils
-        state: present
+    #- name: Install NFS client packages
+    #  dnf:
+    #    name: nfs-utils
+    #    state: present
 
     - name: Create mount point
       file:
