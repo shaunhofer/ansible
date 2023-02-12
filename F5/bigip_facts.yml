@@ -27,3 +27,7 @@
     - name: DISPLAY COMPLETE BIG-IP SYSTEM INFORMATION
       debug:
         var: device_facts
+        
+    - name: DISPLAY ONLY THE MAC ADDRESS
+      debug:
+        var: device_facts['devices']['base_mac_address']
