@@ -1,5 +1,6 @@
 ---
 admin_password: Ansible789&
+as3_uri: "https://github.com/F5Networks/f5-appsvcs-extension/releases"
 ec2_name_prefix: Bunnings
 ec2_region: ap-southeast-2
 ec2_wait: true
