@@ -1,5 +1,19 @@
 ---
 ############## f5 node ##############
+- name: find ami for f5 (F5 MODE)
+  ec2_ami_info:
+    region: "{{ ec2_region }}"
+    owners: "{{ ec2_info.f5node.owners }}"
+    filters:
+      name: "{{ ec2_info.f5node.filter }}"
+      architecture: "{{ ec2_info.f5node.architecture }}"
+  register: amis
+
+- name: save ami for f5 (F5 MODE)
+  set_fact:
+    f5_ami: >
+      {{ amis.images | selectattr('name', 'defined') | sort(attribute='creation_date') | last }}
+      
 - name: Create instances for f5 BIG-IP nodes
   amazon.aws.ec2_instance:
     key_name: "{{ ec2_name_prefix }}-key"
