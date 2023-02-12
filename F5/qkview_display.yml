@@ -1,0 +1,11 @@
+---
+- name: Display qkview details
+
+  tasks:
+    - name: Fetch a qkview from the remote device
+     bigip_qkview:
+       asm_request_log: yes
+       exclude:
+         - audit
+         - secure
+       dest: "{{ results }}"
