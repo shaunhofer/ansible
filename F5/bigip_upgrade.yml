@@ -13,7 +13,7 @@
     nfs_path: /
     isopath: "{{ mount_point }}/{{ iso }}"
     permission: '0777'
-    myopts: 'ro,sync'
+    nfsopts: 'ro,sync'
     
   tasks:
     #- name: Install NFS client packages
@@ -23,7 +23,7 @@
 
     - name: Create mount point
       file:
-        path: "{{ mountpoint }}"
+        path: "{{ mount_point }}"
         state: directory
         mode: "{{ permission }}"
       become: true
@@ -34,7 +34,7 @@
         src: "{{ nfs_server }}:{{ nfs_path }}"
         path: "{{ mount_point }}"
         state: mounted
-        opts: "{{ myopts }}"
+        opts: "{{ nfsopts }}"
       become: true
     
     - name: Setting up provider values
