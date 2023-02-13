@@ -9,7 +9,7 @@
         name: ../F5/roles/deploy_f5
         
 - name: setup f5 nodes
-  hosts: all
+  hosts: f5
   become: false
   connection: local
   gather_facts: false
