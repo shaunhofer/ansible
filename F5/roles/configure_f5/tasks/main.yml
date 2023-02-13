@@ -1,6 +1,9 @@
-
-
 ---
+- name: Generate inventory
+  template:
+    src: "instances_f5.j2"
+    dest: "{{ playbook_dir }}/{{ec2_name_prefix}}/instances.txt"
+
 - name: Wait for BIG-IP to boot up completely
   wait_for:
     host: "{{ ansible_host }}"
