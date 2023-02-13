@@ -7,7 +7,7 @@
     - f5networks.f5_modules
   vars:
     iso: X.iso
-    volume: HD1.1
+    volume: HD1.2
     mount_point: /mnt/nfs
     nfs_server: 0.0.0.0  
     nfs_path: /
