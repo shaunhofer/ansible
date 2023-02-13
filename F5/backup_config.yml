@@ -38,8 +38,3 @@
         src: "{{ task.src }}"
         timeout: 300
         
-    - name: Upload Changed Backup Files to GIT
-      hosts: localhost
-      backup_role: rtr-backup-new
-      roles:
-        - git-upload
