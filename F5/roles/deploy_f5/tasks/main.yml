@@ -87,6 +87,10 @@
       "tag:Workshop_f5": "{{ ec2_name_prefix }}-f5"
     tags:
       short_name: "f5"
+      Workshop_f5: "{{ ec2_name_prefix }}-f5"
+      Workshop: "{{ ec2_name_prefix }}"
+      uuid: "{{ ec2_name_prefix }}"
+      guid: "{{ ec2_name_prefix }}"
     wait: "{{ ec2_wait }}"
     # vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
     volumes:
