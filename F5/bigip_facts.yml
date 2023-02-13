@@ -21,6 +21,7 @@
           - interfaces
           - devices
           - software-images
+          - software-volumes
       delegate_to: localhost
       register: device_facts
 
