@@ -113,3 +113,30 @@
       instance-state-name: running
       "tag:Workshop_f5": "{{ ec2_name_prefix }}-f5"
   register: f5_output
+
+- name: grab facts for f5 node (workshop_type f5)
+  amazon.aws.ec2_instance_info:
+    region: "{{ ec2_region }}"
+    filters:
+      instance-state-name: running
+      "tag:Workshop_f5": "{{ec2_name_prefix}}-f5"
+  register: f5_node_facts
+
+- name: add f5 to groups (workshop_type f5)
+  add_host:
+    name: "{{ item.tags.Name }}"
+    short_name: "{{ item.tags.short_name }}"
+    ansible_host: "{{ item.public_ip_address }}"
+    ansible_user: admin
+    ansible_password: admin
+    ansible_port: "{{ ssh_port }}"
+    ansible_ssh_private_key_file: "{{ playbook_dir }}/{{ec2_name_prefix}}/{{ec2_name_prefix}}-private.pem"
+    private_ip: "{{item.private_ip_address}}"
+    groups:
+      - f5
+  with_items: "{{ f5_node_facts.instances }}"
+
+- name: Generate inventory
+  template:
+    src: "instances_f5.j2"
+    dest: "{{ playbook_dir }}/{{ec2_name_prefix}}/instances.txt"
