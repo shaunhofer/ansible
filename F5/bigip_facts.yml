@@ -30,4 +30,4 @@
         
     - name: software images
       debug:
-        var: device_facts['software-images']
+        var: device_facts['software_images']
