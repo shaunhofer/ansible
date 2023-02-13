@@ -64,7 +64,6 @@
         volume: "{{ volume }}"
         state: installed
         provider: "{{ provider }}"
-      delegate_to: localhost
       
     - name: Ensure an existing image is activated in specified volume
       bigip_software_install:
@@ -72,4 +71,3 @@
         volume: "{{ volume }}"
         state: installed
         provider: "{{provider}}"
-      delegate_to: localhost
