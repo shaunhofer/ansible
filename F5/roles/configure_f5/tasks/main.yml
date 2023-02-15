@@ -14,16 +14,16 @@
 #     dest: "{{ playbook_dir }}/{{ec2_name_prefix}}/instances.txt"
 #   delegate_to: localhost
 
-- name: ensure project folder {{ ec2_name_prefix }} exists
-  file:
-    path: "{{ playbook_dir }}/{{ ec2_name_prefix }}"
-    state: directory
+# - name: ensure project folder {{ ec2_name_prefix }} exists
+#   file:
+#     path: "{{ playbook_dir }}/{{ ec2_name_prefix }}"
+#     state: directory
 
-- name: Copy inventory
-  ansible.builtin.copy:
-    src: "{{ playbook_dir }}/{{ec2_name_prefix}}/instances.txt"
-    dest: "{{ playbook_dir }}/{{ec2_name_prefix}}/instances.txt"
-    mode: '0644'
+# - name: Copy inventory
+#   ansible.builtin.copy:
+#     src: "{{ playbook_dir }}/{{ec2_name_prefix}}/instances.txt"
+#     dest: "{{ playbook_dir }}/{{ec2_name_prefix}}/instances.txt"
+#     mode: '0644'
 
 - name: Wait for BIG-IP to boot up completely
   wait_for:
