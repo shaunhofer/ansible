@@ -41,5 +41,5 @@
       
     - name: Deploy AS3
       f5networks.f5_bigip.bigip_do_deploy:
-        content: "{{ lookup('file', 'templates/as3_create.json') }}"
+        content: "{{ lookup('file', 'templates/banner.json') }}"
       delegate_to: localhost
