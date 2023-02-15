@@ -42,5 +42,5 @@
 
     - name: Create AS3
       f5networks.f5_bigip.bigip_as3_deploy:
-        content: "{{ lookup('template', 'template/as3_create.json') }}"
+        content: "{{ lookup('template', 'templates/as3_create.json') }}"
       when: state == "present"
