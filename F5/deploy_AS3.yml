@@ -1,7 +1,7 @@
 ---
 - name: Deploy AS3 JSON
   hosts: lb
-  connection: local
+  connection: httpapi
   gather_facts: false
   collections:
     - f5networks.f5_bigip
