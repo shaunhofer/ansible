@@ -1,0 +1,27 @@
+---
+- name: BIG-IP BACKUP
+  hosts: lb
+  connection: local
+  gather_facts: false
+  collections:
+    - f5networks.f5_bigip
+  vars:
+    pool_members: "{{ groups['web'] }}"
+  
+  tasks:
+    - name: Setting up provider values
+      set_fact:
+       provider:
+        server: "{{private_ip}}"
+        server_port: "8443"
+        validate_certs: "False"
+        
+    - name: Declaration with 2 Tenants - AS3
+      bigip_as3_deploy:
+        provider: "{{ provider }}"
+        content: "{{ lookup('file', 'two_tenants.json') }}"
+
+    #- name: Remove one tenant - AS3
+    #  bigip_as3_deploy:
+    #    as3_tenant: "Sample_01"
+    #    state: absent
