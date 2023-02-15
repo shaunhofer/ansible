@@ -1,0 +1,27 @@
+---
+- name: Deploy AS3 JSON
+  hosts: lb
+  gather_facts: false
+  collections:
+    - f5networks.f5_bigip
+  vars:
+    pool_members: "{{ groups['web'] }}"
+    partition: AS3_app
+    state: absent
+  
+    tasks:
+
+
+    - name: PUSH AS3
+      uri:
+        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
+        method: POST
+        body: "{{ lookup('file','banner.json') }}"
+        status_code: 200
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
