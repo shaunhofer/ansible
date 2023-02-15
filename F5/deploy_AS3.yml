@@ -1,6 +1,6 @@
 ---
 - name: Deploy AS3 JSON
-  hosts: lb
+  hosts: localhost
   gather_facts: false
   collections:
     - f5networks.f5_bigip
