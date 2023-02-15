@@ -18,8 +18,8 @@
         
     - name: Declaration with 2 Tenants - AS3
       f5networks.f5_bigip.bigip_as3_deploy:
-        provider: "{{ provider }}"
         content: "{{ lookup('template', 'templates/as3_template.j2', split_lines=False) }}"
+        state: present
 
     #- name: Remove one tenant - AS3
     #  bigip_as3_deploy:
