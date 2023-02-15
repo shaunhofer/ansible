@@ -36,5 +36,10 @@
 
     - name: Create AS3
       f5networks.f5_bigip.bigip_as3_deploy:
-        content: "{{ lookup('template', 'templates/as3_create.json') }}"
+        content: "{{ lookup('file', 'templates/as3_create.json') }}"
       when: state == "present"
+      
+    - name: Start complex declaration with restart
+      f5networks.f5_bigip.bigip_do_deploy:
+        content: "{{ lookup('file', 'templates/as3_create.json') }}"
+
