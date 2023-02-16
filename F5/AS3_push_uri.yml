@@ -14,7 +14,7 @@
       uri:
         url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
         method: POST
-        body: "{{ lookup('file','templates/auditLogging.json') }}"
+        body: "{{ lookup('file','templates/create_basic_pool.json') }}"
         status_code: 200
         timeout: 300
         body_format: json
