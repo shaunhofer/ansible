@@ -42,5 +42,5 @@
     - name: Deploy AS3
       f5networks.f5_bigip.bigip_do_deploy:
         content: "{{ lookup('file', 'templates/create_basic_pool.json') }}"
-      delegate_to: localhost
+      #delegate_to: localhost
       tags: [ deploy ]
