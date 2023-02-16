@@ -31,10 +31,10 @@
   tasks:
     - name: Declaration with 2 Tenants - AS3
       f5networks.f5_bigip.bigip_as3_deploy:
-        #content: "{{ lookup('template', 'templates/as3_template.j2', split_lines=False) }}"
-        content: "{{ lookup('file', 'templates/create_basic_pool.json') }}"
+        content: "{{ lookup('template', 'templates/create_basic_pool.json', split_lines=False) }}"
+        #content: "{{ lookup('file', 'templates/create_basic_pool.json') }}"
         state: present
-      #delegate_to: localhost
+      delegate_to: localhost
 
     #- name: Create AS3
     #  f5networks.f5_bigip.bigip_as3_deploy:
