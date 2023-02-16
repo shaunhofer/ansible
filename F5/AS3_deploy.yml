@@ -1,0 +1,44 @@
+---
+- name: Deploy AS3 JSON
+  hosts: lb
+  gather_facts: false
+  collections:
+    - f5networks.f5_bigip
+  vars:
+    pool_members: "{{ groups['web'] }}"
+    partition: AS3_app
+    state: absent
+    apps:
+      - name: web_as3
+        vsip: 10.39.2.1
+        vsport: 80
+        memberport: 8080
+        poolname: web_pool_as3
+        members:
+          - 10.39.2.2
+          - 10.39.2.3
+          - 10.39.2.4
+      - name: api
+        vsip: 10.39.3.1
+        vsport: 3000
+        memberport: 3000
+        poolname: api_pool_as3
+        members:
+          - 10.39.3.2
+          - 10.39.3.3
+          - 10.39.3.4
+  
+  tasks:
+    - name: Declaration with 2 Tenants - AS3
+      f5networks.f5_bigip.bigip_as3_deploy:
+        #content: "{{ lookup('template', 'templates/as3_template.j2', split_lines=False) }}"
+        content: "{{ lookup('file', 'templates/create_basic_pool.json') }}"
+        state: present
+      delegate_to: localhost
+
+    #- name: Create AS3
+    #  f5networks.f5_bigip.bigip_as3_deploy:
+    #    content: "{{ lookup('file', 'templates/as3_create.json') }}"
+    #  when: state == "present"
+    #delegate_to: localhost
+    
