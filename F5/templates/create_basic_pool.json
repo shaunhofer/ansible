@@ -15,7 +15,7 @@
           "class": "Service_HTTP",
           "virtualAddresses": ["10.1.2.3"],
           "virtualPort": 80,
-          "pool": "web_pool_as3"
+          "pool": "web_pool"
         },
         "web_pool": {
           "class": "Pool",
