@@ -5,7 +5,7 @@
   collections:
     - f5networks.f5_bigip
   vars:
-    pool_members: "{{ groups['web'] }}"
+    template_use: 'templates/create_basic_pool.json'
     partition: AS3_app
     state: absent
   
@@ -14,7 +14,7 @@
       uri:
         url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
         method: POST
-        body: "{{ lookup('file','templates/create_basic_pool.json') }}"
+        body: "{{ lookup('file',{{ template_use }} ) }}"
         status_code: 200
         timeout: 300
         body_format: json
