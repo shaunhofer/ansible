@@ -1,0 +1,22 @@
+---
+- name: AS3 pull JSON from the F5
+  hosts: lb
+  gather_facts: false
+  collections:
+    - f5networks.f5_bigip
+  
+  tasks:
+    - name: PUSH AS3
+      uri:
+        url: "https://{{ ansible_host }}:8443/mgmt/tm/cli/script"
+        method: POST
+        body: "@AS3_export_script_JSON_for_API_post"
+        status_code: 200
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      register: json_info
