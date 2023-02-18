@@ -47,15 +47,6 @@
       delegate_to: localhost
   
     - name: PUSH JSON to AS3
-      uri:
-        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
-        method: POST
-        body: "{{ lookup('file', '{{ json_loc }}' ) }}"
-        status_code: 200
-        timeout: 300
-        body_format: json
-        force_basic_auth: true
-        user: "{{ ansible_user }}"
-        password: "{{ ansible_password }}"
-        validate_certs: false
+      f5networks.f5_bigip.bigip_as3_deploy:
+          content: "{{ lookup('file', '{{ json_loc }}') }}"
       delegate_to: localhost
