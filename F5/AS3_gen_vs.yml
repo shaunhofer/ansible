@@ -2,6 +2,7 @@
 - name: Deploy AS3 JSON
   hosts: lb
   gather_facts: false
+  connection: httpapi
   collections:
     - f5networks.f5_bigip
   vars:
