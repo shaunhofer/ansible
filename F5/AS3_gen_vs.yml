@@ -39,8 +39,9 @@
               receive: I AM UP
       
   tasks:
-    - copy:
+    - name: Create JSON file locally
+      copy:
         dest: AS3_send.json
         content: "{{ as3 | to_json }}" 
-      delegate: localhost
+      delegate_to: localhost
   
