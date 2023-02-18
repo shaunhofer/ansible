@@ -41,5 +41,5 @@
   tasks:
     - copy:
         dest: AS3_send.json
-        content: "{{ certificate | to_json }}" 
+        content: "{{ as3 | to_json }}" 
   
