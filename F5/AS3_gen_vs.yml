@@ -21,12 +21,13 @@
                 - class: Application
                   web:
                     - class: Service_HTTP
-                      virtualAddress:"10.1.2.3"
+                      virtualAddress: 10.1.2.3
                       virtualPort: 80
                       pool: web_pool
                    web_pool:
                     - class: Pool
-                      monitors: [{"use": "http_mon"}]
+                      monitors: 
+                        - use: http_mon
                       members:
                         - servicePort: 8080
                           serverAddresses: 10.2.2.5
