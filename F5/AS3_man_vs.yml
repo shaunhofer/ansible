@@ -1,0 +1,61 @@
+---
+- name: Deploy AS3 JSON
+  hosts: lb
+  gather_facts: false
+  collections:
+    - f5networks.f5_bigip
+  vars:
+    json_loc: ~/AS3_send.json
+    pool_members: "{{ groups['web'] }}"
+    as3:
+      class: AS3
+      action: deploy
+      persist: true
+      declaration:
+        class: ADC
+        schemaVersion: 3.22.0
+        id: id
+        label: WebApp
+        ansible:
+          class: Tenant
+          A1:
+            class: Application
+            web:
+              class: Service_HTTP
+              virtualAddresses:
+              - 10.1.2.3
+              virtualPort: 80
+              pool: web_pool
+            web_pool:
+              class: Pool
+              monitors:
+              - use: http_mon
+              members:
+              - servicePort: 8080
+                serverAddresses:
+                - 10.2.2.3
+            http_mon:
+              class: Monitor
+              monitorType: http
+              receive: I AM UP
+      
+  tasks:
+    - name: Create JSON file locally
+      copy:
+        dest: "{{ json_loc }}" 
+        content: "{{ as3 | to_json }}" 
+      delegate_to: localhost
+  
+    - name: PUSH JSON to AS3
+      uri:
+        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
+        method: POST
+        body: "{{ lookup('file', '{{ json_loc }}' ) }}"
+        status_code: 200
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
