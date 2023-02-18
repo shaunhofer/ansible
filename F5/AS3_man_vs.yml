@@ -2,8 +2,8 @@
 - name: Deploy AS3 JSON
   hosts: lb
   gather_facts: false
-  #collections:
-  #  - f5networks.f5_bigip
+  collections:
+    - f5networks.f5_bigip
   vars:
     json_loc: ~/AS3_send.json
     pool_members: "{{ groups['web'] }}"
