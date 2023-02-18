@@ -1,0 +1,9 @@
+- name: Read file directly into fact
+  ansible.builtin.set_fact:
+    jsondata: "{{ lookup('file', './example.json') }}"
+    
+- name: Update the fact
+  ansible.utils.update_fact:
+    updates:
+      - path: jsondata.domain.user
+        value: apache
