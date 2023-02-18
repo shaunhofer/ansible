@@ -2,8 +2,8 @@
 - name: Deploy AS3 JSON
   hosts: lb
   gather_facts: false
-  collections:
-    - f5networks.f5_bigip
+  #collections:
+  #  - f5networks.f5_bigip
   vars:
     json_loc: ~/AS3_send.json
     pool_members: "{{ groups['web'] }}"
@@ -47,7 +47,7 @@
       delegate_to: localhost
   
     - name: PUSH JSON to AS3
-      f5networks.f5_bigip.bigip_as3_deploy:
+      bigip_as3_deploy:
           content: "{{ lookup('file', '{{ json_loc }}') }}"
       tags: [ deploy ]
       delegate_to: localhost
