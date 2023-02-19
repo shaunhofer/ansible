@@ -4,12 +4,12 @@
   gather_facts: false
   connection: httpapi
   vars:
-    action: deploy
+    post_action: deploy
     json_loc: ~/AS3_send.json
     pool_members: "{{ groups['web'] }}"
     as3:
       class: AS3
-      action: "{{ action }}"
+      action: "{{ post_action }}"
       persist: true
       declaration:
         class: ADC
