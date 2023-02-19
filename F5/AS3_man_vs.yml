@@ -52,7 +52,7 @@
       #register: f5_as3_deploy_request
     
    - name: Check json file
-     ansible.builtin.command: cat ~/AS3_send.json
+     ansible.builtin.shell: cat ~/AS3_send.json
      register: f5_as3_deploy_request
     
     - name: Debug
