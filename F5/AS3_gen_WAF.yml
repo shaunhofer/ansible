@@ -1,0 +1,82 @@
+---
+- name: Deploy AS3 JSON
+  hosts: lb
+  gather_facts: false
+  connection: httpapi
+  vars:
+    post_action: deploy
+    json_loc: ~/AS3_send.json
+    pool_members: "{{ groups['web'] }}"
+    as3:
+      class: AS3
+      action: "{{ post_action }}"
+      persist: true
+      declaration:
+        class: ADC
+        schemaVersion: 3.2.0
+        id: Prod_API_AS3
+        API-Prod:
+          class: Tenant
+          defaultRouteDomain: 0
+          arcadia:
+            class: Application
+            template: generic
+            VS_API:
+              class: Service_HTTPS
+              remark: Accepts HTTPS/TLS connections on port 443
+              virtualAddresses:
+              - 10.2.2.2
+              redirect80: false
+              pool: pool_NGINX_API
+              policyWAF:
+                use: Arcadia_WAF_API_policy
+              securityLogProfiles:
+              - bigip: "/Common/Log all requests"
+              profileTCP:
+                egress: wan
+                ingress:
+                  use: TCP_Profile
+              profileHTTP:
+                use: custom_http_profile
+              serverTLS:
+                bigip: "/Common/arcadia_client_ssl"
+            Arcadia_WAF_API_policy:
+              class: WAF_Policy
+              url: http://bla.com/root/awaf_openapi/-/raw/master/WAF/ansible/bigip/policy-api.json
+              ignoreChanges: true
+            pool_NGINX_API:
+              class: Pool
+              monitors:
+              - http
+              members:
+              - servicePort: 8080
+                serverAddresses:
+                - 10.88.2.88
+            custom_http_profile:
+              class: HTTP_Profile
+              xForwardedFor: true
+            TCP_Profile:
+              class: TCP_Profile
+              idleTimeout: 60
+
+      
+  tasks:
+    - name: Create JSON file locally
+      copy:
+        dest: "{{ json_loc }}" 
+        content: "{{ as3 | to_json }}" 
+      delegate_to: localhost
+  
+    - name: PUSH JSON to AS3
+      uri:
+        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
+        method: POST
+        body: "{{ lookup('file', '{{ json_loc }}' ) }}"
+        status_code: 200
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
