@@ -8,8 +8,8 @@
     json_loc: ~/AS3_send.json
     pool_members: "{{ groups['web'] }}"
     as3:
-      class: AS3
-      #action: "{{ post_action }}"
+      class: ADC
+      action: "{{ post_action }}"
       updateMode: selective
       schemaVersion: 3.0.0
       id: DNS
