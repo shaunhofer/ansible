@@ -2,7 +2,6 @@
 - name: Deploy AS3 JSON
   hosts: lb
   gather_facts: false
-  ignore_errors: true
   environment:
     #F5_TEEM: false
     no_f5_teem: true
@@ -50,12 +49,16 @@
         dest: "{{ json_loc }}" 
         content: "{{ as3 | to_json }}" 
       delegate_to: localhost
-  
+      register: f5_as3_deploy_request
+    
+    - name: Debug
+      debug: register: f5_as3_deploy_request
+    
     - name: PUSH JSON to AS3
       f5networks.f5_bigip.bigip_as3_deploy:
           content: "{{ lookup('template', '{{ json_loc }}') }}"
           state: present
       tags: [ deploy ]
       connection: local
-      register: f5_as3_deploy_request
+      
       #delegate_to: localhost
