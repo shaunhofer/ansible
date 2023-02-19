@@ -67,18 +67,6 @@
               use: profileUdp
             profileDNS:
               use: profileDnsHW
-          profileDnsLogging:
-            class: DNS_Logging_Profile
-            remark: DNS Logging Profile test
-            includeCompleteAnswer: true
-            includeQueryId: false
-            includeSource: true
-            includeTimestamp: true
-            includeView: true
-            logPublisher:
-              bigip: "/Common/local-db-publisher"
-            logQueriesEnabled: true
-            logResponsesEnabled: false
           profileDnsHW:
             class: DNS_Profile
             label: profileDnsHW
@@ -101,9 +89,6 @@
             zoneTransferEnabled: true
             recursionDesiredEnabled: false
             securityEnabled: false
-            loggingEnabled: true
-            loggingProfile:
-              use: profileDnsLogging
             statisticsSampleRate: 20
           profileUdp:
             class: UDP_Profile
