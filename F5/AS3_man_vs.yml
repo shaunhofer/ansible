@@ -52,5 +52,6 @@
           content: "{{ lookup('file', '{{ json_loc }}') }}"
           state: present
       tags: [ deploy ]
+      connection: local
       register: f5_as3_deploy_request
       #delegate_to: localhost
