@@ -33,7 +33,7 @@
               members:
               - servicePort: 8080
                 serverAddresses:
-                - "{{ pool_members }}"
+                - 10.2.2.5
             http_mon:
               class: Monitor
               monitorType: http
