@@ -6,18 +6,7 @@
   collections:
     - f5networks.f5_bigip
   vars:
-    json_loc: ~/AS3_send.json
-    pool_members: "{{ groups['web'] }}"
-    as3:
-      class: AS3
-      action: deploy
-      persist: true
-      declaration:
-        class: ADC
-        schemaVersion: 3.22.0
-        id: id
-        label: WebApp
-        ansible:
+    tenant_name: none
       
   tasks:
     - name: Create JSON file locally
@@ -28,7 +17,7 @@
   
     - name: PUSH JSON to AS3
       ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
+        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare/{{ tenant_name }}"
         method: POST
         body: "{{ lookup('file', '{{ json_loc }}' ) }}"
         status_code: 200
