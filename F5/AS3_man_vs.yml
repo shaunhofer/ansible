@@ -2,6 +2,7 @@
 - name: Deploy AS3 JSON
   hosts: lb
   gather_facts: false
+  ignore_errors: true
   collections:
     - f5networks.f5_bigip
     
@@ -54,7 +55,7 @@
       tags: [ deploy ]
       connection: local
       environment:
-        F5_TEEM: false
-        #no_f5_teem: true
+        #F5_TEEM: false
+        no_f5_teem: true
       register: f5_as3_deploy_request
       #delegate_to: localhost
