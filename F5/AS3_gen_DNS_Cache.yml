@@ -1,0 +1,60 @@
+---
+- name: Deploy AS3 JSON
+  hosts: lb
+  gather_facts: false
+  connection: httpapi
+  vars:
+    post_action: deploy
+    json_loc: ~/AS3_send.json
+    pool_members: "{{ groups['web'] }}"
+    as3:
+      class: ADC
+      #action: "{{ post_action }}"
+      schemaVersion: 3.13.0
+      id: DNS_Cache
+      Example_DNS_Cache:
+        class: Tenant
+        Application:
+          class: Application
+          DNSCache_example:
+            class: DNS_Cache
+            remark: DNS Cache
+            answerDefaultZones: true
+            messageCacheSize: 0
+            recordCacheSize: 1
+            recordRotationMethod: query-id
+            localZones:
+              norecords.com:
+                type: transparent
+                records: []
+              onerecord.com:
+                type: transparent
+                records:
+                - wiki.onerecord.com 300 IN A 10.10.10.124
+              tworecords.com:
+                type: transparent
+                records:
+                - wiki.tworecords.com 300 IN A 10.10.10.125
+                - wiki.tworecords.com 300 IN A 10.10.10.126
+            type: transparent
+      
+  tasks:
+    - name: Create JSON file locally
+      copy:
+        dest: "{{ json_loc }}" 
+        content: "{{ as3 | to_json }}" 
+      delegate_to: localhost
+  
+    - name: PUSH JSON to AS3
+      uri:
+        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
+        method: POST
+        body: "{{ lookup('file', '{{ json_loc }}' ) }}"
+        status_code: 200
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
