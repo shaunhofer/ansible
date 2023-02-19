@@ -12,7 +12,7 @@
     - name: PUSH AS3 command
       ansible.builtin.uri:
         url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare/{{ tenant_name }}"
-        method: POST
+        method: DELETE
         status_code: 200
         timeout: 300
         body_format: json
