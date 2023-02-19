@@ -45,10 +45,14 @@
       
   tasks:
     - name: Create JSON file locally
-      copy:
+      ansible.builtin.copy:
         dest: "{{ json_loc }}" 
         content: "{{ as3 | to_json }}" 
       delegate_to: localhost
+      #register: f5_as3_deploy_request
+    
+   - name: Check json file
+      ansible.builtin.command: cat "{{ json_loc }}" 
       register: f5_as3_deploy_request
     
     - name: Debug
