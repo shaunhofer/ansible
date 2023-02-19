@@ -9,6 +9,7 @@
     pool_members: "{{ groups['web'] }}"
     as3:
       class: ADC
+      action: "{{ post_action }}"
       schemaVersion: 3.17.0
       id: Endpoint_Policy
       Example_negative_op:
