@@ -9,7 +9,7 @@
     pool_members: "{{ groups['web'] }}"
     as3:
       class: AS3
-      action: "{{ post_action }}"
+      #action: "{{ post_action }}"
       updateMode: selective
       schemaVersion: 3.0.0
       id: DNS
