@@ -38,8 +38,6 @@
                   use: TCP_Profile
               profileHTTP:
                 use: custom_http_profile
-              serverTLS:
-                bigip: "/Common/arcadia_client_ssl"
             Arcadia_WAF_API_policy:
               class: WAF_Policy
               url: http://bla.com/root/awaf_openapi/-/raw/master/WAF/ansible/bigip/policy-api.json
