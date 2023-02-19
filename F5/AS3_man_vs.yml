@@ -53,7 +53,7 @@
   
     - name: PUSH JSON to AS3
       f5networks.f5_bigip.bigip_as3_deploy:
-          content: "{{ lookup('file', '{{ json_loc }}') }}"
+          content: "{{ lookup('template', '{{ json_loc }}') }}"
           state: present
       tags: [ deploy ]
       connection: local
