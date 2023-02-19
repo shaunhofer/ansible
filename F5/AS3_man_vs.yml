@@ -54,6 +54,7 @@
       tags: [ deploy ]
       connection: local
       environment:
-        F5_TEEM: yes
+        F5_TEEM: false
+        no_f5_teem: true
       register: f5_as3_deploy_request
       #delegate_to: localhost
