@@ -53,7 +53,7 @@
     
     - name: Debug
       debug:
-        var: register: f5_as3_deploy_request
+        var: f5_as3_deploy_request
     
     - name: PUSH JSON to AS3
       f5networks.f5_bigip.bigip_as3_deploy:
