@@ -48,11 +48,12 @@
       ansible.builtin.copy:
         dest: "{{ json_loc }}" 
         content: "{{ as3 | to_json }}" 
-      delegate_to: localhost
+      connection: local
       #register: f5_as3_deploy_request
     
     - name: Check json file
       ansible.builtin.command: cat ~/AS3_send.json
+      connection: local
       register: f5_as3_deploy_request
     
     - name: Debug
