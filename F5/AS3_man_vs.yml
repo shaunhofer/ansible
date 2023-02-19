@@ -53,5 +53,7 @@
           state: present
       tags: [ deploy ]
       connection: local
+      environment:
+        F5_TEEM: yes
       register: f5_as3_deploy_request
       #delegate_to: localhost
