@@ -3,6 +3,9 @@
   hosts: lb
   gather_facts: false
   ignore_errors: true
+  environment:
+    #F5_TEEM: false
+    no_f5_teem: true
   collections:
     - f5networks.f5_bigip
     
@@ -54,8 +57,5 @@
           state: present
       tags: [ deploy ]
       connection: local
-      environment:
-        #F5_TEEM: false
-        no_f5_teem: true
       register: f5_as3_deploy_request
       #delegate_to: localhost
