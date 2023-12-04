@@ -5,7 +5,7 @@
   tasks:
     - name: Stop iis service
       ansible.windows.win_service:
-        name: W3Svc
+        name: W3SVC
         state: stop
         
     - name: Install iis
