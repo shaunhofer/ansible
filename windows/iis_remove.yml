@@ -8,7 +8,7 @@
         name: W3SVC
         state: stopped
         
-    - name: Install iis
+    - name: Remove iis
       ansible.windows.win_feature:
         name: Web-Server
         state: absent
