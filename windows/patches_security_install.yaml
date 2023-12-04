@@ -4,5 +4,5 @@
   tasks:
        - name: install security
          win_updates:
-           category_name: SecurityUpdates
+           category_names: SecurityUpdates
            reboot: yes
