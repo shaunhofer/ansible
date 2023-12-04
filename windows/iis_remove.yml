@@ -6,7 +6,7 @@
     - name: Stop iis service
       ansible.windows.win_service:
         name: W3SVC
-        state: stop
+        state: stopped
         
     - name: Install iis
       ansible.windows.win_feature:
