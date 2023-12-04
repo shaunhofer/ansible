@@ -13,7 +13,7 @@
 
     - name: Start iis service
       ansible.windows.win_service:
-        name: W3Svc
+        name: W3SVC
         state: started
 
     - name: Create website index.html
