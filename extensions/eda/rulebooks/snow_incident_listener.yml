@@ -1,0 +1,25 @@
+---
+- name: Watch for new incidents in ServiceNow
+  hosts: localhost
+  sources:
+    - name: Listen to ServiceNow
+      cloin.eda.snow_records:
+        instance: "{{ instance_url }}"
+        username: "{{ user }}"
+        password: "{{ password }}"
+        table: incident
+        interval: 1
+  rules:
+    - name: Augment Incident
+      condition: event.cmdb_ci is defined
+      actions:
+        - debug:
+            var: event
+        - run_job_template:
+            organization: "midrange"
+            name: "augment-incident"
+    - name: Debug everything else
+      condition: event.cmdb_ci is not defined
+      action:
+        debug:
+          var: event
