@@ -1,15 +1,15 @@
 ---
 - name: Watch for new records
-    hosts: localhost
-    sources:
+  hosts: localhost
+  sources:
     - cloin.eda.snow_records:
         instance: "{{ instance_url }}"
         username: "{{ user }}"
         password: "{{ password }}"
         table: incident
         interval: 1
-    rules:
+  rules:
     - name: New record created
-        condition: event.sys_id is defined
-        action:
+      condition: event.sys_id is defined
+      action:
         debug:
