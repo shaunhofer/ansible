@@ -17,7 +17,7 @@
             var: event
         - run_job_template:
             organization: "midrange"
-            name: "augment-incident"
+            name: "amend-incident"
     - name: Debug everything else
       condition: event.cmdb_ci is not defined
       action:
