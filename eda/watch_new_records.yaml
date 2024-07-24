@@ -1,0 +1,14 @@
+- name: Watch for new records
+    hosts: localhost
+    sources:
+    - cloin.eda.snow_records:
+        instance: 
+        username: ansible
+        password: ansible
+        table: incident
+        interval: 1
+    rules:
+    - name: New record created
+        condition: event.sys_id is defined
+        action:
+        debug:
