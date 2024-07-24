@@ -2,9 +2,9 @@
     hosts: localhost
     sources:
     - cloin.eda.snow_records:
-        instance: 
-        username: ansible
-        password: ansible
+        instance: "{{ instance_url }}"
+        username: "{{ user }}"
+        password: "{{ password }}"
         table: incident
         interval: 1
     rules:
