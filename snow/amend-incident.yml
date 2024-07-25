@@ -2,20 +2,13 @@
 - name: Augment a ServiceNow Incident
   hosts: localhost
   vars: 
-    test: "default"
+    inc_number: "{{ ansible_eda.event.number }}"
+    inc_sys_id: "{{ ansible_eda.event.sys_id }}"
 
   tasks:
     - name: Debug all vars
       ansible.builtin.debug:
-        var: ansible_eda.event
-        var: event
-        var: test
-    - name: Set the incident number
-      ansible.builtin.set_fact:
-        inc_number: "{{ ansible_eda.event.number }}"
-    - name: Set the sys_id
-      ansible.builtin.set_fact:
-        inc_sys_id: "{{ ansible_eda.event.sys_id }}"
+        var: inc_number
     - name: Gather messages log
       ansible.builtin.shell: "echo '{{ dummy_messages_log }}' > /tmp/{{ inc_number }}_messages.log"
       register: messages_log
