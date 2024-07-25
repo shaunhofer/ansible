@@ -1,6 +1,8 @@
 ---
 - name: Augment a ServiceNow Incident
   hosts: localhost
+  collections:
+    - servicenow.itsm
 
   tasks:
     - name: Debug all vars
