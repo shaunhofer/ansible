@@ -7,7 +7,7 @@
   tasks:
     - name: Debug all vars
       ansible.builtin.debug:
-        var: ansible_eda
+        var: ansible_eda.event.sys_id
     - name: Set the incident number
       ansible.builtin.set_fact:
         inc_number: "{{ ansible_eda.event.number }}"
@@ -20,7 +20,6 @@
     - name: Gather journal /var/log/messages
       ansible.builtin.shell: "echo '{{ dummy_journal_log }}' > /tmp/{{ inc_number }}_journal.log"
       register: journal_log
-
     - name: All done message
       ansible.builtin.debug:
         msg: "Incident augmentation for incident {{ inc_number }} complete."
