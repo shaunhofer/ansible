@@ -27,21 +27,39 @@
         action: patch
         sys_id: "{{ inc_sys_id }}"
         data:
-          work_notes: "Event Driven Ansible has augmented this incident with log files. AAP Job Id: {{ tower_job_id }}"
+          work_notes: "Event Driven Ansible has acknowledged this issue and is responding. AAP Job Id: {{ tower_job_id }}"
       register: snow_var
-    - name: Attach the log files
-      servicenow.itsm.attachment_upload:
-        instance:
-          host: "{{ snow_instance }}"
-          username: "{{ snow_username }}"
-          password: "{{ snow_password }}"
-        table_name: incident
-        table_sys_id: "{{ inc_sys_id }}"
+    #- name: Attach the log files
+      #servicenow.itsm.attachment_upload:
+        #instance:
+        #  host: "{{ snow_instance }}"
+        #  username: "{{ snow_username }}"
+        #  password: "{{ snow_password }}"
+        #table_name: incident
+        #table_sys_id: "{{ inc_sys_id }}"
         #attachments:
         #  - path: "/tmp/{{ inc_number }}_messages.log"
         #    name: "{{ inc_number }}_messages.log"
         #  - path: "/tmp/{{ inc_number }}_journal.log"
         #    name: "{{ inc_number }}_journal.log"
+    - name: Create change request
+      servicenow.itsm.change_request:
+        instance:
+          host: "{{ snow_instance }}"
+          username: "{{ snow_username }}"
+          password: "{{ snow_password }}"
+        type: standard
+        state: new
+        requested_by: "{{ snow_username }}"
+        short_description: Fix incident "{{ inc_sys_id }}"
+        description: Rebooting server X
+        attachments:
+          - path: "/tmp/{{ inc_number }}_messages.log"
+        priority: moderate
+        risk: low
+        impact: low
+        other:
+         expected_start: 2021-02-12
     - name: All done message
       ansible.builtin.debug:
         msg: "Incident augmentation for incident {{ inc_number }} complete."
