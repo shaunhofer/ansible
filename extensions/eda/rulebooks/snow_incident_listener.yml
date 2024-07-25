@@ -18,8 +18,3 @@
         - run_job_template:
             organization: "Default"
             name: "amend-incident"
-    - name: Debug everything else
-      condition: event.cmdb_ci is not defined
-      action:
-        debug:
-          var: event
