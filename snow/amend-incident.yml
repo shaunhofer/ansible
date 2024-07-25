@@ -17,18 +17,7 @@
     - name: Gather journal /var/log/messages
       ansible.builtin.shell: "echo '{{ dummy_journal_log }}' > /tmp/{{ inc_number }}_journal.log"
       register: journal_log
-    - name: Update Incident with augmentation
-      servicenow.itsm.api:
-        instance:
-          host: "{{ snow_instance }}"
-          username: "{{ snow_username }}"
-          password: "{{ snow_password }}"
-        resource: incident
-        action: patch
-        sys_id: "{{ inc_sys_id }}"
-        data:
-          work_notes: "Event Driven Ansible has acknowledged this issue and is responding. AAP Job Id: {{ tower_job_id }}"
-      register: snow_var
+
     #- name: Attach the log files
       #servicenow.itsm.attachment_upload:
         #instance:
@@ -51,7 +40,7 @@
         type: standard
         state: new
         requested_by: "{{ snow_username }}"
-        short_description: Fix incident "{{ inc_sys_id }}"
+        short_description: Fix incident "{{ inc_number }}"
         description: Rebooting server X
         attachments:
           - path: "/tmp/{{ inc_number }}_messages.log"
@@ -59,7 +48,20 @@
         risk: low
         impact: low
         other:
-         expected_start: 2021-02-12
+         incidents_fixed_by_change: "{{ inc_number }}"
+      register: snow_var
+    - name: Update Incident with augmentation
+      servicenow.itsm.api:
+        instance:
+          host: "{{ snow_instance }}"
+          username: "{{ snow_username }}"
+          password: "{{ snow_password }}"
+        resource: incident
+        action: patch
+        sys_id: "{{ inc_sys_id }}"
+        data:
+          work_notes: "Event Driven Ansible has acknowledged this issue and is responding. AAP Job Id: {{ tower_job_id }}. Change request logged"
+      register: snow_var
     - name: All done message
       ansible.builtin.debug:
         msg: "Incident augmentation for incident {{ inc_number }} complete."
