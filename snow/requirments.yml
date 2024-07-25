@@ -1,0 +1,10 @@
+collections:
+  - name: infra.controller_configuration
+  - name: infra.ah_configuration
+  - name: infra.ee_utilities
+  - name: infra.aap_utilities
+  - name: infra.eda_configuration
+  - name: containers.podman
+  - name: ansible.eda
+  - name: servicenow.itsm
+  - name: kubernetes.core
