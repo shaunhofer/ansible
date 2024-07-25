@@ -5,7 +5,7 @@
     - name: Listen to ServiceNow
       cloin.eda.snow_records:
         instance: "{{ instance_url }}"
-        username: "{{ user }}"
+        username: "{{ username }}"
         password: "{{ password }}"
         table: incident
         interval: 1
