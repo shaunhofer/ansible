@@ -7,7 +7,8 @@
   tasks:
     - name: Debug all vars
       ansible.builtin.debug:
-        var: ansible_eda.event.sys_id
+        var: ansible_eda.event
+        var: event
     - name: Set the incident number
       ansible.builtin.set_fact:
         inc_number: "{{ ansible_eda.event.number }}"
