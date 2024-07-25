@@ -18,7 +18,7 @@
       ansible.builtin.shell: "echo '{{ dummy_journal_log }}' > /tmp/{{ inc_number }}_journal.log"
       register: journal_log
     - name: Attach the log files
-      itsm.attachment_upload:
+      attachment_upload:
         instance:
           host: "{{ snow_instance }}"
           username: "{{ snow_username }}"
