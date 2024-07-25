@@ -17,6 +17,31 @@
     - name: Gather journal /var/log/messages
       ansible.builtin.shell: "echo '{{ dummy_journal_log }}' > /tmp/{{ inc_number }}_journal.log"
       register: journal_log
+    - name: Attach the log files
+      servicenow.itsm.attachment_upload:
+        instance:
+          host: "{{ snow_instance }}"
+          username: "{{ snow_username }}"
+          password: "{{ snow_password }}"
+        table_name: incident
+        table_sys_id: "{{ inc_sys_id }}"
+        attachments:
+          - path: "/tmp/{{ inc_number }}_messages.log"
+            name: "{{ inc_number }}_messages.log"
+          - path: "/tmp/{{ inc_number }}_journal.log"
+            name: "{{ inc_number }}_journal.log"
+    - name: Update Incident with augmentation
+      servicenow.itsm.api:
+        instance:
+          host: "{{ snow_instance }}"
+          username: "{{ snow_username }}"
+          password: "{{ snow_password }}"
+        resource: incident
+        action: patch
+        sys_id: "{{ inc_sys_id }}"
+        data:
+          work_notes: "Event Driven Ansible has augmented this incident with log files. AAP Job Id: {{ tower_job_id }}"
+      register: snow_var
     - name: All done message
       ansible.builtin.debug:
         msg: "Incident augmentation for incident {{ inc_number }} complete."
