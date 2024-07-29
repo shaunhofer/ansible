@@ -4,9 +4,9 @@
   sources:
     - name: Listen to ServiceNow
       cloin.eda.snow_records:
-        instance: "{{ instance_url }}"
-        username: "{{ username }}"
-        password: "{{ password }}"
+        instance: "{{ snow_instance }}"
+        username: "{{ snow_username }}"
+        password: "{{ snow_password }}"
         table: incident
         interval: 1
   rules:
