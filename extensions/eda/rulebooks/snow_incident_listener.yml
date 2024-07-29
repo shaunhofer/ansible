@@ -15,8 +15,6 @@
       actions:
         - debug:
             var: event
-        - ansible.builtin.set_fact:
-            inc_number: "{{ ansible_eda.event.number }}"
         - run_job_template:
             organization: "Default"
             name: "amend-incident"
