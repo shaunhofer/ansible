@@ -1,0 +1,26 @@
+- name: Install OpenJDK on Windows
+  hosts: windows_servers
+  tasks:
+    - name: Copy Java installer to target
+      ansible.windows.win_copy:
+        src: "/path/to/java-1.8.0-openjdk-1.8.0.452.b09-1.win.x86_64.msi" # Replace with your installer path
+        dest: "C:\\temp\\java-1.8.0-openjdk-1.8.0.452.b09-1.win.x86_64.msi"
+
+    - name: Install OpenJDK
+      ansible.windows.win_package:
+        path: "C:\\temp\\java-1.8.0-openjdk-1.8.0.452.b09-1.win.x86_64.msi"
+        arguments: "/s INSTALLDIR=\"C:\\Program Files\\Java\\jdk1.8.0_XXX\"" # Adjust arguments for silent install and desired path
+
+    - name: Set JAVA_HOME environment variable
+      ansible.windows.win_environment:
+        name: JAVA_HOME
+        value: "C:\\Program Files\\Java\\jdk1.8.0_XXX"
+        state: present
+        level: machine
+
+    - name: Add Java to PATH
+      ansible.windows.win_environment:
+        name: PATH
+        value: "%PATH%;%JAVA_HOME%\\bin"
+        state: present
+        level: machine
