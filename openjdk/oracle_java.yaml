@@ -1,0 +1,12 @@
+---
+- name: Remove / Check for Oracle Java
+  hosts: dev_env
+  tasks:
+    - name: Remove Oracle Java
+      ansible.windows.win_package:
+        path: \\domain\programs\jdk
+        product_id: Java
+        arguments: /S
+        state: absent
+      become: true
+      register: java_uninstall_result
