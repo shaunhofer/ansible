@@ -1,6 +1,8 @@
 ---
 - name: Delete files matching a pattern
-  hosts: all
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
+  gather_facts: true
+  become: true
   var:
     PATTERN: 'CentOS-*'
     DIR: '/etc/yum.repos.d/'
