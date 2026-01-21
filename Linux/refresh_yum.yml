@@ -1,6 +1,6 @@
 ---
 - name: Refresh YUM and Subscription Manager
-  hosts: all
+  hosts: "{{ dynamic_inventory_group | default(omit) }}"
   become: yes
   tasks:
     - name: Clean YUM cache and refresh metadata
