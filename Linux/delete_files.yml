@@ -12,8 +12,9 @@
       ansible.builtin.find:
         paths: "{{ DIR }}"
         patterns: "{{ PATTERN }}" 
-        use_regex: true
-        register: FILES_TO_REMOVE
+        file_type: file
+        use_regex: yes
+      register: FILES_TO_REMOVE
 
     - name: Remove the found files
       ansible.builtin.file:
