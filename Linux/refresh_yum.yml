@@ -1,0 +1,26 @@
+---
+- name: Refresh YUM and Subscription Manager
+  hosts: all
+  become: yes
+  tasks:
+    - name: Clean YUM cache and refresh metadata
+      ansible.builtin.yum:
+        update_cache: yes
+        update_only: no
+      # 'update_cache: yes' is equivalent to 'yum clean all' followed by metadata generation
+
+    - name: Force YUM metadata refresh (Command line method)
+      ansible.builtin.command: yum clean all && yum makecache
+      changed_when: true
+
+    - name: Refresh Subscription Manager
+      community.general.redhat_subscription:
+        state: present
+        refresh: yes
+      register: rhsm_refresh
+      ignore_errors: yes
+
+    - name: Force RHSM check-in with servers
+      ansible.builtin.command: subscription-manager refresh
+      changed_when: true
+      when: rhsm_refresh is failed
