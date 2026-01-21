@@ -10,7 +10,7 @@
       # 'update_cache: yes' is equivalent to 'yum clean all' followed by metadata generation
 
     - name: Force YUM metadata refresh (Command line method)
-      ansible.builtin.command: yum clean all && yum makecache
+      ansible.builtin.command: yum clean all
       changed_when: true
 
     #- name: Refresh Subscription Manager
