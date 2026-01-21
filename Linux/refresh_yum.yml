@@ -13,14 +13,14 @@
       ansible.builtin.command: yum clean all && yum makecache
       changed_when: true
 
-    - name: Refresh Subscription Manager
-      community.general.redhat_subscription:
-        state: present
-        refresh: yes
-      register: rhsm_refresh
-      ignore_errors: yes
+    #- name: Refresh Subscription Manager
+    #  community.general.redhat_subscription:
+    #    state: present
+    #    refresh: yes
+     # register: rhsm_refresh
+    #  ignore_errors: yes
 
     - name: Force RHSM check-in with servers
       ansible.builtin.command: subscription-manager refresh
       changed_when: true
-      when: rhsm_refresh is failed
+      #when: rhsm_refresh is failed
