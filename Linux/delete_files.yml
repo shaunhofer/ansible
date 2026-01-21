@@ -1,7 +1,8 @@
 ---
 - name: Delete files matching a pattern
   hosts: "{{ dynamic_inventory_group | default(omit) }}"
-  gather_facts: true
+  strategy: free
+  gather_facts: false
   become: true
   vars:
     PATTERN: 'CentOS-*'
