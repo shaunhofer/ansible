@@ -1,0 +1,22 @@
+---
+- name: Delete files matching a pattern
+  hosts: all
+  var:
+    PATTERN: 'CentOS-*'
+    DIR: '/etc/yum.repos.d/'
+  tasks:
+    - name: Find files matching in a dir
+      ansible.builtin.find:
+        paths: "{{ DIR }}"
+        patterns: "{{ PATTERN }}" 
+        use_regex: true
+        register: FILES_TO_REMOVE
+
+    - name: Remove the found files
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ FILES_TO_REMOVE.files }}"
+      # Optional: Add a label for clarity in the playbook output
+      loop_control:
+        label: "{{ item.path }}"
